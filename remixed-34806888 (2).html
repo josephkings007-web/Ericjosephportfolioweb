@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Eric Joseph – Data Analyst Portfolio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap');
+:root{
+  --bg:#07071a;--bg2:#0d0d24;--card:#111128;--border:#1a1a38;
+  --gold:#f5a623;--red:#ef4444;--green:#22c55e;--blue:#3b82f6;
+  --purple:#8b5cf6;--orange:#f97316;--teal:#14b8a6;--darkred:#991b1b;
+  --text:#f1f5f9;--sub:#94a3b8;--muted:#475569;--spotify:#1DB954;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(7,7,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 1.5rem;}
+.nav-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;height:62px;gap:1rem;}
+.logo-box{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#000;flex-shrink:0;}
+.logo-name{font-weight:800;font-size:14px;line-height:1.2;}
+.logo-sub{font-size:9px;color:var(--sub);}
+.nav-tabs{display:flex;gap:3px;margin-left:auto;}
+.ntab{padding:6px 13px;border-radius:7px;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;color:var(--sub);background:transparent;transition:all .2s;white-space:nowrap;}
+.ntab:hover{color:var(--text);background:var(--border);}
+.ntab.active{background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:62px;}
+.page.active{display:block;}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:4.5rem 2rem 3rem;background:linear-gradient(135deg,#07071a,#0d0d2e,#130d26);}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 75% 50%,rgba(245,166,35,.09),transparent 60%),radial-gradient(ellipse 50% 70% at 20% 80%,rgba(139,92,246,.07),transparent 60%);}
+.hero-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:3rem;align-items:center;position:relative;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.28);color:var(--gold);padding:4px 12px;border-radius:50px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+.badge span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1.hh{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1.1;margin-bottom:.9rem;}
+h1.hh em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-desc{color:var(--sub);font-size:13px;line-height:1.85;max-width:520px;margin-bottom:1.6rem;}
+.hero-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.btnp{padding:10px 22px;border-radius:9px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;font-weight:700;font-size:12px;font-family:'Inter',sans-serif;transition:all .25s;box-shadow:0 4px 18px rgba(245,166,35,.3);}
+.btnp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,166,35,.4);}
+.btno{padding:10px 22px;border-radius:9px;border:1px solid var(--border);cursor:pointer;background:transparent;color:var(--text);font-weight:600;font-size:12px;font-family:'Inter',sans-serif;transition:all .2s;}
+.btno:hover{border-color:var(--gold);color:var(--gold);}
+
+/* PROFILE CARD */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem;text-align:center;position:relative;overflow:hidden;}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--orange),var(--purple));}
+.ava{width:76px;height:76px;border-radius:50%;margin:0 auto .9rem;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 0 0 4px rgba(245,166,35,.2);}
+.pname{font-weight:800;font-size:1.1rem;margin-bottom:2px;}
+.ptitle{color:var(--gold);font-size:11px;font-weight:600;margin-bottom:.8rem;}
+.ppills{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin-bottom:.9rem;}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.05em;}
+.pstats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.9rem;}
+.ps{background:var(--bg2);border-radius:8px;padding:.55rem;}
+.psv{color:var(--gold);font-weight:800;font-size:.95rem;}
+.psl{color:var(--muted);font-size:9px;margin-top:1px;}
+.contacts{display:flex;flex-direction:column;gap:4px;text-align:left;}
+.ci{display:flex;align-items:center;gap:7px;color:var(--sub);font-size:10px;}
+.ci-ico{width:20px;height:20px;border-radius:5px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+
+/* SECTIONS */
+.sec{padding:3rem 2rem;}
+.sec-inner{max-width:1300px;margin:0 auto;}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900;margin-bottom:.4rem;}
+.sec-sub{color:var(--sub);font-size:13px;max-width:600px;line-height:1.75;margin-bottom:2rem;}
+.divider{height:1px;background:var(--border);max-width:1300px;margin:0 auto;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px;}
+.skill{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:8px 12px;font-size:11px;font-weight:600;color:var(--sub);display:flex;align-items:center;gap:7px;transition:all .2s;}
+.skill:hover{border-color:var(--gold);color:var(--gold);}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.slvl{margin-left:auto;font-size:8px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:4px;}
+
+/* EXPERIENCE */
+.exp-list{display:flex;flex-direction:column;gap:14px;}
+.exp-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;position:relative;overflow:hidden;transition:border-color .2s;}
+.exp-card:hover{border-color:rgba(245,166,35,.3);}
+.exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold),var(--orange));}
+.exp-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:7px;margin-bottom:.35rem;}
+.exp-role{font-weight:800;font-size:14px;}
+.exp-date{background:var(--border);color:var(--sub);padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;}
+.exp-co{color:var(--gold);font-weight:600;font-size:12px;margin-bottom:.65rem;}
+.exp-ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.exp-ul li{color:var(--sub);font-size:12px;line-height:1.6;padding-left:15px;position:relative;}
+.exp-ul li::before{content:'→';position:absolute;left:0;color:var(--gold);}
+
+/* PROJECTS GRID */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.proj-card{border-radius:18px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .3s;}
+.proj-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.proj-thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;}
+.proj-body{background:var(--card);padding:1.2rem;}
+.proj-tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem;}
+.proj-title{font-weight:800;font-size:14px;margin-bottom:.4rem;}
+.proj-desc{color:var(--sub);font-size:11px;line-height:1.65;margin-bottom:.8rem;}
+.tool-row{display:flex;flex-wrap:wrap;gap:4px;}
+.ttag{background:var(--border);color:var(--muted);padding:2px 7px;border-radius:5px;font-size:10px;}
+
+/* CERTS */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:9px;}
+.cert{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:.9rem 1.1rem;display:flex;align-items:flex-start;gap:9px;transition:all .2s;}
+.cert:hover{border-color:rgba(245,166,35,.3);}
+.cert-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.cert-name{font-weight:700;font-size:11px;line-height:1.4;}
+.cert-issuer{color:var(--muted);font-size:10px;margin-top:2px;}
+
+/* EDU */
+.edu-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;position:relative;overflow:hidden;}
+.edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--orange));}
+
+/* KPI BAR */
+.kpi-bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:2rem;}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1rem 1.1rem;position:relative;overflow:hidden;transition:all .2s;}
+.kpi:hover{border-color:rgba(245,166,35,.2);}
+.kpi-bg{position:absolute;top:-8px;right:-4px;font-size:42px;opacity:.06;}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.kpi-val{font-size:1.45rem;font-weight:900;line-height:1;}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:3px;}
+
+/* CHART CARDS */
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px;}
+.cg21{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:13px;}
+.cg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:13px;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;overflow:hidden;}
+.cc.full{grid-column:span 2;}
+.ct{font-weight:700;font-size:12px;color:var(--text);margin-bottom:.85rem;display:flex;align-items:center;gap:7px;}
+.ct-bar{width:3px;height:13px;border-radius:2px;flex-shrink:0;}
+.cw{position:relative;height:250px;}
+.cw-sm{position:relative;height:215px;}
+.cw-xs{position:relative;height:180px;}
+
+/* INSIGHTS */
+.ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:13px;}
+.ins{border-radius:11px;padding:.9rem 1rem;}
+.ins-title{font-weight:700;font-size:12px;margin-bottom:4px;}
+.ins-text{font-size:11px;line-height:1.65;color:var(--sub);}
+
+/* TIMELINE */
+.tl-wrap{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;margin-bottom:13px;}
+.tl-scroll{display:flex;overflow-x:auto;gap:0;padding-bottom:10px;scroll-snap-type:x mandatory;}
+.tl-scroll::-webkit-scrollbar{height:3px;}
+.tl-scroll::-webkit-scrollbar-track{background:var(--border);}
+.tl-scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+.tl-item{flex:0 0 125px;text-align:center;position:relative;scroll-snap-align:start;padding:4px 3px 0;}
+.tl-item::before{content:'';position:absolute;top:12px;left:0;right:0;height:2px;background:var(--border);}
+.tl-dot{width:12px;height:12px;border-radius:50%;margin:6px auto;position:relative;z-index:1;border:2px solid var(--bg);}
+.tl-yr{font-weight:800;font-size:10px;margin-bottom:2px;}
+.tl-evt{color:var(--muted);font-size:9px;line-height:1.4;padding:0 3px;}
+
+/* PROJ BANNER */
+.proj-banner{padding:3rem 2rem 2rem;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+
+/* LANG */
+.lang-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:.6rem;}
+.lang-chip{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--sub);}
+
+/* SALES SPECIFIC */
+.ss-kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:1.5rem;}
+.top-prod-table{width:100%;border-collapse:collapse;}
+.top-prod-table th{background:var(--bg2);color:var(--sub);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.top-prod-table td{padding:8px 12px;font-size:12px;border-bottom:1px solid rgba(26,26,56,.5);color:var(--sub);}
+.top-prod-table tr:hover td{background:var(--bg2);color:var(--text);}
+.top-prod-table .pos{color:var(--gold);font-weight:800;font-size:13px;}
+.bar-pill{height:6px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:6px;}
+
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:1.6rem;text-align:center;}
+footer p{color:var(--muted);font-size:11px;line-height:1.8;}
+footer strong{color:var(--gold);}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .pcard{display:none;}
+  .cg2,.cg21,.cg3{grid-template-columns:1fr;}
+  .cc.full{grid-column:span 1;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-box">EJ</div>
+    <div><div class="logo-name">Eric Joseph</div><div class="logo-sub">Data Analyst Portfolio</div></div>
+    <div class="nav-tabs">
+      <button class="ntab active" onclick="go('resume',this)">📄 Resume</button>
+      <button class="ntab" onclick="go('sales',this)">🛒 Sales</button>
+      <button class="ntab" onclick="go('covid',this)">🦠 COVID-19</button>
+      <button class="ntab" onclick="go('drake',this)">🎤 Drake</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════ RESUME ══════════════════ -->
+<div id="page-resume" class="page active">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="badge"><span></span>Open to Opportunities</div>
+        <h1 class="hh">Data-Driven <em>Clarity</em><br>From Complex Information</h1>
+        <p class="hero-desc">Data Analyst & Data Entry Specialist with hands-on experience supporting healthcare and digital media organisations through precise data management, analysis, and reporting. Strong in SQL, Excel, Power BI, and data visualisation.</p>
+        <div class="hero-btns">
+          <button class="btnp" onclick="go('sales',document.querySelectorAll('.ntab')[1])">View Sales Project →</button>
+          <button class="btno" onclick="go('covid',document.querySelectorAll('.ntab')[2])">COVID-19 Analysis</button>
+          <button class="btno" onclick="go('drake',document.querySelectorAll('.ntab')[3])">Drake Analysis</button>
+        </div>
+      </div>
+      <div class="pcard">
+        <div class="ava">👨‍💻</div>
+        <div class="pname">Eric Joseph</div>
+        <div class="ptitle">Data Analyst · Data Entry Specialist</div>
+        <div class="ppills">
+          <span class="pill" style="background:rgba(245,166,35,.15);color:var(--gold);">Excel</span>
+          <span class="pill" style="background:rgba(59,130,246,.15);color:var(--blue);">SQL</span>
+          <span class="pill" style="background:rgba(139,92,246,.15);color:var(--purple);">Power BI</span>
+          <span class="pill" style="background:rgba(34,197,94,.15);color:var(--green);">Python</span>
+        </div>
+        <div class="pstats">
+          <div class="ps"><div class="psv">3+</div><div class="psl">Years Exp.</div></div>
+          <div class="ps"><div class="psv">3</div><div class="psl">Projects</div></div>
+          <div class="ps"><div class="psv">10+</div><div class="psl">Certifications</div></div>
+          <div class="ps"><div class="psv">4</div><div class="psl">Languages</div></div>
+        </div>
+        <div class="contacts">
+          <div class="ci"><div class="ci-ico">📍</div>Lagos, Nigeria</div>
+          <div class="ci"><div class="ci-ico">📞</div>+234 701 396 6083</div>
+          <div class="ci"><div class="ci-ico">📧</div>josephkings007@gmail.com</div>
+          <div class="ci"><div class="ci-ico">🔗</div>linkedin.com/in/eric-joseph-190482276</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="sec" style="background:var(--bg2);">
+    <div class="sec-inner">
+      <div class="sec-label">Professional Summary</div>
+      <h2 class="sec-title">About Eric</h2>
+      <p style="color:var(--sub);font-size:13px;line-height:1.9;max-width:880px;">Data Analyst and Data Entry Specialist with experience supporting healthcare and digital media organisations through accurate data management, analysis, and reporting. Strong background in SQL, Excel, Power BI, and data visualisation, with a proven ability to improve data accuracy, streamline documentation, and support data-driven decisions. Adept at working with large datasets, validating information, and presenting insights clearly to both technical and non-technical stakeholders.</p>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="sec">
+    <div class="sec-inner">
+      <div class="sec-label">Technical Proficiency</div>
+      <h2 class="sec-title">Key Skills</h2>
+      <p class="sec-sub">A well-rounded analytics toolkit built through real-world delivery across healthcare, education, and digital media.</p>
+      <div class="skills-grid">
+        <div class="skill"><div class="sdot" style="background:var(--gold)"></div>Data Cleaning & Validation<span class="slvl" style="background:rgba(245,166,35,.15);color:var(--gold)">Expert</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--green)"></div>Excel (Pivot, Formulas, Charts)<span class="slvl" style="background:rgba(34,197,94,.15);color:var(--green)">Expert</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--blue)"></div>Report Writing<span class="slvl" style="background:rgba(59,130,246,.15);color:var(--blue)">Expert</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--orange)"></div>Problem-Solving<span class="slvl" style="background:rgba(249,115,22,.15);color:var(--orange)">Expert</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--purple)"></div>SEO & Content Analytics<span class="slvl" style="background:rgba(139,92,246,.15);color:var(--purple)">Expert</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--gold)"></div>Data Analysis & Interpretation<span class="slvl" style="background:rgba(245,166,35,.1);color:var(--sub)">Proficient</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--teal)"></div>Data Visualisation<span class="slvl" style="background:rgba(20,184,166,.1);color:var(--sub)">Proficient</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--red)"></div>Data Management<span class="slvl" style="background:rgba(239,68,68,.1);color:var(--sub)">Proficient</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--blue)"></div>Data Accuracy & QC<span class="slvl" style="background:rgba(59,130,246,.1);color:var(--sub)">Proficient</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--green)"></div>Descriptive Statistics<span class="slvl" style="background:rgba(34,197,94,.1);color:var(--sub)">Proficient</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--orange)"></div>SQL Queries<span class="slvl" style="background:rgba(249,115,22,.1);color:var(--muted)">Competent</span></div>
+        <div class="skill"><div class="sdot" style="background:var(--purple)"></div>Power BI & Tableau<span class="slvl" style="background:rgba(139,92,246,.1);color:var(--muted)">Competent</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <div class="sec">
+    <div class="sec-inner">
+      <div class="sec-label">Work History</div>
+      <h2 class="sec-title">Professional Experience</h2>
+      <p class="sec-sub">Delivering data integrity and analytical support across healthcare, content, and education sectors.</p>
+      <div class="exp-list">
+        <div class="exp-card">
+          <div class="exp-head"><div class="exp-role">Data Entry Specialist</div><div class="exp-date">Feb 2024 – Present</div></div>
+          <div class="exp-co">Daysprings Healthcare LTD · Southampton</div>
+          <ul class="exp-ul">
+            <li>Achieved high data accuracy by entering, validating, and maintaining healthcare records across internal databases and spreadsheets.</li>
+            <li>Improved record reliability by reviewing documents for errors, completeness, and inconsistencies prior to data entry.</li>
+            <li>Created and maintained structured documentation using Excel and Word to support operational reporting and audits.</li>
+            <li>Organised large datasets to improve data retrieval efficiency for administrative and clinical teams.</li>
+            <li>Utilised data management tools and standardised processes to reduce data duplication and entry errors.</li>
+          </ul>
+        </div>
+        <div class="exp-card">
+          <div class="exp-head"><div class="exp-role">Blogger / SEO Content Creator</div><div class="exp-date">Feb 2022 – Feb 2023</div></div>
+          <div class="exp-co">Savage Metro · Lagos, Nigeria</div>
+          <ul class="exp-ul">
+            <li>Developed and managed blog content using SEO best practices to increase reach and search visibility.</li>
+            <li>Conducted keyword research and optimised existing content to improve search engine rankings.</li>
+            <li>Crafted data-driven headlines that increased readership and engagement.</li>
+            <li>Analysed content performance trends to guide future topic and format selection.</li>
+          </ul>
+        </div>
+        <div class="exp-card">
+          <div class="exp-head"><div class="exp-role">Data Entry Officer</div><div class="exp-date">Feb 2021 – Feb 2022</div></div>
+          <div class="exp-co">Rachael Royal School · Lagos, Nigeria</div>
+          <ul class="exp-ul">
+            <li>Accurately entered and maintained confidential client information into the company database.</li>
+            <li>Demonstrated proficiency in Microsoft Excel, Word, and other data entry software programs.</li>
+            <li>Collaborated with cross-functional teams to meet tight deadlines and deliver high-quality data entry services.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <div class="sec" style="background:var(--bg2);">
+    <div class="sec-inner">
+      <div class="sec-label">Featured Work</div>
+      <h2 class="sec-title">Portfolio Projects</h2>
+      <p class="sec-sub">Three comprehensive analytical case studies demonstrating end-to-end data methodology.</p>
+      <div class="proj-grid">
+        <div class="proj-card" onclick="go('sales',document.querySelectorAll('.ntab')[1])">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#061a0a,#0a2e12);">🛒<div style="position:absolute;bottom:10px;right:10px;font-size:10px;color:rgba(34,197,94,.7);font-weight:700;">VIEW →</div></div>
+          <div class="proj-body">
+            <div class="proj-tag" style="background:rgba(34,197,94,.15);color:var(--green);">Retail · Business Intelligence</div>
+            <div class="proj-title">Sales Performance Analysis</div>
+            <div class="proj-desc">2-year Superstore sales analysis revealing top products, seasonal trends, regional performance gaps, customer segments, and discount-driven profit losses.</div>
+            <div class="tool-row"><span class="ttag">Excel</span><span class="ttag">Power BI</span><span class="ttag">Superstore Data</span><span class="ttag">Chart.js</span></div>
+          </div>
+        </div>
+        <div class="proj-card" onclick="go('covid',document.querySelectorAll('.ntab')[2])">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#1a0505,#2d0a0a);">🦠<div style="position:absolute;bottom:10px;right:10px;font-size:10px;color:rgba(239,68,68,.7);font-weight:700;">VIEW →</div></div>
+          <div class="proj-body">
+            <div class="proj-tag" style="background:rgba(239,68,68,.15);color:var(--red);">Public Health · Epidemiology</div>
+            <div class="proj-title">COVID-19 Global Analysis</div>
+            <div class="proj-desc">End-to-end analysis of 700M+ cases across 195 countries (2020–2023). Variant tracking, vaccine rollout, CFR comparisons, and age-stratified severity.</div>
+            <div class="tool-row"><span class="ttag">Excel</span><span class="ttag">SQL</span><span class="ttag">WHO Data</span><span class="ttag">Power BI</span></div>
+          </div>
+        </div>
+        <div class="proj-card" onclick="go('drake',document.querySelectorAll('.ntab')[3])">
+          <div class="proj-thumb" style="background:linear-gradient(135deg,#1a1200,#2d2000);">🎤<div style="position:absolute;bottom:10px;right:10px;font-size:10px;color:rgba(245,166,35,.7);font-weight:700;">VIEW →</div></div>
+          <div class="proj-body">
+            <div class="proj-tag" style="background:rgba(245,166,35,.15);color:var(--gold);">Music Industry · Entertainment</div>
+            <div class="proj-title">Drake Career Analytics</div>
+            <div class="proj-desc">15-year retrospective covering album sales, streaming, net worth growth, Billboard records, revenue streams, and top collaborations including $$$4U (2025).</div>
+            <div class="tool-row"><span class="ttag">Excel</span><span class="ttag">Spotify API</span><span class="ttag">Billboard</span><span class="ttag">RIAA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EDUCATION + CERTS -->
+  <div class="sec">
+    <div class="sec-inner">
+      <div style="display:grid;grid-template-columns:1fr 1.7fr;gap:2.5rem;align-items:start;">
+        <div>
+          <div class="sec-label">Academic Background</div>
+          <h2 class="sec-title" style="font-size:1.4rem;">Education</h2>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="edu-card"><div style="font-size:1.4rem;margin-bottom:.5rem;">🎓</div><div style="font-weight:800;font-size:13px;">B.Sc. Chemistry</div><div style="color:var(--gold);font-size:11px;font-weight:600;margin:.2rem 0;">University of Uyo · Expected Dec 2025</div></div>
+            <div class="edu-card"><div style="font-size:1.4rem;margin-bottom:.5rem;">📋</div><div style="font-weight:800;font-size:13px;">WAEC / SSCE</div><div style="color:var(--gold);font-size:11px;font-weight:600;margin:.2rem 0;">Daily Light College · Lagos, Nigeria</div></div>
+            <div class="edu-card"><div style="font-size:1.4rem;margin-bottom:.5rem;">📊</div><div style="font-weight:800;font-size:13px;">Data Analytics</div><div style="color:var(--gold);font-size:11px;font-weight:600;margin:.2rem 0;">IBM Skills Build / University of the People</div></div>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <div class="sec-label">Languages</div>
+            <div class="lang-row"><div class="lang-chip">🇬🇧 English</div><div class="lang-chip">🇫🇷 French</div><div class="lang-chip">🇳🇬 Yoruba</div><div class="lang-chip">🇳🇬 Ibibio</div></div>
+          </div>
+          <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;">
+            <div class="sec-label" style="margin-bottom:.5rem;">References</div>
+            <p style="color:var(--sub);font-size:12px;">Available upon request.</p>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Professional Credentials</div>
+          <h2 class="sec-title" style="font-size:1.4rem;">Certifications</h2>
+          <div class="cert-grid" style="grid-template-columns:1fr;">
+            <div class="cert"><div class="cert-ico" style="background:rgba(245,166,35,.15);">🏅</div><div><div class="cert-name">IBM Data Analytics Professional Certificate</div><div class="cert-issuer">IBM · Dec 2026</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(59,130,246,.15);">📊</div><div><div class="cert-name">Data Collection and Analysis (IBM)</div><div class="cert-issuer">IBM · Dec 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(34,197,94,.15);">🔧</div><div><div class="cert-name">Data Preparation for Analysis (IBM)</div><div class="cert-issuer">IBM · Nov 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(139,92,246,.15);">📈</div><div><div class="cert-name">Data Visualisation and Presentation (IBM)</div><div class="cert-issuer">IBM · Nov 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(249,115,22,.15);">🗂️</div><div><div class="cert-name">Data Classification (IBM)</div><div class="cert-issuer">IBM · Nov 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(20,184,166,.15);">📐</div><div><div class="cert-name">Intro to Inferential & Descriptive Statistics</div><div class="cert-issuer">IBM / University of the People · Nov 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(239,68,68,.15);">🔢</div><div><div class="cert-name">Data Usability for Inferential & Descriptive Statistics</div><div class="cert-issuer">IBM · Nov 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(245,166,35,.15);">🏛️</div><div><div class="cert-name">NASBA: Data Analytics Foundations (IBM)</div><div class="cert-issuer">IBM / NASBA · May 2025</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(59,130,246,.15);">✍️</div><div><div class="cert-name">PMI Business Writing Principles</div><div class="cert-issuer">PMI · May 2026</div></div></div>
+            <div class="cert"><div class="cert-ico" style="background:rgba(139,92,246,.15);">🌐</div><div><div class="cert-name">NASBA: Writing for the Web</div><div class="cert-issuer">NASBA · May 2025</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ SALES PAGE ══════════════════ -->
+<div id="page-sales" class="page">
+  <div class="proj-banner" style="background:linear-gradient(135deg,#030f06,#061a0a,#030f06);">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(34,197,94,.1),transparent 60%);"></div>
+    <div style="max-width:1300px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem;flex-wrap:wrap;">
+        <span class="pill" style="background:rgba(34,197,94,.15);color:var(--green);">Retail · Business Intelligence</span>
+        <span style="color:var(--muted);font-size:11px;">2 Years Sales Data · Sample Superstore Dataset · Power BI / Excel</span>
+      </div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.7rem);font-weight:900;margin-bottom:.6rem;">🛒 Sales Performance Analysis Dashboard</h1>
+      <p style="color:var(--sub);max-width:680px;line-height:1.8;font-size:13px;">Retained as Data Analyst by a retail company to analyse 2 years of Superstore sales data — uncovering top products, seasonal revenue patterns, regional gaps, customer segment profitability, and discount-driven profit erosion. Findings directly inform management strategy.</p>
+    </div>
+  </div>
+
+  <div style="padding:1.8rem 2rem;max-width:1300px;margin:0 auto;">
+
+    <!-- KPIs -->
+    <div class="kpi-bar">
+      <div class="kpi" style="border-top:2px solid var(--green);"><div class="kpi-bg">💰</div><div class="kpi-label">Total Revenue</div><div class="kpi-val" style="color:var(--green);">$2.30M</div><div class="kpi-sub">2-year period</div></div>
+      <div class="kpi" style="border-top:2px solid var(--teal);"><div class="kpi-bg">📈</div><div class="kpi-label">Total Profit</div><div class="kpi-val" style="color:var(--teal);">$286K</div><div class="kpi-sub">12.4% margin</div></div>
+      <div class="kpi" style="border-top:2px solid var(--gold);"><div class="kpi-bg">🛒</div><div class="kpi-label">Total Orders</div><div class="kpi-val" style="color:var(--gold);">9,994</div><div class="kpi-sub">Avg $230/order</div></div>
+      <div class="kpi" style="border-top:2px solid var(--blue);"><div class="kpi-bg">👥</div><div class="kpi-label">Customers</div><div class="kpi-val" style="color:var(--blue);">793</div><div class="kpi-sub">Across 4 regions</div></div>
+      <div class="kpi" style="border-top:2px solid var(--orange);"><div class="kpi-bg">📦</div><div class="kpi-label">Products Sold</div><div class="kpi-val" style="color:var(--orange);">1,862</div><div class="kpi-sub">Across 17 sub-cats</div></div>
+      <div class="kpi" style="border-top:2px solid var(--red);"><div class="kpi-bg">⚠️</div><div class="kpi-label">Loss-Making Items</div><div class="kpi-val" style="color:var(--red);">-$48K</div><div class="kpi-sub">Furniture & discounts</div></div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="cg21">
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--green);"></div>Monthly Sales Trend — Revenue vs. Profit (2-Year Overview)</div>
+        <div class="cw"><canvas id="ssMonthly"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--blue);"></div>Sales by Category</div>
+        <div class="cw"><canvas id="ssCat"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="cg2">
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--orange);"></div>Revenue & Profit by Region</div>
+        <div class="cw-sm"><canvas id="ssRegion"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--purple);"></div>Customer Segment: Revenue vs. Profit</div>
+        <div class="cw-sm"><canvas id="ssSegment"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Row 3 — Sub-category profitability -->
+    <div class="cc full" style="margin-bottom:13px;">
+      <div class="ct"><div class="ct-bar" style="background:var(--red);"></div>Profit by Sub-Category — Identifying Loss-Makers (High Discount Impact)</div>
+      <div style="height:260px;"><canvas id="ssSubcat"></canvas></div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="cg2">
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--gold);"></div>Discount Level vs. Profit Margin (%)</div>
+        <div class="cw-sm"><canvas id="ssDiscount"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ct"><div class="ct-bar" style="background:var(--teal);"></div>Quarterly Revenue Growth (YoY Comparison)</div>
+        <div class="cw-sm"><canvas id="ssQtr"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Top 10 Products Table -->
+    <div class="cc" style="margin-bottom:13px;">
+      <div class="ct"><div class="ct-bar" style="background:var(--gold);"></div>Top 10 Products by Revenue — with Profit Flag</div>
+      <div style="overflow-x:auto;">
+        <table class="top-prod-table" id="ssTopTable"></table>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.3rem;">
+      <div style="font-weight:800;font-size:14px;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;">
+        <div style="width:3px;height:14px;background:var(--gold);border-radius:2px;"></div>Key Business Insights
+      </div>
+      <div class="ins-grid">
+        <div class="ins" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);"><div class="ins-title" style="color:var(--green);">📅 Seasonal Revenue Peaks</div><div class="ins-text">Sales peak in November and December — driven by holiday demand. Q4 consistently contributes ~35% of annual revenue. Management should front-load inventory by October.</div></div>
+        <div class="ins" style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);"><div class="ins-title" style="color:var(--blue);">🌍 West Region Leads</div><div class="ins-text">The West region generates the highest revenue ($710K), but the Central region records the highest net losses — driven by deep discounting and high return rates on Furniture.</div></div>
+        <div class="ins" style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);"><div class="ins-title" style="color:var(--purple);">💻 Technology = Best Margin</div><div class="ins-text">Technology category achieves the highest profit margin (~18%), while Furniture sits at -2.5% after discounts. Redirecting marketing spend toward Technology could increase overall margin by ~3pp.</div></div>
+        <div class="ins" style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);"><div class="ins-title" style="color:var(--orange);">🏢 Corporate Segment Wins</div><div class="ins-text">Corporate customers generate 30% of revenue with the highest average order value ($280). Consumer segment is largest by volume but lowest margin — suggesting a B2B growth opportunity.</div></div>
+        <div class="ins" style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);"><div class="ins-title" style="color:var(--red);">⚠️ Discount Erosion</div><div class="ins-text">Discounts above 40% turn profitable products loss-making. Tables sub-category loses $17.7K despite $200K in sales — entirely due to unsustainable discount rates averaging 47%.</div></div>
+        <div class="ins" style="background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);"><div class="ins-title" style="color:var(--teal);">📦 Copiers — Hidden Gem</div><div class="ins-text">Copiers sub-category delivers the highest profit ($55.6K) on relatively modest sales ($149K) — an 37% margin. A focused upsell strategy here could unlock significant untapped profit.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ COVID PAGE ══════════════════ -->
+<div id="page-covid" class="page">
+  <div class="proj-banner" style="background:linear-gradient(135deg,#0f0005,#1a0008,#0f0005);">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(239,68,68,.1),transparent 60%);"></div>
+    <div style="max-width:1300px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem;">
+        <span class="pill" style="background:rgba(239,68,68,.15);color:var(--red);">Public Health Analytics</span>
+        <span style="color:var(--muted);font-size:11px;">Jan 2020 – Dec 2023 · WHO · Our World in Data · Johns Hopkins CSSE</span>
+      </div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.7rem);font-weight:900;margin-bottom:.6rem;">🦠 COVID-19 Global Pandemic Analysis</h1>
+      <p style="color:var(--sub);max-width:660px;line-height:1.8;font-size:13px;">Comprehensive epidemiological study spanning 195 countries — tracking 700M+ cases, variant emergence, vaccine rollout, mortality by nation and age, and healthcare system stress indicators across all major pandemic waves.</p>
+    </div>
+  </div>
+
+  <div style="padding:1.8rem 2rem;max-width:1300px;margin:0 auto;">
+    <div class="kpi-bar">
+      <div class="kpi" style="border-top:2px solid var(--red);"><div class="kpi-bg">🦠</div><div class="kpi-label">Total Cases</div><div class="kpi-val" style="color:var(--red);">700M+</div><div class="kpi-sub">Dec 2023</div></div>
+      <div class="kpi" style="border-top:2px solid #7f1d1d;"><div class="kpi-bg">💀</div><div class="kpi-label">Total Deaths</div><div class="kpi-val" style="color:#f87171;">7.0M+</div><div class="kpi-sub">CFR ~1.0%</div></div>
+      <div class="kpi" style="border-top:2px solid var(--green);"><div class="kpi-bg">💚</div><div class="kpi-label">Recovered</div><div class="kpi-val" style="color:var(--green);">675M+</div><div class="kpi-sub">96.4% rate</div></div>
+      <div class="kpi" style="border-top:2px solid var(--blue);"><div class="kpi-bg">💉</div><div class="kpi-label">Doses Administered</div><div class="kpi-val" style="color:var(--blue);">13.5B+</div><div class="kpi-sub">Global total</div></div>
+      <div class="kpi" style="border-top:2px solid var(--purple);"><div class="kpi-bg">🛡️</div><div class="kpi-label">Fully Vaccinated</div><div class="kpi-val" style="color:var(--purple);">~69%</div><div class="kpi-sub">World population</div></div>
+      <div class="kpi" style="border-top:2px solid var(--gold);"><div class="kpi-bg">🌍</div><div class="kpi-label">Countries</div><div class="kpi-val" style="color:var(--gold);">195</div><div class="kpi-sub">Pandemic: Mar 2020</div></div>
+    </div>
+
+    <div class="cg21">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--red);"></div>Global Cumulative Cases, Deaths & Recoveries</div><div class="cw"><canvas id="cvG"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--orange);"></div>Variant Dominance by Wave (%)</div><div class="cw"><canvas id="cvV"></canvas></div></div>
+    </div>
+    <div class="cg2">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--blue);"></div>Vaccine Rollout: Doses (M) vs. % Fully Vaccinated</div><div class="cw-sm"><canvas id="cvVax"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--red);"></div>Case Fatality Rate by Country (%)</div><div class="cw-sm"><canvas id="cvCFR"></canvas></div></div>
+    </div>
+    <div class="cg2">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--purple);"></div>ICU & Hospitalisation Index (per 100K)</div><div class="cw-sm"><canvas id="cvH"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--orange);"></div>Age-Stratified Severity (%)</div><div class="cw-sm"><canvas id="cvA"></canvas></div></div>
+    </div>
+    <div class="cc" style="margin-bottom:13px;"><div class="ct"><div class="ct-bar" style="background:var(--teal);"></div>Regional Comparison: Cases per 1M · Deaths per 100K · Vaccination %</div><div style="height:220px;"><canvas id="cvR"></canvas></div></div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.3rem;">
+      <div style="font-weight:800;font-size:14px;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;"><div style="width:3px;height:14px;background:var(--gold);border-radius:2px;"></div>Key Analytical Insights</div>
+      <div class="ins-grid">
+        <div class="ins" style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.15);"><div class="ins-title" style="color:var(--red);">🔴 Omicron Paradox</div><div class="ins-text">Highest infection velocity ever but lowest CFR — viral evolution toward host coexistence with immune evasion and reduced lethality.</div></div>
+        <div class="ins" style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15);"><div class="ins-title" style="color:var(--blue);">🔵 Vaccine Impact</div><div class="ins-text">Nations at 60%+ vaccination saw ~70% reduction in severe outcomes. Africa's 28% rate correlated with sustained fatality burden through 2022.</div></div>
+        <div class="ins" style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.15);"><div class="ins-title" style="color:var(--orange);">🟠 Latin America CFR</div><div class="ins-text">Mexico (4.2%) and Brazil (2.8%) reflect late vaccine access, healthcare saturation, and high co-morbidity prevalence.</div></div>
+        <div class="ins" style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);"><div class="ins-title" style="color:var(--green);">🟢 Recovery Rate</div><div class="ins-text">Global recovery climbed from 44% (Jun 2020) to 96%+ by 2023, driven by antivirals, improved ICU protocols, and natural immunity.</div></div>
+        <div class="ins" style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.15);"><div class="ins-title" style="color:var(--purple);">🟣 Age Gradient</div><div class="ins-text">Patients 80+ face 150× higher critical risk than under-20s — underpinning age-prioritised vaccine campaigns in 120+ nations.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ DRAKE PAGE ══════════════════ -->
+<div id="page-drake" class="page">
+  <div class="proj-banner" style="background:linear-gradient(135deg,#0a0800,#1a1200,#0a0800);">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(245,166,35,.1),transparent 60%);"></div>
+    <div style="max-width:1300px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.9rem;flex-wrap:wrap;">
+        <span class="pill" style="background:rgba(245,166,35,.15);color:var(--gold);">Music Industry Analytics</span>
+        <span style="color:var(--muted);font-size:11px;">2006–2025 · Spotify · Billboard · RIAA · Forbes</span>
+      </div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.7rem);font-weight:900;margin-bottom:.6rem;">🎤 Drake: Career Analytics 2006–2025</h1>
+      <p style="color:var(--sub);max-width:700px;line-height:1.8;font-size:13px;">15-year data retrospective on Aubrey Graham's rise from Degrassi actor to the best-streaming solo artist in history — including his latest release <strong style="color:var(--gold);">$ome $exy $ongs 4 U ($$$4U)</strong> with PartyNextDoor (Feb 2025).</p>
+    </div>
+  </div>
+
+  <div style="padding:1.8rem 2rem;max-width:1300px;margin:0 auto;">
+    <div class="kpi-bar">
+      <div class="kpi" style="border-top:2px solid var(--gold);"><div class="kpi-bg">💰</div><div class="kpi-label">Est. Net Worth</div><div class="kpi-val" style="color:var(--gold);">~$300M</div><div class="kpi-sub">Forbes 2024</div></div>
+      <div class="kpi" style="border-top:2px solid var(--spotify);"><div class="kpi-bg">🎧</div><div class="kpi-label">Spotify Monthly</div><div class="kpi-val" style="color:var(--spotify);">~65M</div><div class="kpi-sub">Peak 75M (2021)</div></div>
+      <div class="kpi" style="border-top:2px solid var(--orange);"><div class="kpi-bg">📈</div><div class="kpi-label">Hot 100 Entries</div><div class="kpi-val" style="color:var(--orange);">295+</div><div class="kpi-sub">Most — solo artist</div></div>
+      <div class="kpi" style="border-top:2px solid var(--red);"><div class="kpi-bg">🥇</div><div class="kpi-label">#1 Albums</div><div class="kpi-val" style="color:var(--red);">13</div><div class="kpi-sub">Billboard 200</div></div>
+      <div class="kpi" style="border-top:2px solid var(--purple);"><div class="kpi-bg">🏆</div><div class="kpi-label">Grammy Noms</div><div class="kpi-val" style="color:var(--purple);">52</div><div class="kpi-sub">4 wins</div></div>
+      <div class="kpi" style="border-top:2px solid var(--blue);"><div class="kpi-bg">▶️</div><div class="kpi-label">Records Sold</div><div class="kpi-val" style="color:var(--blue);">170M+</div><div class="kpi-sub">Worldwide (RIAA)</div></div>
+    </div>
+
+    <div class="cg21">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--gold);"></div>Album Sales (K Units) vs. First-Week Streams (M) — All Projects incl. $$$4U</div><div class="cw"><canvas id="drA"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--orange);"></div>Genre Mix — Career Discography</div><div class="cw"><canvas id="drG"></canvas></div></div>
+    </div>
+    <div class="cg2">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--spotify);"></div>Monthly Spotify Listeners (Millions)</div><div class="cw-sm"><canvas id="drS"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--gold);"></div>Net Worth Growth ($M)</div><div class="cw-sm"><canvas id="drN"></canvas></div></div>
+    </div>
+    <div class="cg2">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--orange);"></div>Revenue Streams: Music · Touring · Brand/OVO ($M est.)</div><div class="cw-sm"><canvas id="drRev"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--blue);"></div>Top Collaborators by Track Count</div><div class="cw-sm"><canvas id="drC"></canvas></div></div>
+    </div>
+    <div class="cg2">
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--gold);"></div>Career Dominance Radar (Score / 100)</div><div class="cw"><canvas id="drR"></canvas></div></div>
+      <div class="cc"><div class="ct"><div class="ct-bar" style="background:var(--red);"></div>Billboard Milestones</div><div class="cw"><canvas id="drBB"></canvas></div></div>
+    </div>
+
+    <div class="tl-wrap">
+      <div style="font-weight:800;font-size:13px;margin-bottom:1rem;display:flex;align-items:center;gap:7px;">
+        <div style="width:3px;height:14px;background:var(--gold);border-radius:2px;"></div>Career Timeline: 2001–2025 <span style="color:var(--muted);font-size:10px;font-weight:400;margin-left:4px;">← scroll →</span>
+      </div>
+      <div class="tl-scroll" id="tl"></div>
+    </div>
+
+    <!-- Collabs -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.3rem;margin-bottom:13px;">
+      <div style="font-weight:800;font-size:13px;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;"><div style="width:3px;height:14px;background:var(--purple);border-radius:2px;"></div>Notable Collaborations & Features</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;" id="collabCards"></div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.3rem;">
+      <div style="font-weight:800;font-size:13px;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;"><div style="width:3px;height:14px;background:var(--gold);border-radius:2px;"></div>Key Analytical Insights</div>
+      <div class="ins-grid">
+        <div class="ins" style="background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.18);"><div class="ins-title" style="color:var(--gold);">🏆 Streaming Architect</div><div class="ins-text">Scorpion (2018) became the first album to surpass 1B streams in its release week. $$$4U debuted #1 in Feb 2025 with 246K units.</div></div>
+        <div class="ins" style="background:rgba(29,185,84,.07);border:1px solid rgba(29,185,84,.18);"><div class="ins-title" style="color:var(--spotify);">📈 Record Breaker</div><div class="ins-text">Holds the record for most Hot 100 entries (295+) by a solo artist, surpassing Michael Jackson in 2019.</div></div>
+        <div class="ins" style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);"><div class="ins-title" style="color:var(--orange);">💸 Revenue Pivot</div><div class="ins-text">The It's All a Blur Tour grossed $100M+. OVO Sound and brand deals add $25M+/yr beyond music royalties.</div></div>
+        <div class="ins" style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.18);"><div class="ins-title" style="color:var(--purple);">🎭 Genre Fluency</div><div class="ins-text">Rap (52%), R&B (28%), and Dancehall/House experiments signal deliberate audience expansion over critical approval.</div></div>
+        <div class="ins" style="background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);"><div class="ins-title" style="color:var(--blue);">🔭 What's Next</div><div class="ins-text">Iceman — 9th solo album — expected 2026. Singles "What Did I Miss?", "Which One" (ft. Central Cee), "Dog House" (ft. Yeat) already charting.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Portfolio of <strong>Eric Joseph</strong> · Data Analyst & Data Entry Specialist · Lagos, Nigeria<br>
+  📧 josephkings007@gmail.com · 📞 +234 701 396 6083 · 🔗 linkedin.com/in/eric-joseph-190482276<br>
+  <span style="font-size:10px;">Data sources: Sample Superstore Dataset, WHO, Johns Hopkins CSSE, Billboard, Spotify, RIAA, Forbes · Built 2025</span></p>
+</footer>
+
+<script>
+// ── NAV ───────────────────────────────────────────────────────
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='sales'&&!window.ssDone){buildSales();window.ssDone=true;}
+  if(id==='covid'&&!window.cvDone){buildCovid();window.cvDone=true;}
+  if(id==='drake'&&!window.drDone){buildDrake();buildTL();buildCollabs();window.drDone=true;}
+}
+
+// ── SHARED ────────────────────────────────────────────────────
+const F="'Inter',sans-serif";
+const gc='rgba(255,255,255,0.04)';
+const tc='#475569';
+const TT={backgroundColor:'#111128',borderColor:'#1a1a38',borderWidth:1,titleColor:'#f1f5f9',bodyColor:'#94a3b8',padding:11,cornerRadius:8,titleFont:{family:F,weight:'700'},bodyFont:{family:F,size:11}};
+const LEG={labels:{color:'#94a3b8',font:{family:F,size:11},boxWidth:11,padding:12}};
+const AX={grid:{color:gc},ticks:{color:tc,font:{family:F,size:10}}};
+const PAL=['#f5a623','#f97316','#ef4444','#8b5cf6','#3b82f6','#14b8a6','#22c55e','#1DB954','#e879f9','#fbbf24','#60a5fa','#fb923c'];
+
+// ── SALES ─────────────────────────────────────────────────────
+function buildSales(){
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const sales=[52000,48000,61000,65000,75000,68000,72000,80000,88000,92000,148000,181000,58000,55000,70000,74000,88000,82000,90000,102000,98000,115000,168000,195000];
+  const profit=[6200,5800,7300,7800,9000,7500,8200,8600,9800,10200,18000,22100,6900,6200,8200,8900,10500,9000,9800,11500,10200,13200,20000,24100];
+
+  new Chart('ssMonthly',{type:'bar',data:{labels:months,datasets:[
+    {label:'Revenue ($)',data:sales,backgroundColor:'rgba(34,197,94,.55)',borderColor:'#22c55e',borderWidth:1,borderRadius:3,yAxisID:'y'},
+    {label:'Profit ($)',data:profit,type:'line',borderColor:'#f5a623',backgroundColor:'transparent',borderWidth:2.5,tension:.4,pointRadius:3,pointBackgroundColor:'#f5a623',yAxisID:'y1'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:{...AX,ticks:{...AX.ticks,maxRotation:45,font:{family:F,size:9}}},y:{...AX,ticks:{...AX.ticks,callback:v=>'$'+(v/1000)+'K'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:tc,font:{family:F,size:10},callback:v=>'$'+(v/1000)+'K'}}}}});
+
+  new Chart('ssCat',{type:'doughnut',data:{labels:['Technology','Furniture','Office Supplies'],datasets:[{data:[836154,741999,719047],backgroundColor:['#3b82f6','#f97316','#22c55e'],borderWidth:2,borderColor:'#111128',hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{family:F,size:11},boxWidth:10,padding:10}},tooltip:{...TT,callbacks:{label:ctx=>'$'+(ctx.parsed/1000).toFixed(0)+'K'}}}}});
+
+  new Chart('ssRegion',{type:'bar',data:{labels:['West','East','Central','South'],datasets:[
+    {label:'Revenue ($K)',data:[725458,678781,501240,391722],backgroundColor:'rgba(59,130,246,.7)',borderRadius:4},
+    {label:'Profit ($K)',data:[108418,91523,39706,46749],backgroundColor:'rgba(34,197,94,.75)',borderRadius:4},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index',callbacks:{label:ctx=>'$'+(ctx.parsed.y).toFixed(0)+'K'}}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>'$'+v+'K'}}}}});
+
+  new Chart('ssSegment',{type:'bar',data:{labels:['Consumer','Corporate','Home Office'],datasets:[
+    {label:'Revenue ($K)',data:[1161401,706146,429653],backgroundColor:'rgba(245,166,35,.7)',borderRadius:4},
+    {label:'Profit ($K)',data:[134119,91979,60299],backgroundColor:'rgba(20,184,166,.75)',borderRadius:4},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>'$'+v+'K'}}}}});
+
+  const subcats=['Copiers','Phones','Accessories','Paper','Binders','Storage','Art','Appliances','Chairs','Labels','Furnishings','Envelopes','Bookcases','Supplies','Machines','Tables'];
+  const subProfit=[55618,44516,41937,34054,30221,21279,6528,18138,-1811,5546,13059,6964,-3473,-1189,3385,-17725];
+  const subColors=subProfit.map(v=>v>=0?'rgba(34,197,94,.75)':'rgba(239,68,68,.8)');
+  new Chart('ssSubcat',{type:'bar',data:{labels:subcats,datasets:[{label:'Profit ($)',data:subProfit,backgroundColor:subColors,borderWidth:0,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:ctx=>'$'+ctx.parsed.x.toFixed(0)}}},scales:{x:{...AX,ticks:{...AX.ticks,callback:v=>'$'+(v/1000).toFixed(0)+'K'}},y:{...AX,ticks:{...AX.ticks,font:{family:F,size:10}}}}}});
+
+  new Chart('ssDiscount',{type:'bar',data:{labels:['0%','10%','20%','30%','40%','50%','60%','70%','80%'],datasets:[{label:'Avg Profit Margin %',data:[22.4,18.6,14.2,8.7,1.2,-8.4,-18.6,-29.1,-41.2],backgroundColor:['#22c55e','#4ade80','#86efac','#fbbf24','#f97316','#ef4444','#dc2626','#991b1b','#7f1d1d'],borderWidth:0,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:ctx=>ctx.parsed.y.toFixed(1)+'%'}}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>v+'%'}}}}});
+
+  new Chart('ssQtr',{type:'line',data:{labels:['Q1','Q2','Q3','Q4'],datasets:[
+    {label:'Year 1',data:[161000,208000,240000,527000],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:4,pointBackgroundColor:'#8b5cf6'},
+    {label:'Year 2',data:[183000,244000,290000,582000],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:4,pointBackgroundColor:'#22c55e'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index',callbacks:{label:ctx=>'$'+(ctx.parsed.y/1000).toFixed(0)+'K'}}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>'$'+(v/1000)+'K'}}}}});
+
+  // Top products table
+  const prods=[
+    ['Canon imageCLASS 2200','Technology','$61,600','$25,199',true],
+    ['Fellowes PB500 Binding','Office Supplies','$27,453','$7,753',true],
+    ['Cisco TelePresence System','Technology','$22,639','$6,038',true],
+    ['HON 5400 Series Task Chair','Furniture','$21,870','-$592',false],
+    ['Hewlett Packard LaserJet','Technology','$18,040','$5,888',true],
+    ['Ibico EPK-21 Binding','Office Supplies','$17,620','$4,614',true],
+    ['Cubify CubeX 3D Printer','Technology','$16,800','$1,188',true],
+    ['GBC DocuBind P400','Office Supplies','$14,910','$3,500',true],
+    ['Cisco SPA 501G IP Phone','Technology','$14,700','$2,557',true],
+    ['Bretford CR4500 Multimedia Cart','Furniture','$14,100','-$3,700',false],
+  ];
+  const t=document.getElementById('ssTopTable');
+  t.innerHTML=`<thead><tr><th>#</th><th>Product</th><th>Category</th><th>Revenue</th><th>Profit</th><th>Status</th></tr></thead><tbody>${prods.map((p,i)=>`<tr><td class="pos">${i+1}</td><td style="color:var(--text);font-weight:600;">${p[0]}</td><td>${p[1]}</td><td style="color:var(--green);font-weight:700;">${p[2]}</td><td style="color:${p[4]?'var(--teal)':'var(--red)'};font-weight:700;">${p[3]}</td><td><span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:${p[4]?'rgba(34,197,94,.15)':'rgba(239,68,68,.15)'};color:${p[4]?'var(--green)':'var(--red)'}">${p[4]?'✅ Profitable':'⚠️ Loss'}</span></td></tr>`).join('')}</tbody>`;
+}
+
+// ── COVID ─────────────────────────────────────────────────────
+function buildCovid(){
+  const lbl=["Mar'20","Jun'20","Sep'20","Dec'20","Mar'21","Jun'21","Sep'21","Dec'21","Mar'22","Jun'22","Dec'22","Dec'23"];
+  new Chart('cvG',{type:'line',data:{labels:lbl,datasets:[
+    {label:'Cases',data:[85e3,6.1e6,27e6,82e6,128e6,180e6,232e6,288e6,480e6,550e6,660e6,700e6],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',fill:true,tension:.4,borderWidth:2,pointRadius:2},
+    {label:'Recovered',data:[37e3,2.9e6,18.5e6,58e6,102e6,163e6,208e6,254e6,430e6,525e6,630e6,675e6],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:2},
+    {label:'Deaths',data:[2900,371e3,880e3,1.8e6,2.8e6,3.9e6,4.75e6,5.45e6,6.1e6,6.35e6,6.7e6,7e6],borderColor:'#991b1b',backgroundColor:'rgba(153,27,27,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:2},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:TT},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>v>=1e6?(v/1e6).toFixed(0)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':v}}}}});
+  new Chart('cvV',{type:'doughnut',data:{labels:['Original','Alpha','Delta','Omicron BA.1','Omicron BA.5','XBB/Others'],datasets:[{data:[15,12,28,22,14,9],backgroundColor:['#ef4444','#f97316','#eab308','#8b5cf6','#3b82f6','#14b8a6'],borderWidth:2,borderColor:'#111128',hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{family:F,size:10},boxWidth:10,padding:8}},tooltip:TT}}});
+  new Chart('cvVax',{type:'bar',data:{labels:["Jan'21","Apr'21","Jul'21","Oct'21","Jan'22","Apr'22","Jul'22","Jan'23"],datasets:[
+    {label:'Doses (M)',data:[50,800,3100,6800,9400,11200,12400,13200],backgroundColor:'rgba(59,130,246,.5)',borderColor:'#3b82f6',borderWidth:1,borderRadius:4,yAxisID:'y'},
+    {label:'Fully Vax %',data:[0.5,12,25,42,56,62,66,69],type:'line',borderColor:'#22c55e',backgroundColor:'transparent',borderWidth:2.5,tension:.4,pointRadius:3,pointBackgroundColor:'#22c55e',yAxisID:'y1'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>v+'M'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:tc,font:{family:F,size:10},callback:v=>v+'%'}}}}});
+  new Chart('cvCFR',{type:'bar',data:{labels:['Mexico','Brazil','Germany','India','USA','UK','Japan'],datasets:[{label:'CFR %',data:[4.2,2.8,1.3,1.2,1.1,0.9,0.6],backgroundColor:['#ef4444','#f97316','#eab308','#84cc16','#22c55e','#14b8a6','#3b82f6'],borderWidth:0,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:TT},scales:{x:{...AX,ticks:{...AX.ticks,callback:v=>v+'%'}},y:AX}}});
+  new Chart('cvH',{type:'line',data:{labels:["Jan'21","Apr'21","Jul'21","Oct'21","Jan'22","Apr'22","Jul'22","Jan'23"],datasets:[
+    {label:'ICU',data:[180,120,90,200,310,80,50,30],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.4,borderWidth:2,pointRadius:3},
+    {label:'Hospitalisations',data:[950,700,550,1100,1800,420,280,180],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:3},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:AX}}});
+  new Chart('cvA',{type:'bar',data:{labels:['0–19','20–39','40–59','60–79','80+'],datasets:[
+    {label:'Mild %',data:[99.5,96,89,75,55],backgroundColor:'rgba(34,197,94,.7)'},
+    {label:'Severe %',data:[0.4,3.2,8,18,30],backgroundColor:'rgba(249,115,22,.7)'},
+    {label:'Critical %',data:[0.1,0.8,3,7,15],backgroundColor:'rgba(239,68,68,.85)',borderRadius:{topLeft:4,topRight:4}},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:{...AX,stacked:true,ticks:{...AX.ticks,callback:v=>v+'%'}}}}});
+  new Chart('cvR',{type:'bar',data:{labels:['Americas','Europe','Asia','Africa','Oceania'],datasets:[
+    {label:'Cases/1M (K)',data:[195,210,185,12,14],backgroundColor:'rgba(239,68,68,.7)',borderRadius:4},
+    {label:'Deaths/100K',data:[2.8,2.1,1.4,0.25,0.18],backgroundColor:'rgba(153,27,27,.7)',borderRadius:4},
+    {label:'Fully Vax %',data:[71,74,68,28,81],backgroundColor:'rgba(59,130,246,.7)',borderRadius:4},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:AX}}});
+}
+
+// ── DRAKE ─────────────────────────────────────────────────────
+function buildDrake(){
+  new Chart('drA',{type:'bar',data:{labels:['TML','Take Care','NWTS','IYRTITL','Views','More Life','Scorpion','CLB','Hov.NM','Her Loss','FATD','$$$4U'],datasets:[
+    {label:'Sales/Units (K)',data:[447,2200,1500,535,1590,505,732,900,204,404,402,246],backgroundColor:'rgba(245,166,35,.65)',borderColor:'#f5a623',borderWidth:1,borderRadius:4,yAxisID:'y'},
+    {label:'First-Wk Streams (M)',data:[120,280,380,780,2450,3850,7200,5400,2100,3200,4200,1800],type:'line',borderColor:'#1DB954',backgroundColor:'transparent',borderWidth:2.5,tension:.4,pointRadius:3,pointBackgroundColor:'#1DB954',yAxisID:'y1'},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:{...AX,ticks:{...AX.ticks,font:{family:F,size:9},maxRotation:30}},y:{...AX,ticks:{...AX.ticks,callback:v=>v+'K'}},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:tc,font:{family:F,size:10},callback:v=>v+'M'}}}}});
+  new Chart('drG',{type:'doughnut',data:{labels:['Hip-Hop/Rap','R&B/Soul','Pop','Dancehall/Dance','Afrobeats'],datasets:[{data:[52,28,10,6,4],backgroundColor:['#f5a623','#f97316','#ef4444','#8b5cf6','#14b8a6'],borderWidth:2,borderColor:'#111128',hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'52%',plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{family:F,size:11},boxWidth:10,padding:8}},tooltip:TT}}});
+  new Chart('drS',{type:'line',data:{labels:[2010,2012,2014,2016,2017,2018,2019,2020,2021,2022,2023,2025],datasets:[{label:'Monthly Listeners (M)',data:[0.1,5,22,48,63,70,68,72,75,68,71,65],borderColor:'#1DB954',backgroundColor:'rgba(29,185,84,.12)',fill:true,tension:.4,borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#1DB954'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>v+'M'}}}}});
+  new Chart('drN',{type:'line',data:{labels:[2009,2011,2013,2015,2016,2018,2020,2022,2024],datasets:[{label:'Net Worth ($M)',data:[0.2,10,45,90,130,180,220,260,300],borderColor:'#f5a623',backgroundColor:'rgba(245,166,35,.12)',fill:true,tension:.4,borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#f5a623'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:ctx=>'$'+ctx.parsed.y+'M'}}},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,callback:v=>'$'+v+'M'}}}}});
+  new Chart('drRev',{type:'bar',data:{labels:[2010,2013,2016,2018,2021,2023],datasets:[
+    {label:'Music/Royalties',data:[2,18,35,42,38,44],backgroundColor:'rgba(139,92,246,.7)'},
+    {label:'Touring',data:[1,12,45,55,0,70],backgroundColor:'rgba(249,115,22,.7)'},
+    {label:'Brand/OVO',data:[0,2,8,15,20,25],backgroundColor:'rgba(245,166,35,.85)',borderRadius:{topLeft:4,topRight:4}},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:LEG,tooltip:{...TT,mode:'index'}},scales:{x:AX,y:{...AX,stacked:true,ticks:{...AX.ticks,callback:v=>'$'+v+'M'}}}}});
+  new Chart('drC',{type:'bar',data:{labels:['Lil Wayne','Future','21 Savage','PartyNextDoor','Rihanna','Nicki Minaj','Travis Scott','J. Cole'],datasets:[{label:'Collab Tracks',data:[15,12,10,9,8,7,5,4],backgroundColor:PAL,borderWidth:0,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:TT},scales:{x:AX,y:{...AX,ticks:{...AX.ticks,font:{family:F,size:10}}}}}});
+  new Chart('drR',{type:'radar',data:{labels:['Sales','Streaming','Longevity','Influence','Versatility','Awards','Culture'],datasets:[{label:'Drake',data:[90,98,85,92,80,75,95],borderColor:'#f5a623',backgroundColor:'rgba(245,166,35,.2)',borderWidth:2,pointBackgroundColor:'#f5a623',pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{angleLines:{color:gc},grid:{color:gc},pointLabels:{color:'#94a3b8',font:{family:F,size:11}},ticks:{color:'#475569',backdropColor:'transparent',stepSize:20}}},plugins:{legend:{display:false},tooltip:TT}}});
+  new Chart('drBB',{type:'bar',data:{labels:['Hot 100 Entries','#1 Albums','No.1 Singles','Top 10 Hits','Grammy Noms','Grammy Wins'],datasets:[{label:'Count',data:[295,13,13,58,52,4],backgroundColor:PAL,borderWidth:0,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:TT},scales:{x:AX,y:AX}}});
+}
+
+// ── TIMELINE ─────────────────────────────────────────────────
+function buildTL(){
+  const items=[
+    {yr:'2001',e:'Born Aubrey Graham, Toronto',ico:'👶'},
+    {yr:'2001–09',e:'Jimmy Brooks on Degrassi TNG',ico:'📺'},
+    {yr:'2006',e:'Room for Improvement mixtape',ico:'🎙️'},
+    {yr:'2009',e:'So Far Gone — signs with Young Money',ico:'🚀'},
+    {yr:'2010',e:'Thank Me Later — #1, 447K wk 1',ico:'🏆'},
+    {yr:'2011',e:'Take Care — Grammy AOTY, 2.2M sales',ico:'🎶'},
+    {yr:'2013',e:'Nothing Was the Same — 5× Platinum',ico:'🎵'},
+    {yr:'2015',e:"If You're Reading This… 535K wk 1",ico:'📦'},
+    {yr:'2016',e:'Views — 1B Spotify streams',ico:'🌍'},
+    {yr:'2017',e:'More Life — 3.85B streams wk 1',ico:'📊'},
+    {yr:'2018',e:'Scorpion — 745M streams, world record',ico:'💥'},
+    {yr:'2019',e:"Breaks MJ's Hot 100 solo record",ico:'🏅'},
+    {yr:'2021',e:'CLB — 153M Apple Music streams day 1',ico:'🍎'},
+    {yr:'2022',e:'Honestly Nevermind + Her Loss w/ 21',ico:'🎛️'},
+    {yr:'2023',e:'For All the Dogs — #1 globally',ico:'🐕'},
+    {yr:'2024',e:'Kendrick beef / Not Like Us',ico:'⚔️'},
+    {yr:'Feb 2025',e:'$$$4U w/ PartyNextDoor — #1 US',ico:'💛'},
+    {yr:'2026',e:'Iceman — 9th solo album expected',ico:'🧊'},
+  ];
+  document.getElementById('tl').innerHTML=items.map((it,i)=>`
+    <div class="tl-item">
+      <div style="font-size:15px;margin-bottom:1px;">${it.ico}</div>
+      <div class="tl-dot" style="background:${PAL[i%PAL.length]};box-shadow:0 0 6px ${PAL[i%PAL.length]}60;"></div>
+      <div class="tl-yr" style="color:${PAL[i%PAL.length]};">${it.yr}</div>
+      <div class="tl-evt">${it.e}</div>
+    </div>`).join('');
+}
+
+// ── COLLABS ───────────────────────────────────────────────────
+function buildCollabs(){
+  const c=[
+    ['Rihanna','Take Care, Work, What\'s My Name, Too Good','2010–16','#ef4444'],
+    ['Lil Wayne','Miss Me, HYFR, The Motto, Right Above It + 15 tracks','2007–22','#3b82f6'],
+    ['Future','Jumpman, Life Is Good, WATTBA album','2012–22','#8b5cf6'],
+    ['21 Savage','Her Loss album, Rich Flex, Jimmy Cooks','2016–23','#f97316'],
+    ['Nicki Minaj','Moment 4 Life, Make Me Proud, Only, No Frauds','2010–19','#14b8a6'],
+    ['Travis Scott','Company, Portland, Way Back','2016–22','#f5a623'],
+    ['PartyNextDoor','Come & See Me, $$$4U album (Feb 2025)','2015–25','#22c55e'],
+    ['J. Cole','First Person Shooter, Jodeci Freestyle','2013–23','#1DB954'],
+  ];
+  document.getElementById('collabCards').innerHTML=c.map(([a,s,y,col])=>`
+    <div style="background:var(--bg2);border:1px solid ${col}25;border-radius:10px;padding:.75rem;border-left:3px solid ${col};">
+      <div style="font-weight:700;font-size:12px;color:${col};">${a}</div>
+      <div style="font-size:10px;color:var(--sub);margin-top:3px;line-height:1.5;">${s}</div>
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;">${y}</div>
+    </div>`).join('');
+}
+
+Chart.defaults.font.family=F;
+</script>
+</body>
+</html>
