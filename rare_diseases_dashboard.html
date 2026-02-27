@@ -1,0 +1,1040 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rare Diseases Database — Analysis Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07080f;
+  --surface: #0d0f1a;
+  --surface2: #131525;
+  --border: #1e2035;
+  --text: #e8eaf6;
+  --muted: #5c6080;
+  --dim: #383d5c;
+
+  --violet: #7c6af0;
+  --violet-glow: rgba(124,106,240,0.15);
+  --cyan: #00d4e8;
+  --cyan-glow: rgba(0,212,232,0.12);
+  --amber: #f5a623;
+  --amber-glow: rgba(245,166,35,0.12);
+  --rose: #f0456a;
+  --rose-glow: rgba(240,69,106,0.12);
+  --green: #30d48a;
+  --green-glow: rgba(48,212,138,0.1);
+  --lavender: #a78bfa;
+  --sky: #38bdf8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.header {
+  background: linear-gradient(135deg, #0d0f1a 0%, #10122a 60%, #0d0f1a 100%);
+  padding: 56px 48px 40px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(124,106,240,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 20%;
+  width: 300px; height: 200px;
+  background: radial-gradient(circle, rgba(0,212,232,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--violet);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.header h1 span { color: var(--violet); }
+.header-sub {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.header-meta {
+  display: flex;
+  gap: 28px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.meta-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.meta-chip strong { color: var(--text); font-size: 15px; display: block; margin-bottom: 2px; }
+
+/* ── KPI STRIP ── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+.kpi {
+  padding: 22px 20px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  transition: background 0.2s;
+}
+.kpi:last-child { border-right: none; }
+.kpi:hover { background: var(--surface); }
+.kpi-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.kpi-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+}
+.kpi-sub {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 5px;
+  font-family: 'DM Mono', monospace;
+}
+.kpi-accent { display: block; width: 24px; height: 2px; margin-top: 10px; border-radius: 1px; }
+
+/* ── LAYOUT ── */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--violet);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 26px 28px 22px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--dim); }
+.card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.card .insight {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 8px;
+}
+.card .insight b { color: var(--amber); }
+.card .insight .hi { color: var(--cyan); }
+.card .insight .lo { color: var(--rose); }
+.card .insight .g { color: var(--green); }
+
+.grid { display: grid; gap: 0; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g12 { grid-template-columns: 1fr 2fr; }
+.g21 { grid-template-columns: 2fr 1fr; }
+.g31 { grid-template-columns: 3fr 1fr; }
+.g13 { grid-template-columns: 1fr 3fr; }
+
+.chart-wrap { margin-top: 16px; position: relative; }
+
+/* ── BAR CHART CUSTOM ── */
+.hbar-list { margin-top: 14px; display: flex; flex-direction: column; gap: 9px; }
+.hbar-row { display: flex; align-items: center; gap: 10px; }
+.hbar-name { font-size: 10.5px; color: var(--text); width: 160px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar-name.sm { width: 120px; }
+.hbar-track { flex: 1; height: 7px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: 2px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+.hbar-val { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 50px; text-align: right; flex-shrink: 0; }
+
+/* ── DONUT CENTER ── */
+.donut-wrap { position: relative; }
+.donut-wrap canvas { display: block; margin: 0 auto; }
+
+/* ── STAT BOXES ── */
+.stat-boxes { display: grid; gap: 10px; margin-top: 14px; }
+.stat-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+.stat-box .sb-label { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.1em; }
+.stat-box .sb-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.1; margin-top: 3px; }
+.stat-box .sb-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ── BUBBLE GRID ── */
+.bubble-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.bubble {
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: transform 0.15s;
+}
+.bubble:hover { transform: translateY(-2px); }
+
+/* ── COVERAGE TABLE ── */
+.cov-table { margin-top: 14px; width: 100%; border-collapse: collapse; }
+.cov-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-align: left; padding: 0 8px 10px 0; text-transform: uppercase; }
+.cov-table td { padding: 7px 8px 7px 0; border-top: 1px solid var(--border); font-size: 11.5px; }
+.cov-table td:last-child { text-align: right; font-family: 'DM Mono', monospace; font-size: 11px; }
+.cov-pct { font-weight: 600; }
+
+/* ── TAG ── */
+.tag { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; padding: 3px 8px; border-radius: 3px; border: 1px solid currentColor; text-transform: uppercase; margin: 2px; }
+
+/* ── FOOTER ── */
+.footer { padding: 20px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); }
+
+/* ── PROGRESS ARC (CSS) ── */
+.arc-row { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+.arc-label { font-size: 11px; color: var(--text); flex: 1; }
+.arc-pct { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--amber); width: 40px; text-align: right; }
+.arc-bar { height: 5px; background: var(--surface2); border-radius: 2px; flex: 2; overflow: hidden; }
+.arc-fill { height: 100%; border-radius: 2px; }
+
+@media (max-width: 860px) {
+  .kpi-strip, .g2, .g3, .g12, .g21, .g31, .g13 { grid-template-columns: 1fr; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card { animation: fadeUp 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-eyebrow">Orphanet Database — Comprehensive Analysis</div>
+  <h1>Rare Diseases<br><span>Intelligence</span> Dashboard</h1>
+  <div class="header-sub">11,456 entries · 15 fields · 20+ analytical questions answered</div>
+  <div class="header-meta">
+    <div class="meta-chip"><strong>11,456</strong>Total Records</div>
+    <div class="meta-chip"><strong>10</strong>Disorder Types</div>
+    <div class="meta-chip"><strong>9</strong>Onset Categories</div>
+    <div class="meta-chip"><strong>12</strong>Inheritance Patterns</div>
+    <div class="meta-chip"><strong>18</strong>ICD-10 Chapters</div>
+    <div class="meta-chip"><strong>6</strong>Cross-Ref Databases</div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">Total Disorders</div>
+    <div class="kpi-value">11,456</div>
+    <div class="kpi-sub">Orphanet catalog entries</div>
+    <span class="kpi-accent" style="background:var(--violet)"></span>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Distinct Diseases</div>
+    <div class="kpi-value">4,713</div>
+    <div class="kpi-sub">DisorderType = "Disease"</div>
+    <span class="kpi-accent" style="background:var(--cyan)"></span>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Malformation Syndromes</div>
+    <div class="kpi-value">2,068</div>
+    <div class="kpi-sub">18% of catalog</div>
+    <span class="kpi-accent" style="background:var(--amber)"></span>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Neonatal Onset</div>
+    <div class="kpi-value">3,091</div>
+    <div class="kpi-sub">Most common onset age</div>
+    <span class="kpi-accent" style="background:var(--rose)"></span>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Autosomal Recessive</div>
+    <div class="kpi-value">2,599</div>
+    <div class="kpi-sub">Most common inheritance</div>
+    <span class="kpi-accent" style="background:var(--green)"></span>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Missing Data (Onset)</div>
+    <div class="kpi-value">41%</div>
+    <div class="kpi-sub">4,727 records incomplete</div>
+    <span class="kpi-accent" style="background:var(--dim)"></span>
+  </div>
+</div>
+
+<!-- ROW 1: Q1 Disorder Type Distribution + Q2 Disorder Group -->
+<div class="grid g21">
+  <div class="card">
+    <div class="section-label">Q1 — What types of disorders are in the database?</div>
+    <h2>Disorder Type Distribution</h2>
+    <p class="insight">The catalog is dominated by <b>Disease</b> (41%), followed by <b>Category</b> (19%) and <b>Malformation Syndrome</b> (18%). Clinical subtypes, morphological anomalies, and clinical groups account for the remaining quarter.</p>
+    <div class="chart-wrap"><canvas id="disorderTypeChart" height="200"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q2 — How are disorders grouped?</div>
+    <h2>Disorder Group Breakdown</h2>
+    <p class="insight"><b>65%</b> are individual disorders, <b>23%</b> are groups of disorders (umbrella categories), and <b>12%</b> are subtypes of existing disorders.</p>
+    <div class="chart-wrap"><canvas id="disorderGroupChart" height="200"></canvas></div>
+    <div style="margin-top:12px">
+      <div class="arc-row"><span class="arc-label">Disorder</span><div class="arc-bar"><div class="arc-fill" style="width:65%;background:var(--violet)"></div></div><span class="arc-pct">65%</span></div>
+      <div class="arc-row"><span class="arc-label">Group of disorders</span><div class="arc-bar"><div class="arc-fill" style="width:23%;background:var(--cyan)"></div></div><span class="arc-pct">23%</span></div>
+      <div class="arc-row"><span class="arc-label">Subtype of disorder</span><div class="arc-bar"><div class="arc-fill" style="width:12%;background:var(--amber)"></div></div><span class="arc-pct">12%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 2: Q3 Age of Onset (large) + Q4 Onset by early/late -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q3 — When do rare diseases typically begin?</div>
+    <h2>Age of Onset Distribution</h2>
+    <p class="insight"><b>Neonatal</b> (3,091) and <b>Infancy</b> (2,566) dominate — over <b class="lo">50% of rare diseases manifest in the first year of life</b>. Adult-onset accounts for 1,486 entries. Elderly onset is the rarest documented category (347).</p>
+    <div class="chart-wrap"><canvas id="onsetChart" height="220"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q4 — What is the lifecycle burden of rare diseases?</div>
+    <h2>Early vs. Late Onset Profile</h2>
+    <p class="insight">Breaking onset into lifecycle phases shows the overwhelming <b>pediatric burden</b>. The pre-birth + newborn window (<b>Antenatal + Neonatal</b>) alone covers 4,024 entries. Only a minority are primarily adult conditions.</p>
+    <div class="chart-wrap"><canvas id="lifecycleChart" height="180"></canvas></div>
+    <div style="margin-top:14px">
+      <div class="arc-row"><span class="arc-label">Antenatal / Neonatal</span><div class="arc-bar"><div class="arc-fill" style="width:78%;background:var(--rose)"></div></div><span class="arc-pct" style="color:var(--rose)">~35%</span></div>
+      <div class="arc-row"><span class="arc-label">Infancy / Childhood</span><div class="arc-bar"><div class="arc-fill" style="width:55%;background:var(--amber)"></div></div><span class="arc-pct" style="color:var(--amber)">~37%</span></div>
+      <div class="arc-row"><span class="arc-label">Adult / Elderly</span><div class="arc-bar"><div class="arc-fill" style="width:24%;background:var(--violet)"></div></div><span class="arc-pct" style="color:var(--violet)">~16%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 3: Q5 Inheritance patterns (full width) -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q5 — How are rare diseases inherited?</div>
+    <h2>Inheritance Pattern Frequency</h2>
+    <p class="insight"><b>Autosomal recessive</b> is the single most common mode (2,599 entries), narrowly ahead of <b class="hi">autosomal dominant</b> (1,943). <span class="lo">X-linked recessive</span> accounts for 388 entries — predominantly affecting males. Mitochondrial inheritance is rare (39).</p>
+    <div class="hbar-list" id="inheritanceList"></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q6 — What is the ratio of dominant vs. recessive conditions?</div>
+    <h2>Dominant vs. Recessive Breakdown</h2>
+    <p class="insight">Counting all recessive modes (autosomal + X-linked + mitochondrial) vs. dominant modes, <b>recessive conditions outnumber dominant ones by ~1.6:1</b>. This ratio is clinically significant for genetic counseling and carrier screening.</p>
+    <div class="chart-wrap"><canvas id="domRecChart" height="230"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 4: Q7 ICD-10 Chapter breakdown + Q8 Body System -->
+<div class="grid g21">
+  <div class="card">
+    <div class="section-label">Q7 — Which body systems / ICD-10 chapters are most affected?</div>
+    <h2>ICD-10 Chapter Distribution</h2>
+    <p class="insight"><b>Congenital Anomalies (Q-codes)</b> dominate with 2,916 entries — nearly 4x the next category. <b class="hi">Nervous System</b> disorders and <b class="hi">Endocrine/Metabolic</b> diseases each account for ~1,026 entries, highlighting the outsized role of neurological and metabolic rare diseases.</p>
+    <div class="chart-wrap"><canvas id="icd10Chart" height="280"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q8 — Top 5 body systems</div>
+    <h2>System Burden</h2>
+    <p class="insight">The top 5 ICD-10 chapters together cover <b>~65%</b> of all coded rare diseases.</p>
+    <div class="hbar-list" id="bodySystemList"></div>
+    <div style="margin-top:24px; padding-top:16px; border-top: 1px solid var(--border)">
+      <div class="section-label" style="margin-bottom:8px">Q9 — ICD-10 vs ICD-11 Coverage Gap</div>
+      <h2 style="font-size:14px">Database Coding Coverage</h2>
+      <p class="insight" style="margin-top:6px">ICD-10 covers <b>65.8%</b> of records vs only <b>53.6%</b> for ICD-11 — revealing a <span class="lo">significant transition gap</span> as the field moves to the newer standard.</p>
+      <div class="arc-row" style="margin-top:12px"><span class="arc-label" style="font-size:11px">ICD-10 coded</span><div class="arc-bar"><div class="arc-fill" style="width:66%;background:var(--cyan)"></div></div><span class="arc-pct">65.8%</span></div>
+      <div class="arc-row"><span class="arc-label" style="font-size:11px">ICD-11 coded</span><div class="arc-bar"><div class="arc-fill" style="width:54%;background:var(--violet)"></div></div><span class="arc-pct">53.6%</span></div>
+      <div class="arc-row"><span class="arc-label" style="font-size:11px">OMIM linked</span><div class="arc-bar"><div class="arc-fill" style="width:43%;background:var(--amber)"></div></div><span class="arc-pct">43.5%</span></div>
+      <div class="arc-row"><span class="arc-label" style="font-size:11px">GARD linked</span><div class="arc-bar"><div class="arc-fill" style="width:33%;background:var(--green)"></div></div><span class="arc-pct">33.5%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 5: Q10 Cross-database coverage + Q11 Data completeness -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q10 — How complete is cross-database linkage?</div>
+    <h2>Cross-Reference Database Coverage</h2>
+    <p class="insight">UMLS has the highest coverage at <b>84.1%</b>, making it the most universally linked identifier. GARD has the lowest at <b>33.5%</b>, indicating many rare diseases lack US registry representation. <span class="lo">MedDRA coverage is just 7.4%</span>.</p>
+    <div class="chart-wrap"><canvas id="coverageChart" height="220"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q11 — Where are the data gaps?</div>
+    <h2>Missing Data Analysis</h2>
+    <p class="insight">The two most clinically critical fields — <b class="lo">Age of Onset</b> (41.2% missing) and <b class="lo">Inheritance Pattern</b> (47.9% missing) — have the largest gaps, limiting genomic counseling utility for nearly half the database.</p>
+    <table class="cov-table">
+      <thead><tr><th>Field</th><th>Present</th><th>Missing</th><th>Coverage</th></tr></thead>
+      <tbody id="missingTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ROW 6: Q12 Disorder type vs onset + Q13 Inheritance per disorder type -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q12 — Do different disorder types have different onset profiles?</div>
+    <h2>Onset Pattern by Disorder Type</h2>
+    <p class="insight"><b>Malformation syndromes</b> are overwhelmingly Neonatal/Antenatal (prenatal detectability). <b class="hi">Diseases</b> show a more even spread — including significant Adult onset. <b>Categories</b> are broadly distributed across all ages.</p>
+    <div class="chart-wrap"><canvas id="onsetByTypeChart" height="260"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q13 — How does inheritance differ across disorder types?</div>
+    <h2>Inheritance Mode by Disorder Type</h2>
+    <p class="insight">For pure <b>Diseases</b>, <b>autosomal recessive</b> leads (31%). For <b class="hi">Malformation Syndromes</b>, recessive and dominant are nearly equal (~28% each), reflecting heterogeneous developmental pathway disruptions.</p>
+    <div class="chart-wrap"><canvas id="inhByTypeChart" height="260"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 7: Q14 Early vs late onset inheritance + Q15 Name keyword analysis -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q14 — Does inheritance pattern differ by age of onset?</div>
+    <h2>Inheritance Pattern: Early vs. Late Onset</h2>
+    <p class="insight">Early-onset diseases (Neonatal/Infancy/Antenatal) show a strong <b>autosomal recessive</b> skew — metabolic enzyme deficiencies and structural protein defects manifest at birth. Late-onset diseases (Adult/Elderly) show a higher proportion of <b class="hi">autosomal dominant</b> and <b class="hi">multifactorial</b> conditions.</p>
+    <div class="chart-wrap"><canvas id="earlyLateInhChart" height="240"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q15 — What keywords characterize rare disease names?</div>
+    <h2>Disease Nomenclature Analysis</h2>
+    <p class="insight">The word <b>"Syndrome"</b> appears in <b>3,284</b> disease names — 29% of all entries — making it the dominant nomenclature pattern. <b class="hi">"Disease"</b> appears in 882 names. <b>Deficiency</b> (702) and <b>Dysplasia</b> (395) reveal common mechanistic themes.</p>
+    <div class="chart-wrap"><canvas id="nameKeyChart" height="220"></canvas></div>
+    <div class="bubble-grid" style="margin-top:16px">
+      <span class="bubble" style="background:rgba(124,106,240,0.15);border-color:var(--violet);color:var(--lavender)">Syndrome · 3,284</span>
+      <span class="bubble" style="background:rgba(0,212,232,0.1);border-color:var(--cyan);color:var(--cyan)">Disease · 882</span>
+      <span class="bubble" style="background:rgba(245,166,35,0.1);border-color:var(--amber);color:var(--amber)">Deficiency · 702</span>
+      <span class="bubble" style="background:rgba(240,69,106,0.1);border-color:var(--rose);color:var(--rose)">Dysplasia · 395</span>
+      <span class="bubble" style="background:rgba(48,212,138,0.1);border-color:var(--green);color:var(--green)">Dystrophy · 245</span>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 8: Q16 Multiple inheritance + Q17 Multi-onset -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q16 — How many diseases have multiple inheritance patterns?</div>
+    <h2>Multiple Inheritance Pattern Complexity</h2>
+    <p class="insight">Of the 5,965 records with known inheritance, <b>872 (14.6%)</b> have <b class="lo">two or more inheritance modes listed</b>, suggesting conditions with variable expressivity, heterogeneous mutations, or incomplete documentation. The most common combo: <b>AD + AR</b> (251 cases).</p>
+    <div class="chart-wrap"><canvas id="multiInhChart" height="200"></canvas></div>
+    <div style="margin-top:14px">
+      <div class="hbar-list" id="comboInhList"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q17 — What onset combinations are most common?</div>
+    <h2>Most Frequent Multi-Onset Combinations</h2>
+    <p class="insight">The most common onset combination is <b>Infancy + Neonatal</b> (1,466 cases), indicating diseases that appear at birth or within months. <b class="hi">"All ages"</b> (867) is the second most common — suggesting chronic conditions present throughout life.</p>
+    <div class="hbar-list" id="onsetComboList"></div>
+  </div>
+</div>
+
+<!-- ROW 9: Q18 OrphaCode distribution + Q19 X-linked analysis -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q18 — How does database growth track across OrphaCode ranges?</div>
+    <h2>OrphaCode Range Distribution (Discovery Era Proxy)</h2>
+    <p class="insight">OrphaCodes are assigned sequentially, making code ranges a proxy for <b>discovery era</b>. Codes ≥50,000 account for <b>75.8%</b> of all records — reflecting explosive growth in rare disease characterization in recent decades driven by genomics.</p>
+    <div class="chart-wrap"><canvas id="orphaRangeChart" height="200"></canvas></div>
+    <p class="insight" style="margin-top:12px">Codes &lt;1000 (oldest): <b>872</b> · Codes 1K–50K: <b>1,901</b> · Codes ≥50K (newest): <b>8,683</b></p>
+  </div>
+  <div class="card">
+    <div class="section-label">Q19 — What is the profile of X-linked rare diseases?</div>
+    <h2>X-Linked Disease Characteristics</h2>
+    <p class="insight">Among the <b>493 X-linked disorders</b> (XLR + XLD), <b class="lo">X-linked recessive</b> dominates at 79% — conditions affecting predominantly males. X-linked dominant (105) often have female-skewed or lethal-in-males profiles. X-linked diseases peak in <b class="hi">Neonatal/Infancy</b> onset.</p>
+    <div class="stat-boxes" style="grid-template-columns:1fr 1fr; gap:10px">
+      <div class="stat-box">
+        <div class="sb-label">X-linked Recessive</div>
+        <div class="sb-val" style="color:var(--rose)">388</div>
+        <div class="sb-sub">79% of X-linked</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-label">X-linked Dominant</div>
+        <div class="sb-val" style="color:var(--amber)">105</div>
+        <div class="sb-sub">21% of X-linked</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-label">Y-linked (rare)</div>
+        <div class="sb-val" style="color:var(--green)">3</div>
+        <div class="sb-sub">Ultra-rare category</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-label">Mitochondrial</div>
+        <div class="sb-val" style="color:var(--violet)">39</div>
+        <div class="sb-sub">Maternally inherited</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="margin-top:16px"><canvas id="xlinkChart" height="160"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 10: Q20 Metabolic/Neurological deep dive + Q21 Full coverage summary -->
+<div class="grid g2">
+  <div class="card">
+    <div class="section-label">Q20 — What are the most represented ICD-10 systems among hereditary diseases?</div>
+    <h2>Top Disease Systems (Coded Entries)</h2>
+    <p class="insight">Among the 7,541 ICD-10 coded entries, <b>Congenital Anomalies represent 38.7%</b> — nearly 4× the next largest system. <b class="hi">Neurological + Metabolic</b> together comprise another 27%, reinforcing that rare diseases disproportionately affect the brain and metabolism.</p>
+    <div class="chart-wrap"><canvas id="topSystemsChart" height="260"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-label">Q21 — What is the overall database quality scorecard?</div>
+    <h2>Data Quality &amp; Completeness Scorecard</h2>
+    <p class="insight">Assessing <b>6 critical fields</b> across all 11,456 records reveals that the database has strong identifier coverage (UMLS, ICD-10) but critical gaps in <b class="lo">clinical metadata</b> (onset, inheritance) — the fields most important for patient care and research.</p>
+    <div style="margin-top:16px">
+      <div class="arc-row"><span class="arc-label">UMLS Identifier</span><div class="arc-bar"><div class="arc-fill" style="width:84%;background:var(--green)"></div></div><span class="arc-pct" style="color:var(--green)">84%</span></div>
+      <div class="arc-row"><span class="arc-label">ICD-10 Code</span><div class="arc-bar"><div class="arc-fill" style="width:66%;background:var(--cyan)"></div></div><span class="arc-pct" style="color:var(--cyan)">66%</span></div>
+      <div class="arc-row"><span class="arc-label">ICD-11 Code</span><div class="arc-bar"><div class="arc-fill" style="width:54%;background:var(--violet)"></div></div><span class="arc-pct" style="color:var(--violet)">54%</span></div>
+      <div class="arc-row"><span class="arc-label">OMIM Link</span><div class="arc-bar"><div class="arc-fill" style="width:43%;background:var(--amber)"></div></div><span class="arc-pct" style="color:var(--amber)">44%</span></div>
+      <div class="arc-row"><span class="arc-label">Age of Onset</span><div class="arc-bar"><div class="arc-fill" style="width:59%;background:var(--rose)"></div></div><span class="arc-pct" style="color:var(--rose)">59%</span></div>
+      <div class="arc-row"><span class="arc-label">Inheritance Type</span><div class="arc-bar"><div class="arc-fill" style="width:52%;background:var(--sky)"></div></div><span class="arc-pct" style="color:var(--sky)">52%</span></div>
+      <div class="arc-row"><span class="arc-label">GARD Link</span><div class="arc-bar"><div class="arc-fill" style="width:33%;background:var(--dim)"></div></div><span class="arc-pct" style="color:var(--muted)">34%</span></div>
+    </div>
+    <div style="margin-top:20px; padding: 14px 16px; background:var(--surface2); border-radius:6px; border-left: 3px solid var(--rose)">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--rose);margin-bottom:6px">KEY FINDING</div>
+      <div style="font-size:12px; color:var(--text); line-height:1.6">The database is strongest on <b>classification identifiers</b> but weakest on <b>clinical phenotype metadata</b> — the gap most critical to bridge for AI-assisted diagnosis and patient matching.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>Source: Orphanet Rare Disease Database · 11,456 entries · Orphanet nomenclature 2024</div>
+  <div>Analysis Dashboard · 21 Questions · Built for Research Purposes</div>
+</div>
+
+<script>
+// ── CHART GLOBAL DEFAULTS ─────────────────────────────────────────────────────
+Chart.defaults.color = '#5c6080';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const GRID_COLOR = '#1e2035';
+const TOOLTIP = {
+  backgroundColor: '#131525',
+  titleColor: '#e8eaf6',
+  bodyColor: '#8890b8',
+  borderColor: '#1e2035',
+  borderWidth: 1,
+  padding: 10,
+  cornerRadius: 6
+};
+
+const COLORS = {
+  violet: '#7c6af0',
+  cyan: '#00d4e8',
+  amber: '#f5a623',
+  rose: '#f0456a',
+  green: '#30d48a',
+  sky: '#38bdf8',
+  lavender: '#a78bfa',
+  orange: '#fb923c',
+  pink: '#e879f9',
+  lime: '#a3e635',
+};
+
+const scales_xy = {
+  x: { grid: { color: GRID_COLOR }, ticks: { color: '#5c6080' }, border: { color: '#1e2035' } },
+  y: { grid: { color: GRID_COLOR }, ticks: { color: '#5c6080' }, border: { color: '#1e2035' } }
+};
+
+// ── Q1: DISORDER TYPE ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('disorderTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Disease','Category','Malformation Syn.','Clinical Subtype','Morphological Anomaly','Clinical Group','Etiological Subtype','Other'],
+    datasets: [{
+      data: [4713,2147,2068,1053,519,486,265,205],
+      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c'],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: TOOLTIP },
+    scales: {
+      x: { ...scales_xy.x, ticks: { ...scales_xy.x.ticks, callback: v => v.toLocaleString() } },
+      y: { ...scales_xy.y, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// ── Q2: DISORDER GROUP DONUT ──────────────────────────────────────────────────
+new Chart(document.getElementById('disorderGroupChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Disorder','Group of disorders','Subtype of disorder'],
+    datasets: [{
+      data: [7441,2633,1382],
+      backgroundColor: ['#7c6af0','#00d4e8','#f5a623'],
+      borderWidth: 2,
+      borderColor: '#0d0f1a',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '65%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#8890b8', padding: 16, boxWidth: 10 } },
+      tooltip: TOOLTIP
+    }
+  }
+});
+
+// ── Q3: AGE OF ONSET ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('onsetChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Neonatal','Infancy','Childhood','Adult','Antenatal','All ages','Adolescent','Elderly','No data'],
+    datasets: [{
+      data: [3091,2566,1619,1486,933,872,825,347,52],
+      backgroundColor: [
+        '#f0456a','#f5a623','#7c6af0','#00d4e8','#30d48a','#a78bfa','#38bdf8','#fb923c','#3d3f5c'
+      ],
+      borderRadius: 5,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: TOOLTIP },
+    scales: {
+      x: scales_xy.x,
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q4: LIFECYCLE CHART ───────────────────────────────────────────────────────
+new Chart(document.getElementById('lifecycleChart'), {
+  type: 'pie',
+  data: {
+    labels: ['Antenatal/Neonatal','Infancy','Childhood','Adolescent','Adult','Elderly','All Ages'],
+    datasets: [{
+      data: [4024,2566,1619,825,1486,347,872],
+      backgroundColor: ['#f0456a','#f5a623','#7c6af0','#38bdf8','#00d4e8','#a78bfa','#30d48a'],
+      borderWidth: 2,
+      borderColor: '#0d0f1a',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'right', labels: { color: '#8890b8', padding: 12, boxWidth: 10, font: { size: 9 } } },
+      tooltip: TOOLTIP
+    }
+  }
+});
+
+// ── Q5: INHERITANCE LIST ──────────────────────────────────────────────────────
+const inhData = [
+  { name: 'Autosomal recessive', val: 2599, color: '#7c6af0' },
+  { name: 'Autosomal dominant', val: 1943, color: '#00d4e8' },
+  { name: 'Not applicable', val: 1616, color: '#3d3f5c' },
+  { name: 'X-linked recessive', val: 388, color: '#f0456a' },
+  { name: 'Unknown', val: 384, color: '#4a4c68' },
+  { name: 'Multigenic/multifactorial', val: 200, color: '#f5a623' },
+  { name: 'X-linked dominant', val: 105, color: '#a78bfa' },
+  { name: 'Mitochondrial', val: 39, color: '#30d48a' },
+  { name: 'Semi-dominant', val: 5, color: '#38bdf8' },
+  { name: 'Y-linked', val: 3, color: '#fb923c' },
+];
+const inhMax = 2599;
+const inhList = document.getElementById('inheritanceList');
+inhData.forEach(d => {
+  inhList.innerHTML += `<div class="hbar-row">
+    <div class="hbar-name">${d.name}</div>
+    <div class="hbar-track"><div class="hbar-fill" style="width:${(d.val/inhMax*100).toFixed(1)}%;background:${d.color}"></div></div>
+    <div class="hbar-val">${d.val.toLocaleString()}</div>
+  </div>`;
+});
+
+// ── Q6: DOMINANT VS RECESSIVE ─────────────────────────────────────────────────
+new Chart(document.getElementById('domRecChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Autosomal Recessive','Autosomal Dominant','X-linked Recessive','X-linked Dominant','Mitochondrial','Multigenic','Not applicable/Unknown'],
+    datasets: [{
+      data: [2599,1943,388,105,39,200,2182],
+      backgroundColor: ['#7c6af0','#00d4e8','#f0456a','#a78bfa','#30d48a','#f5a623','#2a2c42'],
+      borderWidth: 2,
+      borderColor: '#0d0f1a',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '58%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#8890b8', padding: 10, boxWidth: 10, font: { size: 9 } } },
+      tooltip: TOOLTIP
+    }
+  }
+});
+
+// ── Q7: ICD-10 CHART ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('icd10Chart'), {
+  type: 'bar',
+  data: {
+    labels: ['Congenital Anomalies','Nervous System','Endocrine/Metabolic','Blood/Hematopoietic','Neoplasms','Eye/Ear','Infectious','Skin','Musculoskeletal','Digestive','Circulatory','Other'],
+    datasets: [{
+      data: [2916,1029,1026,700,452,237,198,188,175,149,135,336],
+      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c','#e879f9','#a3e635','#f0456a','#3d3f5c'],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: TOOLTIP },
+    scales: {
+      x: { ...scales_xy.x, ticks: { ...scales_xy.x.ticks, callback: v => v.toLocaleString() } },
+      y: { ...scales_xy.y }
+    }
+  }
+});
+
+// ── Q8: BODY SYSTEM LIST ──────────────────────────────────────────────────────
+const sysData = [
+  { name: 'Congenital Anomalies', val: 2916, color: '#7c6af0' },
+  { name: 'Nervous System', val: 1029, color: '#00d4e8' },
+  { name: 'Endocrine/Metabolic', val: 1026, color: '#f5a623' },
+  { name: 'Blood/Hematopoietic', val: 700, color: '#f0456a' },
+  { name: 'Neoplasms', val: 452, color: '#30d48a' },
+];
+const sysMax = 2916;
+const sysList = document.getElementById('bodySystemList');
+sysData.forEach(d => {
+  sysList.innerHTML += `<div class="hbar-row">
+    <div class="hbar-name sm">${d.name}</div>
+    <div class="hbar-track"><div class="hbar-fill" style="width:${(d.val/sysMax*100).toFixed(1)}%;background:${d.color}"></div></div>
+    <div class="hbar-val">${d.val.toLocaleString()}</div>
+  </div>`;
+});
+
+// ── Q10: COVERAGE CHART ───────────────────────────────────────────────────────
+new Chart(document.getElementById('coverageChart'), {
+  type: 'bar',
+  data: {
+    labels: ['UMLS','ICD-10','ICD-11','OMIM','MeSH','GARD','MedDRA'],
+    datasets: [{
+      label: 'Records with Link',
+      data: [9634,7541,6143,4978,3216,3833,846],
+      backgroundColor: ['#30d48a','#00d4e8','#7c6af0','#f5a623','#a78bfa','#f0456a','#38bdf8'],
+      borderRadius: 5,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...TOOLTIP, callbacks: { label: ctx => ` ${ctx.raw.toLocaleString()} records (${(ctx.raw/11456*100).toFixed(1)}%)` } } },
+    scales: {
+      x: scales_xy.x,
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q11: MISSING TABLE ────────────────────────────────────────────────────────
+const missingData = [
+  { field: 'UMLS Identifier', present: 9634, total: 11456, color: '#30d48a' },
+  { field: 'ICD-10 Code', present: 7541, total: 11456, color: '#00d4e8' },
+  { field: 'Age of Onset', present: 6729, total: 11456, color: '#f5a623' },
+  { field: 'ICD-11 Code', present: 6143, total: 11456, color: '#7c6af0' },
+  { field: 'Inheritance Type', present: 5965, total: 11456, color: '#a78bfa' },
+  { field: 'OMIM Link', present: 4978, total: 11456, color: '#f5a623' },
+  { field: 'GARD Link', present: 3833, total: 11456, color: '#f0456a' },
+  { field: 'MeSH Term', present: 3216, total: 11456, color: '#38bdf8' },
+];
+const tbl = document.getElementById('missingTable');
+missingData.forEach(d => {
+  const pct = (d.present/d.total*100).toFixed(1);
+  const missing = d.total - d.present;
+  tbl.innerHTML += `<tr>
+    <td style="color:var(--text)">${d.field}</td>
+    <td style="color:${d.color}">${d.present.toLocaleString()}</td>
+    <td style="color:var(--rose)">${missing.toLocaleString()}</td>
+    <td class="cov-pct" style="color:${d.color}">${pct}%</td>
+  </tr>`;
+});
+
+// ── Q12: ONSET BY DISORDER TYPE ───────────────────────────────────────────────
+new Chart(document.getElementById('onsetByTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Disease','Malformation Syn.','Clinical Subtype','Clinical Group','Category'],
+    datasets: [
+      { label: 'Neonatal', data: [1116,1356,256,53,31], backgroundColor: '#f0456a' },
+      { label: 'Infancy', data: [1311,739,236,48,25], backgroundColor: '#f5a623' },
+      { label: 'Childhood', data: [1154,218,104,43,12], backgroundColor: '#7c6af0' },
+      { label: 'Adult', data: [1178,18,114,36,21], backgroundColor: '#00d4e8' },
+      { label: 'Antenatal', data: [218,589,77,19,10], backgroundColor: '#30d48a' },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { boxWidth: 10, padding: 10 } }, tooltip: TOOLTIP },
+    scales: {
+      x: { ...scales_xy.x, stacked: true },
+      y: { ...scales_xy.y, stacked: true, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q13: INHERITANCE BY DISORDER TYPE ────────────────────────────────────────
+new Chart(document.getElementById('inhByTypeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Disease','Malformation Syn.','Clinical Subtype'],
+    datasets: [
+      { label: 'AR', data: [1468,581,230], backgroundColor: '#7c6af0' },
+      { label: 'AD', data: [1034,484,157], backgroundColor: '#00d4e8' },
+      { label: 'XLR', data: [173,112,45], backgroundColor: '#f0456a' },
+      { label: 'XLD', data: [43,37,10], backgroundColor: '#a78bfa' },
+      { label: 'Multigenic', data: [105,15,20], backgroundColor: '#f5a623' },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { boxWidth: 10, padding: 10 } }, tooltip: TOOLTIP },
+    scales: {
+      x: scales_xy.x,
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q14: EARLY VS LATE ONSET INHERITANCE ──────────────────────────────────────
+new Chart(document.getElementById('earlyLateInhChart'), {
+  type: 'bar',
+  data: {
+    labels: ['AR','AD','X-linked R','Multigenic','X-linked D','Mitochondrial'],
+    datasets: [
+      { label: 'Early Onset', data: [1687,947,249,64,65,22], backgroundColor: '#f0456a', borderRadius: 3 },
+      { label: 'Late Onset', data: [328,469,50,77,20,8], backgroundColor: '#00d4e8', borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { boxWidth: 10 } }, tooltip: TOOLTIP },
+    scales: {
+      x: scales_xy.x,
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q15: NAME KEYWORD CHART ───────────────────────────────────────────────────
+new Chart(document.getElementById('nameKeyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Syndrome','Disease','Deficiency','Dysplasia','Dystrophy','Other'],
+    datasets: [{
+      data: [3284,882,702,395,245,5948],
+      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#2a2c42'],
+      borderRadius: 5,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: TOOLTIP },
+    scales: {
+      x: scales_xy.x,
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q16: MULTI INHERITANCE PIE + LIST ─────────────────────────────────────────
+new Chart(document.getElementById('multiInhChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Single inheritance pattern','Multiple inheritance patterns'],
+    datasets: [{
+      data: [5093,872],
+      backgroundColor: ['#7c6af0','#f0456a'],
+      borderWidth: 2,
+      borderColor: '#0d0f1a',
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#8890b8', padding: 16, boxWidth: 10 } },
+      tooltip: TOOLTIP
+    }
+  }
+});
+
+const comboData = [
+  { name: 'AD + AR', val: 251, color: '#7c6af0' },
+  { name: 'AD + Not applicable', val: 151, color: '#00d4e8' },
+  { name: 'Multigenic + Not applicable', val: 88, color: '#f5a623' },
+  { name: 'Not applicable + Unknown', val: 86, color: '#f0456a' },
+  { name: 'AR + XLR', val: 54, color: '#30d48a' },
+];
+const comboMax = 251;
+const comboList = document.getElementById('comboInhList');
+comboData.forEach(d => {
+  comboList.innerHTML += `<div class="hbar-row">
+    <div class="hbar-name">${d.name}</div>
+    <div class="hbar-track"><div class="hbar-fill" style="width:${(d.val/comboMax*100).toFixed(1)}%;background:${d.color}"></div></div>
+    <div class="hbar-val">${d.val}</div>
+  </div>`;
+});
+
+// ── Q17: ONSET COMBO LIST ─────────────────────────────────────────────────────
+const onsetComboData = [
+  { name: 'Infancy + Neonatal', val: 1466, color: '#f0456a' },
+  { name: 'All ages', val: 867, color: '#00d4e8' },
+  { name: 'Adult only', val: 654, color: '#7c6af0' },
+  { name: 'Childhood only', val: 611, color: '#f5a623' },
+  { name: 'Neonatal only', val: 596, color: '#30d48a' },
+  { name: 'Antenatal + Neonatal', val: 551, color: '#a78bfa' },
+  { name: 'Infancy only', val: 246, color: '#38bdf8' },
+  { name: 'Antenatal+Infancy+Neonatal', val: 223, color: '#fb923c' },
+  { name: 'Childhood + Infancy', val: 206, color: '#e879f9' },
+  { name: 'Adolescent+Adult+Childhood', val: 181, color: '#a3e635' },
+];
+const onsetComboMax = 1466;
+const ocList = document.getElementById('onsetComboList');
+onsetComboData.forEach(d => {
+  ocList.innerHTML += `<div class="hbar-row">
+    <div class="hbar-name" style="width:200px">${d.name}</div>
+    <div class="hbar-track"><div class="hbar-fill" style="width:${(d.val/onsetComboMax*100).toFixed(1)}%;background:${d.color}"></div></div>
+    <div class="hbar-val">${d.val.toLocaleString()}</div>
+  </div>`;
+});
+
+// ── Q18: ORPHACODE RANGE ──────────────────────────────────────────────────────
+new Chart(document.getElementById('orphaRangeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Codes < 1,000\n(Earliest)', 'Codes 1K–50K\n(Mid era)', 'Codes ≥ 50K\n(Recent)'],
+    datasets: [{
+      data: [872, 1901, 8683],
+      backgroundColor: ['#f5a623','#7c6af0','#00d4e8'],
+      borderRadius: 6,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...TOOLTIP, callbacks: { label: ctx => ` ${ctx.raw.toLocaleString()} records (${(ctx.raw/11456*100).toFixed(1)}%)` } } },
+    scales: {
+      x: { ...scales_xy.x, ticks: { font: { size: 9 } } },
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+
+// ── Q19: X-LINKED CHART ───────────────────────────────────────────────────────
+new Chart(document.getElementById('xlinkChart'), {
+  type: 'bar',
+  data: {
+    labels: ['X-linked Recessive','X-linked Dominant','Mitochondrial','Y-linked'],
+    datasets: [{
+      data: [388,105,39,3],
+      backgroundColor: ['#f0456a','#a78bfa','#30d48a','#38bdf8'],
+      borderRadius: 5,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: TOOLTIP },
+    scales: {
+      x: { ...scales_xy.x, ticks: { font: { size: 9 } } },
+      y: { ...scales_xy.y }
+    }
+  }
+});
+
+// ── Q20: TOP SYSTEMS ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('topSystemsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Congenital\nAnomalies','Nervous\nSystem','Endocrine/\nMetabolic','Blood/\nHematopoietic','Neoplasms','Eye/Ear','Infectious','Skin','Musculosk.','Digestive'],
+    datasets: [{
+      data: [2916,1029,1026,700,452,237,198,188,175,149],
+      backgroundColor: [
+        'rgba(124,106,240,0.85)','rgba(0,212,232,0.85)','rgba(245,166,35,0.85)',
+        'rgba(240,69,106,0.85)','rgba(48,212,138,0.85)','rgba(167,139,250,0.85)',
+        'rgba(56,189,248,0.85)','rgba(251,146,60,0.85)','rgba(232,121,249,0.85)',
+        'rgba(163,230,53,0.85)'
+      ],
+      borderRadius: 5,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { ...TOOLTIP, callbacks: { label: ctx => ` ${ctx.raw.toLocaleString()} (${(ctx.raw/7541*100).toFixed(1)}% of coded)` } } },
+    scales: {
+      x: { ...scales_xy.x, ticks: { font: { size: 9 } } },
+      y: { ...scales_xy.y, ticks: { ...scales_xy.y.ticks, callback: v => v.toLocaleString() } }
+    }
+  }
+});
+</script>
+</body>
+</html>
