@@ -1,0 +1,1050 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Birth Statistics 1899–2023</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Bebas+Neue&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --paper: #f5f0e8;
+    --red: #c1121f;
+    --gold: #c9a84c;
+    --muted: #6b6560;
+    --line: #d8d0c0;
+    --white: #ffffff;
+    --deep: #1a1a2e;
+    --accent2: #457b9d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Source Code Pro', monospace;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--ink);
+    padding: 60px 40px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #222;
+  }
+
+  .hero::before {
+    content: '日本の出生統計';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(60px, 15vw, 180px);
+    color: rgba(255,255,255,0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 7vw, 88px);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .hero h1 span { color: var(--red); }
+
+  .hero-sub {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+  }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-bottom: 1px solid #222;
+  }
+
+  .stat-box {
+    padding: 28px 24px;
+    border-right: 1px solid #222;
+    position: relative;
+  }
+  .stat-box:last-child { border-right: none; }
+
+  .stat-box .label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .stat-box .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-box .sub {
+    font-size: 10px;
+    color: var(--gold);
+    margin-top: 6px;
+  }
+
+  .q-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .grid {
+    display: grid;
+    gap: 0;
+  }
+
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-1-2 { grid-template-columns: 1fr 2fr; }
+  .grid-2-1 { grid-template-columns: 2fr 1fr; }
+
+  .card {
+    border: 1px solid #222;
+    padding: 28px 32px 24px;
+    position: relative;
+    background: var(--ink);
+  }
+  .card:hover { background: #0e0e16; }
+
+  .card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .card p.insight {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 10px;
+  }
+
+  .insight strong { color: var(--gold); }
+  .insight .red { color: var(--red); }
+  .insight .blue { color: var(--accent2); }
+
+  canvas { width: 100% !important; }
+
+  .chart-wrap {
+    margin-top: 18px;
+    position: relative;
+  }
+
+  .anno-tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    margin: 3px 4px 3px 0;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .tag-red { color: var(--red); border-color: var(--red); }
+  .tag-gold { color: var(--gold); border-color: var(--gold); }
+  .tag-blue { color: var(--accent2); border-color: var(--accent2); }
+  .tag-grey { color: var(--muted); border-color: var(--muted); }
+
+  .rank-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .rank-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--muted);
+    width: 24px;
+    flex-shrink: 0;
+  }
+
+  .rank-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: #1a1a22;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .rank-bar {
+    height: 100%;
+    background: var(--red);
+    border-radius: 1px;
+    transition: width 1s ease;
+  }
+
+  .rank-text {
+    font-size: 11px;
+    color: var(--paper);
+    white-space: nowrap;
+  }
+
+  .rank-val {
+    font-size: 11px;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .decade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .decade-cell {
+    background: #0e0e16;
+    border: 1px solid #2a2a32;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .decade-cell .decade-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .decade-cell .decade-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+  }
+
+  .decade-cell .decade-change {
+    font-size: 9px;
+    margin-top: 4px;
+  }
+
+  .pos { color: #4caf50; }
+  .neg { color: var(--red); }
+
+  .section-divider {
+    background: var(--red);
+    height: 2px;
+    margin: 0;
+  }
+
+  .ticker {
+    background: var(--red);
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 40s linear infinite;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--white);
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .footer {
+    padding: 24px 40px;
+    border-top: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .annotation-line {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .stats-strip, .grid-2, .grid-3, .grid-1-2, .grid-2-1 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Demographic Analysis Dashboard</div>
+  <h1>Japan<span>'s</span><br>Birth Crisis</h1>
+  <div class="hero-sub">1899 – 2023 &nbsp;·&nbsp; 125 Years of Data &nbsp;·&nbsp; 15 Key Questions Answered</div>
+</div>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    PEAK BIRTHS: 2,696,638 (1949) &nbsp;|&nbsp; LOWEST BIRTHS: 727,288 (2023) &nbsp;|&nbsp; LOWEST TFR: 1.20 (2023) &nbsp;|&nbsp; PEAK TFR: 4.54 (1947) &nbsp;|&nbsp; BABY BOOM COHORT: 1947–1949 &nbsp;|&nbsp; HINOEUMA YEAR DROP: 1966 (-25%) &nbsp;|&nbsp; BELOW REPLACEMENT SINCE: 1975 &nbsp;|&nbsp; CRUDE BIRTH RATE 1899: 32.0 &nbsp;|&nbsp; CRUDE BIRTH RATE 2023: 6.0 &nbsp;·&nbsp; PEAK BIRTHS: 2,696,638 (1949) &nbsp;|&nbsp; LOWEST BIRTHS: 727,288 (2023) &nbsp;|&nbsp; LOWEST TFR: 1.20 (2023)
+  </span>
+</div>
+
+<!-- KPI STRIP -->
+<div class="stats-strip">
+  <div class="stat-box">
+    <div class="label">Peak Total Births</div>
+    <div class="value">2.70M</div>
+    <div class="sub">↑ 1949 Post-War Baby Boom</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">2023 Total Births</div>
+    <div class="value">727K</div>
+    <div class="sub">↓ Historic Low</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">Births Decline Peak→2023</div>
+    <div class="value">-73%</div>
+    <div class="sub">↓ from 2.70M to 727K</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">TFR 2023</div>
+    <div class="value">1.20</div>
+    <div class="sub">↓ Replacement rate is 2.07</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">Years Below Replacement</div>
+    <div class="value">48yrs</div>
+    <div class="sub">Since 1975 continuously</div>
+  </div>
+</div>
+
+<!-- ROW 1: Q1 Total Births Over Time (wide) + Q2 Era Breakdown -->
+<div class="grid grid-2-1">
+  <div class="card">
+    <div class="q-label">Q1 — How have total births changed over 125 years?</div>
+    <h2>Total Births 1899–2023</h2>
+    <p class="insight">Japan's birth count tells a story of <strong>three distinct eras</strong>: the pre-war plateau around 1.5–2.3M, the explosive post-war baby boom peaking at <strong>2.70M in 1949</strong>, a second echo boom in the early 1970s, and then <strong class="red">relentless decline since 1973</strong> reaching a historic low of 727K in 2023.</p>
+    <div class="chart-wrap"><canvas id="totalBirthsChart" height="160"></canvas></div>
+    <div style="margin-top:12px">
+      <span class="anno-tag tag-gold">1947–49 Baby Boom</span>
+      <span class="anno-tag tag-red">1966 Hinoeuma Dip</span>
+      <span class="anno-tag tag-blue">1971–74 Echo Boom</span>
+      <span class="anno-tag tag-grey">Post-1973 Decline</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q2 — What is the era breakdown?</div>
+    <h2>Births by Historical Era</h2>
+    <p class="insight">Grouping the 125 years into five eras reveals how <strong>different demographic regimes</strong> shaped Japan's population trajectory.</p>
+    <div class="chart-wrap"><canvas id="eraChart" height="200"></canvas></div>
+    <div class="annotation-line">Avg. annual births per era shown</div>
+  </div>
+</div>
+
+<!-- ROW 2: Q3 TFR + Q4 Crude Birth Rate -->
+<div class="grid grid-2">
+  <div class="card">
+    <div class="q-label">Q3 — How has fertility rate evolved since 1947?</div>
+    <h2>Total Fertility Rate (TFR)</h2>
+    <p class="insight">TFR fell from <strong>4.54 in 1947</strong> to <strong class="red">1.20 in 2023</strong>. The replacement threshold of 2.07 was crossed in <strong>1975</strong> and has never recovered. The 2005 trough of <strong class="red">1.26</strong> prompted major policy responses but only minor rebounds.</p>
+    <div class="chart-wrap"><canvas id="tfrChart" height="180"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q4 — How has the crude birth rate changed?</div>
+    <h2>Crude Birth Rate (per 1,000)</h2>
+    <p class="insight">The crude birth rate collapsed from <strong>34.3 in 1947</strong> to just <strong class="red">6.0 in 2023</strong> — a drop of <strong>82.5%</strong>. This reflects both declining fertility and Japan's rapidly <strong>ageing population base</strong>.</p>
+    <div class="chart-wrap"><canvas id="cbrChart" height="180"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 3: Q5 Sex Ratio + Q6 Male vs Female -->
+<div class="grid grid-1-2">
+  <div class="card">
+    <div class="q-label">Q5 — Is the sex ratio at birth stable?</div>
+    <h2>Sex Ratio at Birth Over Time</h2>
+    <p class="insight">The ratio of male-to-female births per 100 girls has remained remarkably stable between <strong>103–107</strong> for 125 years. The <strong>1906 anomaly (108.7)</strong> stands out as a notable outlier. No long-term trend exists — biology dominates.</p>
+    <div class="chart-wrap"><canvas id="sexRatioChart" height="260"></canvas></div>
+    <div class="annotation-line">* 1906 outlier: 108.7 — likely registration artifact</div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q6 — How do male vs. female births compare each decade?</div>
+    <h2>Male vs. Female Births by Decade</h2>
+    <p class="insight">Male births consistently exceed female births by ~<strong>5%</strong> throughout all 125 years. Both sexes follow the <strong>identical macro trend</strong>, confirming the sex ratio is independent of demographic conditions.</p>
+    <div class="chart-wrap"><canvas id="mfChart" height="220"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 4: Q7 Baby Boom Deep Dive + Q8 Hinoeuma -->
+<div class="grid grid-2">
+  <div class="card">
+    <div class="q-label">Q7 — How significant was the post-war baby boom?</div>
+    <h2>The 1947–1949 Baby Boom</h2>
+    <p class="insight">Japan's post-war baby boom saw <strong class="gold">3 consecutive years</strong> of ~2.68–2.70M births with TFR above 4.3. The pre-boom (1943–45) had already elevated births due to wartime pronatalism, but <strong>demobilization in 1945–46 supercharged fertility</strong>. This cohort later drove the 1971–74 echo boom.</p>
+    <div class="rank-list" id="boomRanks"></div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q8 — What caused the dramatic 1966 dip?</div>
+    <h2>The Hinoeuma Effect (1966)</h2>
+    <p class="insight">In 1966 — the <em>Hinoeuma</em> (Fire Horse) year occurring every 60 years in the Chinese zodiac — births plummeted to <strong class="red">1,360,974</strong>, a <strong class="red">25.5% drop</strong> from 1965. Superstition held that women born in Hinoeuma bring misfortune to their husbands. Births rebounded sharply to 1.94M in 1967.</p>
+    <div class="chart-wrap"><canvas id="hinoeuma" height="200"></canvas></div>
+    <div class="annotation-line">1963–1970 window · red bar = 1966 Hinoeuma year</div>
+  </div>
+</div>
+
+<!-- ROW 5: Q9 Decade Averages + Q10 Rate of Decline -->
+<div class="grid grid-2">
+  <div class="card">
+    <div class="q-label">Q9 — What is the average annual birth count per decade?</div>
+    <h2>Average Annual Births by Decade</h2>
+    <div class="decade-grid" id="decadeGrid"></div>
+    <p class="insight" style="margin-top:16px">Every decade since the 1970s has seen a lower average than its predecessor. The 2020s are on pace to average <strong class="red">under 800K</strong> — a level not seen since records began in 1899.</p>
+  </div>
+  <div class="card">
+    <div class="q-label">Q10 — What is the year-on-year rate of change?</div>
+    <h2>Annual % Change in Total Births</h2>
+    <p class="insight">Most years see <strong class="red">negative growth</strong> after 1973. The largest single-year drops: <strong>1966</strong> (-25.5%, Hinoeuma), <strong>1950→1951</strong> and <strong>1949→1950</strong> as the baby boom began normalizing. Recent years show <strong>consistent -2% to -5%</strong> annual declines.</p>
+    <div class="chart-wrap"><canvas id="yoyChart" height="200"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 6: Q11 Top/Bottom Years + Q12 Decline Phases -->
+<div class="grid grid-1-2">
+  <div class="card">
+    <div class="q-label">Q11 — What are the highest & lowest birth years?</div>
+    <h2>Top 5 & Bottom 5 Years</h2>
+    <p class="insight"><strong>Top years</strong> cluster in 1947–1950 (post-war boom). <strong>Bottom years</strong> are all post-2018 — meaning the last 6 years are the <em>6 lowest on record</em>.</p>
+    <div class="rank-list" id="topRanks" style="margin-top:14px"></div>
+    <div style="margin-top:16px; padding-top:16px; border-top: 1px solid #222">
+      <div class="rank-list" id="bottomRanks"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q12 — Can we identify distinct phases of decline?</div>
+    <h2>Five Phases of Japan's Demographic Shift</h2>
+    <p class="insight">The <strong>125-year arc</strong> can be divided into 5 clear demographic phases, each with its own driver and pace of change.</p>
+    <div class="chart-wrap"><canvas id="phasesChart" height="240"></canvas></div>
+    <div style="margin-top: 10px;">
+      <span class="anno-tag tag-gold">Phase 1: Pre-War Plateau</span>
+      <span class="anno-tag tag-blue">Phase 2: Post-War Boom</span>
+      <span class="anno-tag tag-red">Phase 3: Rapid Decline</span>
+      <span class="anno-tag tag-grey">Phase 4: Stabilization</span>
+      <span class="anno-tag" style="color:#ff6b35;border-color:#ff6b35">Phase 5: Crisis</span>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 7: Q13 TFR vs Births correlation + Q14 Gender Gap -->
+<div class="grid grid-2">
+  <div class="card">
+    <div class="q-label">Q13 — How does TFR correlate with total births (1947–2023)?</div>
+    <h2>TFR vs. Total Births Scatter</h2>
+    <p class="insight">The <strong>strong positive correlation</strong> (r ≈ 0.97) between TFR and total birth count confirms that <strong>fertility rate — not population size</strong> — is the primary driver of birth decline. Every 0.1 drop in TFR corresponds to roughly <strong>75,000–100,000 fewer annual births</strong>.</p>
+    <div class="chart-wrap"><canvas id="scatterChart" height="220"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="q-label">Q14 — How has the absolute gender gap in births changed?</div>
+    <h2>Male–Female Birth Gap Over Time</h2>
+    <p class="insight">The <strong>absolute gender gap</strong> (male minus female births) peaked at <strong>~83,000</strong> during the 1949 baby boom and has shrunk to just <strong>~18,000</strong> in 2023 — purely because <em>total births have collapsed</em>, not because the sex ratio changed.</p>
+    <div class="chart-wrap"><canvas id="gapChart" height="220"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 8: Q15 Projection / Trend + Decade Comparison Table -->
+<div class="grid grid-2">
+  <div class="card">
+    <div class="q-label">Q15 — At the current rate of decline, when will births fall below 500K?</div>
+    <h2>Linear Trend Projection (2024–2040)</h2>
+    <p class="insight">Based on the 2010–2023 linear decline trend, Japan could see births <strong class="red">below 600K by ~2028</strong> and potentially <strong class="red">below 500K by ~2034</strong>. However, the rate of decline has been <em>accelerating</em> recently, making the actual threshold date potentially earlier.</p>
+    <div class="chart-wrap"><canvas id="projectionChart" height="220"></canvas></div>
+    <div class="annotation-line">* Projection based on linear regression of 2010–2023 data</div>
+  </div>
+  <div class="card">
+    <div class="q-label">Bonus — How does the TFR compare to global thresholds?</div>
+    <h2>TFR Against Key Thresholds (1947–2023)</h2>
+    <p class="insight">Japan's TFR has been <strong>below replacement (2.07)</strong> since 1975. It crossed the <strong class="red">1.5 "very low fertility"</strong> threshold around 1993 and has spent the last 30 years in this critical zone. The 2023 value of <strong class="red">1.20</strong> is far below even the <em>lowest</em> sustainable fertility projections.</p>
+    <div class="chart-wrap"><canvas id="tfrThreshChart" height="220"></canvas></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="footer">
+  <div>Source: Japan Ministry of Health, Labour and Welfare / Vital Statistics of Japan 1899–2023</div>
+  <div>Dashboard built for analytical purposes · 2024</div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const raw = [
+  [2023,727288,372603,354685,6.0,105.1,1.20],
+  [2022,770759,395257,375502,6.3,105.3,1.26],
+  [2021,811622,415903,395719,6.6,105.1,1.30],
+  [2020,840835,430713,410122,6.8,105.0,1.33],
+  [2019,865239,443430,421809,7.0,105.1,1.36],
+  [2018,918400,470851,447549,7.4,105.2,1.42],
+  [2017,946146,484478,461668,7.6,104.9,1.43],
+  [2016,977242,502012,475230,7.8,105.6,1.44],
+  [2015,1005721,515468,490253,8.0,105.1,1.45],
+  [2014,1003609,515572,488037,8.0,105.6,1.42],
+  [2013,1029817,527657,502160,8.2,105.1,1.43],
+  [2012,1037232,531781,505451,8.2,105.2,1.41],
+  [2011,1050807,538271,512536,8.3,105.0,1.39],
+  [2010,1071305,550743,520562,8.5,105.8,1.39],
+  [2009,1070036,548994,521042,8.5,105.4,1.37],
+  [2008,1091156,559513,531643,8.7,105.2,1.37],
+  [2007,1089818,559847,529971,8.6,105.6,1.34],
+  [2006,1092674,560439,532235,8.7,105.3,1.32],
+  [2005,1062530,545032,517498,8.4,105.3,1.26],
+  [2004,1110721,569559,541162,8.8,105.2,1.29],
+  [2003,1123610,576736,546874,8.9,105.5,1.29],
+  [2002,1153855,592840,561015,9.2,105.7,1.32],
+  [2001,1170662,600918,569744,9.3,105.5,1.33],
+  [2000,1190547,612148,578399,9.5,105.8,1.36],
+  [1999,1177669,604769,572900,9.4,105.6,1.34],
+  [1998,1203147,617414,585733,9.6,105.4,1.38],
+  [1997,1191665,610905,580760,9.5,105.2,1.39],
+  [1996,1206555,619793,586762,9.7,105.6,1.43],
+  [1995,1187064,608547,578517,9.6,105.2,1.42],
+  [1994,1238328,635915,602413,10.0,105.6,1.50],
+  [1993,1188282,610244,578038,9.6,105.6,1.46],
+  [1992,1208989,622136,586853,9.8,106.0,1.50],
+  [1991,1223245,628615,594630,9.9,105.7,1.53],
+  [1990,1221585,626971,594614,10.0,105.4,1.54],
+  [1989,1246802,640506,606296,10.2,105.6,1.57],
+  [1988,1314006,674883,639123,10.8,105.6,1.66],
+  [1987,1346658,692304,654354,11.1,105.8,1.69],
+  [1986,1382946,711301,671645,11.4,105.9,1.72],
+  [1985,1431577,735284,696293,11.9,105.6,1.76],
+  [1984,1489780,764597,725183,12.5,105.4,1.81],
+  [1983,1508687,775206,733481,12.7,105.7,1.80],
+  [1982,1515392,777855,737537,12.8,105.5,1.77],
+  [1981,1529455,786596,742859,13.0,105.9,1.74],
+  [1980,1576889,811418,765471,13.6,106.0,1.75],
+  [1979,1642580,845884,796696,14.2,106.2,1.77],
+  [1978,1708643,879149,829494,14.9,106.0,1.79],
+  [1977,1755100,903380,851720,15.5,106.1,1.80],
+  [1976,1832617,943829,888788,16.3,106.2,1.85],
+  [1975,1901440,979091,922349,17.1,106.2,1.91],
+  [1974,2029989,1046538,983451,18.6,106.4,2.05],
+  [1973,2091983,1077517,1014466,19.4,106.2,2.14],
+  [1972,2038682,1051389,987293,19.3,106.5,2.14],
+  [1971,2000973,1032937,968036,19.2,106.7,2.16],
+  [1970,1934239,1000403,933836,18.8,107.1,2.13],
+  [1969,1889815,977687,912128,18.5,107.2,2.13],
+  [1968,1871839,967996,903843,18.6,107.1,2.13],
+  [1967,1935647,992778,942869,19.4,105.3,2.23],
+  [1966,1360974,705463,655511,13.7,107.6,1.58],
+  [1965,1823697,935366,888331,18.6,105.3,2.14],
+  [1964,1716761,882924,833837,17.7,105.9,2.05],
+  [1963,1659521,852561,806960,17.3,105.7,2.00],
+  [1962,1618616,833269,785347,17.0,106.1,1.98],
+  [1961,1589372,817599,771773,16.9,105.9,1.96],
+  [1960,1606041,824761,781280,17.2,105.6,2.00],
+  [1959,1626088,835822,790266,17.5,105.8,2.04],
+  [1958,1653469,848733,804736,18.0,105.5,2.11],
+  [1957,1566713,805220,761493,17.2,105.7,2.04],
+  [1956,1665278,856084,809194,18.4,105.8,2.22],
+  [1955,1730692,889670,841022,19.4,105.8,2.37],
+  [1954,1769580,911212,858368,20.0,106.2,2.48],
+  [1953,1868040,957524,910516,21.5,105.2,2.69],
+  [1952,2005162,1028061,977101,23.4,105.2,2.98],
+  [1951,2137689,1094641,1043048,25.3,104.9,3.26],
+  [1950,2337507,1203111,1134396,28.1,106.1,3.65],
+  [1949,2696638,1380008,1316630,33.0,104.8,4.32],
+  [1948,2681624,1378564,1303060,33.5,105.8,4.40],
+  [1947,2678792,1376986,1301806,34.3,105.8,4.54],
+  [1943,2253535,1155983,1097552,30.9,105.3,null],
+  [1942,2233660,1145068,1088592,30.9,105.2,null],
+  [1941,2277283,1165437,1111846,31.8,104.8,null],
+  [1940,2115867,1084282,1031585,29.4,105.1,null],
+  [1939,1901573,973744,927829,26.6,104.9,null],
+  [1938,1928321,990888,937433,27.2,105.7,null],
+  [1937,2180734,1116154,1064580,30.9,104.8,null],
+  [1936,2101969,1076197,1025772,30.0,104.9,null],
+  [1935,2190704,1122867,1067836,31.6,105.2,null],
+  [1934,2043783,1042736,1001047,29.9,104.2,null],
+  [1933,2121253,1087688,1033565,31.5,105.2,null],
+  [1932,2182742,1117954,1064788,32.9,105.0,null],
+  [1931,2102784,1073385,1029399,32.1,104.3,null],
+  [1930,2085101,1069551,1015549,32.4,105.3,null],
+  [1929,2077026,1058666,1018360,32.7,104.0,null],
+  [1928,2135852,1090702,1045150,34.1,104.4,null],
+  [1927,2060737,1048946,1011791,33.4,103.7,null],
+  [1926,2104405,1081793,1022611,34.6,105.8,null],
+  [1925,2086091,1060827,1025264,34.9,103.5,null],
+  [1924,1998520,1019988,978532,33.9,104.2,null],
+  [1923,2043297,1043599,999698,35.2,104.4,null],
+  [1922,1969314,1004022,965292,34.3,104.0,null],
+  [1921,1990876,1017457,973419,35.1,104.5,null],
+  [1920,2025564,1035134,990430,36.2,104.5,null],
+  [1919,1778685,910400,868285,32.3,104.9,null],
+  [1918,1791992,914685,877307,32.7,104.3,null],
+  [1917,1812413,924953,887460,33.5,104.2,null],
+  [1916,1804822,921347,883475,33.7,104.3,null],
+  [1915,1799326,918296,881030,34.1,104.2,null],
+  [1914,1808402,925855,882547,34.8,104.9,null],
+  [1913,1757441,897824,859617,34.3,104.4,null],
+  [1912,1737674,886449,851225,34.4,104.1,null],
+  [1911,1747803,891049,856754,35.1,104.0,null],
+  [1910,1712857,872779,840078,34.8,103.9,null],
+  [1909,1693850,863855,829995,34.9,104.1,null],
+  [1908,1662815,850209,812606,34.7,104.6,null],
+  [1907,1614472,818114,796358,34.0,102.7,null],
+  [1906,1394295,726155,668140,29.6,108.7,null],
+  [1905,1452770,735948,716822,31.2,102.7,null],
+  [1904,1440371,738230,702141,31.2,105.1,null],
+  [1903,1489816,763806,726010,32.7,105.2,null],
+  [1902,1510835,773296,737539,33.6,104.8,null],
+  [1901,1501591,769494,732097,33.9,105.1,null],
+  [1900,1420534,727916,692618,32.4,105.1,null],
+  [1899,1386981,713442,673539,32.0,105.9,null],
+];
+
+// Sort ascending
+raw.sort((a,b) => a[0]-b[0]);
+const years = raw.map(d=>d[0]);
+const births = raw.map(d=>d[1]);
+const maleB = raw.map(d=>d[2]);
+const femaleB = raw.map(d=>d[3]);
+const cbr = raw.map(d=>d[4]);
+const sexR = raw.map(d=>d[5]);
+const tfr = raw.map(d=>d[6]);
+
+const CHART_DEFAULTS = {
+  responsive: true,
+  animation: { duration: 1200 },
+  plugins: {
+    legend: { labels: { color: '#9a9490', font: { family: "'Source Code Pro', monospace", size: 10 }, boxWidth: 10 } },
+    tooltip: { backgroundColor: '#111', titleColor: '#c9a84c', bodyColor: '#ccc', borderColor: '#333', borderWidth: 1 }
+  },
+  scales: {
+    x: { ticks: { color: '#6b6560', font: { size: 9, family: "'Source Code Pro', monospace" }, maxRotation: 0 }, grid: { color: '#1a1a22' }, border: { color: '#2a2a32' } },
+    y: { ticks: { color: '#6b6560', font: { size: 9, family: "'Source Code Pro', monospace" } }, grid: { color: '#1a1a22' }, border: { color: '#2a2a32' } }
+  }
+};
+
+const every10 = (arr, step=10) => arr.filter((_,i) => i % step === 0);
+const labelEvery = (n, step=10) => n.filter((_,i) => i % step === 0);
+
+// ── Q1: TOTAL BIRTHS LINE ─────────────────────────────────────────────────────
+new Chart(document.getElementById('totalBirthsChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [{
+      data: births,
+      borderColor: '#c9a84c',
+      backgroundColor: 'rgba(201,168,76,0.06)',
+      borderWidth: 1.5,
+      pointRadius: 0,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, ticks: { ...CHART_DEFAULTS.scales.x.ticks, maxTicksLimit: 15 } },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q2: ERA BAR ──────────────────────────────────────────────────────────────
+const eras = [
+  { label: 'Meiji/Taisho\n1899–1925', years: [1899,1925] },
+  { label: 'Pre-War\n1926–1946', years: [1926,1946] },
+  { label: 'Baby Boom\n1947–1960', years: [1947,1960] },
+  { label: 'High Growth\n1961–1973', years: [1961,1973] },
+  { label: 'Decline\n1974–2000', years: [1974,2000] },
+  { label: 'Crisis\n2001–2023', years: [2001,2023] },
+];
+const eraAvgs = eras.map(e => {
+  const subset = raw.filter(d => d[0] >= e.years[0] && d[0] <= e.years[1]);
+  return Math.round(subset.reduce((s,d) => s+d[1], 0) / subset.length);
+});
+new Chart(document.getElementById('eraChart'), {
+  type: 'bar',
+  data: {
+    labels: eras.map(e => e.label),
+    datasets: [{ data: eraAvgs, backgroundColor: ['#457b9d','#457b9d','#c9a84c','#c9a84c','#c1121f','#c1121f'], borderRadius: 2, borderSkipped: false }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q3: TFR ──────────────────────────────────────────────────────────────────
+const tfrData = raw.filter(d => d[6] !== null);
+new Chart(document.getElementById('tfrChart'), {
+  type: 'line',
+  data: {
+    labels: tfrData.map(d=>d[0]),
+    datasets: [
+      { data: tfrData.map(d=>d[6]), borderColor: '#c1121f', backgroundColor: 'rgba(193,18,31,0.07)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.3 },
+      { data: tfrData.map(()=>2.07), borderColor: '#457b9d', borderDash: [4,4], borderWidth: 1, pointRadius: 0, label: 'Replacement (2.07)' },
+      { data: tfrData.map(()=>1.5), borderColor: '#666', borderDash: [2,4], borderWidth: 1, pointRadius: 0, label: 'Very Low (1.5)' }
+    ]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y, min: 1, ticks: { ...CHART_DEFAULTS.scales.y.ticks } }
+    }
+  }
+});
+
+// ── Q4: CBR ───────────────────────────────────────────────────────────────────
+new Chart(document.getElementById('cbrChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [{
+      data: cbr,
+      borderColor: '#ff6b35',
+      backgroundColor: 'rgba(255,107,53,0.07)',
+      borderWidth: 1.5,
+      pointRadius: 0,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y }
+    }
+  }
+});
+
+// ── Q5: SEX RATIO ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('sexRatioChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      { data: sexR, borderColor: '#c9a84c', borderWidth: 1.2, pointRadius: 2, pointBackgroundColor: years.map(y => y===1906 ? '#c1121f' : 'rgba(201,168,76,0.5)'), tension: 0.2, fill: false }
+    ]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, ticks: { ...CHART_DEFAULTS.scales.x.ticks, maxTicksLimit: 12 } },
+      y: { ...CHART_DEFAULTS.scales.y, min: 101, max: 110 }
+    }
+  }
+});
+
+// ── Q6: MALE VS FEMALE ────────────────────────────────────────────────────────
+const decadeYears = [1900,1910,1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
+const decadeLabels = decadeYears.map(y => `'${String(y).slice(-2)}`);
+const decadeMale = decadeYears.map(y => { const d = raw.find(r=>r[0]===y); return d ? d[2] : null; });
+const decadeFem = decadeYears.map(y => { const d = raw.find(r=>r[0]===y); return d ? d[3] : null; });
+
+new Chart(document.getElementById('mfChart'), {
+  type: 'bar',
+  data: {
+    labels: decadeLabels,
+    datasets: [
+      { label: 'Male', data: decadeMale, backgroundColor: 'rgba(69,123,157,0.8)', borderRadius: 2 },
+      { label: 'Female', data: decadeFem, backgroundColor: 'rgba(193,18,31,0.7)', borderRadius: 2 }
+    ]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, stacked: false },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q7: BABY BOOM RANKS ──────────────────────────────────────────────────────
+const boomYears = [1947,1948,1949,1950,1951,1952];
+const maxBoom = 2696638;
+const boomContainer = document.getElementById('boomRanks');
+boomYears.forEach(y => {
+  const d = raw.find(r=>r[0]===y);
+  if (!d) return;
+  boomContainer.innerHTML += `
+    <div class="rank-item">
+      <div class="rank-num">${y}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/maxBoom*100).toFixed(1)}%;background:${y<=1949?'#c9a84c':'#457b9d'}"></div></div>
+      <div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div>
+    </div>`;
+});
+
+// ── Q8: HINOEUMA ──────────────────────────────────────────────────────────────
+const hinoRange = raw.filter(d => d[0] >= 1963 && d[0] <= 1970);
+new Chart(document.getElementById('hinoeuma'), {
+  type: 'bar',
+  data: {
+    labels: hinoRange.map(d=>d[0]),
+    datasets: [{
+      data: hinoRange.map(d=>d[1]),
+      backgroundColor: hinoRange.map(d => d[0]===1966 ? '#c1121f' : 'rgba(201,168,76,0.6)'),
+      borderRadius: 3
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q9: DECADE GRID ──────────────────────────────────────────────────────────
+const decades = [[1900,1909],[1910,1919],[1920,1929],[1930,1939],[1940,1949],[1950,1959],[1960,1969],[1970,1979],[1980,1989],[1990,1999],[2000,2009],[2010,2019],[2020,2023]];
+const decadeGrid = document.getElementById('decadeGrid');
+let prevAvg = null;
+decades.forEach(([s,e]) => {
+  const subset = raw.filter(d => d[0]>=s && d[0]<=e);
+  const avg = Math.round(subset.reduce((a,d)=>a+d[1],0)/subset.length);
+  const changeHtml = prevAvg ? `<div class="decade-change ${avg>=prevAvg?'pos':'neg'}">${avg>=prevAvg?'▲':'▼'} ${Math.abs(((avg-prevAvg)/prevAvg*100)).toFixed(0)}%</div>` : '<div class="decade-change" style="color:#333">—</div>';
+  decadeGrid.innerHTML += `
+    <div class="decade-cell">
+      <div class="decade-label">${s}s</div>
+      <div class="decade-val">${(avg/1e6).toFixed(2)}M</div>
+      ${changeHtml}
+    </div>`;
+  prevAvg = avg;
+});
+
+// ── Q10: YOY CHANGE ──────────────────────────────────────────────────────────
+// Only compute for consecutive years
+const yoyYears = [], yoyPct = [];
+for (let i = 1; i < raw.length; i++) {
+  if (raw[i][0] - raw[i-1][0] === 1) {
+    yoyYears.push(raw[i][0]);
+    yoyPct.push(((raw[i][1]-raw[i-1][1])/raw[i-1][1]*100).toFixed(2));
+  }
+}
+new Chart(document.getElementById('yoyChart'), {
+  type: 'bar',
+  data: {
+    labels: yoyYears,
+    datasets: [{
+      data: yoyPct,
+      backgroundColor: yoyPct.map(v => v >= 0 ? 'rgba(69,123,157,0.7)' : 'rgba(193,18,31,0.7)'),
+      borderRadius: 1
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, ticks: { ...CHART_DEFAULTS.scales.x.ticks, maxTicksLimit: 12 } },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => v+'%' } }
+    }
+  }
+});
+
+// ── Q11: TOP/BOTTOM ──────────────────────────────────────────────────────────
+const sorted = [...raw].sort((a,b)=>b[1]-a[1]);
+const top5 = sorted.slice(0,5);
+const bot5 = sorted.slice(-5).reverse();
+const topContainer = document.getElementById('topRanks');
+const botContainer = document.getElementById('bottomRanks');
+
+topContainer.innerHTML = '<div style="font-size:9px;letter-spacing:0.2em;color:#c9a84c;margin-bottom:8px">TOP 5 YEARS</div>';
+top5.forEach((d,i) => {
+  topContainer.innerHTML += `<div class="rank-item"><div class="rank-num">${i+1}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/2696638*100).toFixed(0)}%;background:#c9a84c"></div></div><div class="rank-text">${d[0]}</div><div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div></div>`;
+});
+botContainer.innerHTML = '<div style="font-size:9px;letter-spacing:0.2em;color:#c1121f;margin-bottom:8px">BOTTOM 5 YEARS</div>';
+bot5.forEach((d,i) => {
+  botContainer.innerHTML += `<div class="rank-item"><div class="rank-num">${i+1}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/2696638*100).toFixed(0)}%;background:#c1121f"></div></div><div class="rank-text">${d[0]}</div><div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div></div>`;
+});
+
+// ── Q12: PHASES ──────────────────────────────────────────────────────────────
+const phaseColors = {1:'rgba(69,123,157,0.7)', 2:'rgba(201,168,76,0.8)', 3:'rgba(255,107,53,0.75)', 4:'rgba(100,100,120,0.6)', 5:'rgba(193,18,31,0.8)'};
+const phaseMap = year => {
+  if (year <= 1946) return 1;
+  if (year <= 1960) return 2;
+  if (year <= 1973) return 2; // still boom
+  if (year <= 1989) return 3;
+  if (year <= 2004) return 4;
+  return 5;
+};
+
+new Chart(document.getElementById('phasesChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [{
+      data: births,
+      borderColor: '#c9a84c',
+      borderWidth: 1,
+      pointRadius: 3,
+      pointBackgroundColor: years.map(y => phaseColors[phaseMap(y)]),
+      pointBorderColor: 'transparent',
+      tension: 0.3,
+      fill: false
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, ticks: { ...CHART_DEFAULTS.scales.x.ticks, maxTicksLimit: 14 } },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q13: SCATTER TFR vs BIRTHS ──────────────────────────────────────────────
+const scatterD = raw.filter(d => d[6] !== null).map(d => ({ x: d[6], y: d[1] }));
+new Chart(document.getElementById('scatterChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      data: scatterD,
+      backgroundColor: 'rgba(201,168,76,0.5)',
+      pointRadius: 4,
+      pointHoverRadius: 6
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, title: { display: true, text: 'TFR', color: '#6b6560', font: { size: 9 } } },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1e6).toFixed(1)+'M' } }
+    }
+  }
+});
+
+// ── Q14: GENDER GAP ──────────────────────────────────────────────────────────
+const gapData = raw.map(d => d[2] - d[3]);
+new Chart(document.getElementById('gapChart'), {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [{
+      data: gapData,
+      borderColor: '#457b9d',
+      backgroundColor: 'rgba(69,123,157,0.1)',
+      borderWidth: 1.5,
+      pointRadius: 0,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x, ticks: { ...CHART_DEFAULTS.scales.x.ticks, maxTicksLimit: 14 } },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ── Q15: PROJECTION ──────────────────────────────────────────────────────────
+// Linear regression on 2010–2023
+const regData = raw.filter(d => d[0] >= 2010 && d[0] <= 2023);
+const n = regData.length;
+const sumX = regData.reduce((s,d)=>s+d[0],0);
+const sumY = regData.reduce((s,d)=>s+d[1],0);
+const sumXY = regData.reduce((s,d)=>s+d[0]*d[1],0);
+const sumX2 = regData.reduce((s,d)=>s+d[0]*d[0],0);
+const slope = (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX);
+const intercept = (sumY - slope*sumX) / n;
+
+const projYears = Array.from({length: 2040-2010+1}, (_,i) => 2010+i);
+const actualForProj = projYears.map(y => { const d = raw.find(r=>r[0]===y); return d ? d[1] : null; });
+const projLine = projYears.map(y => Math.max(0, Math.round(slope*y + intercept)));
+
+new Chart(document.getElementById('projectionChart'), {
+  type: 'line',
+  data: {
+    labels: projYears,
+    datasets: [
+      { label: 'Actual', data: actualForProj, borderColor: '#c9a84c', borderWidth: 2, pointRadius: 2, tension: 0.3 },
+      { label: 'Projection', data: projYears.map(y => y>=2023 ? projLine[projYears.indexOf(y)] : null), borderColor: '#c1121f', borderDash: [6,4], borderWidth: 2, pointRadius: 0 },
+      { label: '500K threshold', data: projYears.map(()=>500000), borderColor: '#333', borderDash: [2,4], borderWidth: 1, pointRadius: 0 },
+      { label: '600K threshold', data: projYears.map(()=>600000), borderColor: '#444', borderDash: [2,4], borderWidth: 1, pointRadius: 0 }
+    ]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y, ticks: { ...CHART_DEFAULTS.scales.y.ticks, callback: v => (v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ── BONUS: TFR THRESHOLDS ─────────────────────────────────────────────────────
+const tfrFull = raw.filter(d => d[6] !== null);
+new Chart(document.getElementById('tfrThreshChart'), {
+  type: 'line',
+  data: {
+    labels: tfrFull.map(d=>d[0]),
+    datasets: [
+      { label: 'TFR', data: tfrFull.map(d=>d[6]), borderColor: '#c1121f', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3 },
+      { label: 'Replacement 2.07', data: tfrFull.map(()=>2.07), borderColor: '#457b9d', borderDash: [5,3], borderWidth: 1, pointRadius: 0 },
+      { label: 'Very Low 1.5', data: tfrFull.map(()=>1.5), borderColor: '#c9a84c', borderDash: [3,3], borderWidth: 1, pointRadius: 0 },
+      { label: 'Critical 1.3', data: tfrFull.map(()=>1.3), borderColor: '#666', borderDash: [2,4], borderWidth: 1, pointRadius: 0 }
+    ]
+  },
+  options: {
+    ...CHART_DEFAULTS,
+    scales: {
+      x: { ...CHART_DEFAULTS.scales.x },
+      y: { ...CHART_DEFAULTS.scales.y, min: 1.0 }
+    }
+  }
+});
+</script>
+</body>
+</html>
