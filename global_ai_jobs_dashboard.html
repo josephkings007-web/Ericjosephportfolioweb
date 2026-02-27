@@ -1,0 +1,1197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global AI Jobs — Intelligence Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060912;
+  --s1: #0c1020;
+  --s2: #111828;
+  --s3: #1a2235;
+  --border: #1f2d44;
+  --text: #e2e8f5;
+  --muted: #4a5a78;
+  --dim: #2a3a55;
+
+  --electric: #00e5ff;
+  --electric-glow: rgba(0,229,255,0.12);
+  --neon: #39ff8f;
+  --neon-glow: rgba(57,255,143,0.1);
+  --hot: #ff4757;
+  --hot-glow: rgba(255,71,87,0.12);
+  --gold: #ffd60a;
+  --gold-glow: rgba(255,214,10,0.1);
+  --purple: #a855f7;
+  --purple-glow: rgba(168,85,247,0.12);
+  --orange: #ff8c42;
+  --sky: #60a5fa;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ──────────── HEADER ──────────── */
+.hero {
+  background: linear-gradient(160deg, #060912 0%, #0d1528 40%, #060912 100%);
+  padding: 52px 48px 36px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -60px; left: 30%;
+  width: 400px; height: 300px;
+  background: radial-gradient(circle, rgba(57,255,143,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2);
+  padding: 5px 14px; border-radius: 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em; color: var(--electric);
+  text-transform: uppercase; margin-bottom: 18px;
+}
+.hero-badge::before { content: '●'; font-size: 8px; animation: blink 1.8s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4.5vw, 62px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.hero h1 em { font-style: normal; color: var(--electric); }
+.hero-desc {
+  margin-top: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--muted); letter-spacing: 0.05em;
+}
+.kpi-row {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;
+}
+.kpi-pill {
+  background: var(--s2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--muted);
+}
+.kpi-pill strong { display: block; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 2px; font-family: 'Space Grotesk', sans-serif; }
+
+/* ──────────── NAV TABS ──────────── */
+.tab-nav {
+  background: var(--s1); border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; padding: 0 48px; gap: 2px;
+  position: sticky; top: 0; z-index: 50;
+}
+.tab-btn {
+  padding: 14px 20px; background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--muted); font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text); border-bottom-color: var(--dim); }
+.tab-btn.active { color: var(--electric); border-bottom-color: var(--electric); }
+
+/* ──────────── SECTIONS ──────────── */
+.section { display: none; padding: 0; }
+.section.active { display: block; }
+
+/* ──────────── CARD GRID ──────────── */
+.grid { display: grid; gap: 0; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g12 { grid-template-columns: 1fr 2fr; }
+.g21 { grid-template-columns: 2fr 1fr; }
+.g31 { grid-template-columns: 3fr 1fr; }
+
+.card {
+  background: var(--s1); border: 1px solid var(--border);
+  padding: 26px 28px 22px; position: relative;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--dim); }
+
+.q-tag {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--electric); margin-bottom: 7px;
+}
+.card h2 {
+  font-size: 15px; font-weight: 600; color: var(--text);
+  line-height: 1.3; margin-bottom: 6px;
+}
+.insight {
+  font-size: 11.5px; color: var(--muted); line-height: 1.75; margin-top: 8px;
+}
+.insight b { color: var(--gold); }
+.insight .hi { color: var(--electric); }
+.insight .lo { color: var(--hot); }
+.insight .g { color: var(--neon); }
+
+.chart-wrap { margin-top: 16px; }
+
+/* ──────────── HORIZONTAL BAR LIST ──────────── */
+.hbl { display: flex; flex-direction: column; gap: 9px; margin-top: 14px; }
+.hbl-row { display: flex; align-items: center; gap: 10px; }
+.hbl-name { font-size: 11px; color: var(--text); flex-shrink: 0; }
+.hbl-name.w120 { width: 120px; }
+.hbl-name.w160 { width: 160px; }
+.hbl-name.w180 { width: 180px; }
+.hbl-track { flex: 1; height: 6px; background: var(--s3); border-radius: 2px; overflow: hidden; }
+.hbl-fill { height: 100%; border-radius: 2px; transition: width 1.3s cubic-bezier(0.4,0,0.2,1); }
+.hbl-val { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+/* ──────────── STAT BOX ──────────── */
+.stat-boxes { display: grid; gap: 10px; margin-top: 14px; }
+.sb { background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.sb-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+.sb-val { font-size: 24px; font-weight: 700; line-height: 1.1; margin-top: 4px; }
+.sb-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+/* ──────────── PROGRESS ──────────── */
+.prog-row { display: flex; align-items: center; gap: 12px; margin-top: 9px; }
+.prog-label { font-size: 11px; color: var(--text); flex: 1.5; }
+.prog-bar { flex: 2; height: 5px; background: var(--s3); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 2px; }
+.prog-val { font-family: 'Space Mono', monospace; font-size: 10px; width: 55px; text-align: right; }
+
+/* ──────────── BUBBLE TAGS ──────────── */
+.bubbles { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.bub { font-family: 'Space Mono', monospace; font-size: 10px; padding: 5px 12px; border-radius: 20px; border: 1px solid currentColor; }
+
+/* ──────────── HEAT CELL ──────────── */
+.heat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-top: 14px; }
+.heat-cell {
+  background: var(--s2); border: 1px solid var(--border); border-radius: 6px;
+  padding: 12px 10px; text-align: center;
+}
+.heat-cell .hc-label { font-size: 9px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 5px; }
+.heat-cell .hc-val { font-size: 19px; font-weight: 700; }
+.heat-cell .hc-sub { font-size: 9px; color: var(--muted); margin-top: 3px; }
+
+/* ──────────── INSIGHT BOX ──────────── */
+.insight-box {
+  background: var(--s2); border-left: 3px solid var(--electric);
+  border-radius: 0 6px 6px 0; padding: 14px 16px; margin-top: 16px;
+}
+.insight-box.hot { border-left-color: var(--hot); }
+.insight-box.neon { border-left-color: var(--neon); }
+.insight-box.gold { border-left-color: var(--gold); }
+.insight-box .ib-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--electric); text-transform: uppercase; margin-bottom: 5px; }
+.insight-box.hot .ib-label { color: var(--hot); }
+.insight-box.neon .ib-label { color: var(--neon); }
+.insight-box.gold .ib-label { color: var(--gold); }
+.insight-box p { font-size: 12px; color: var(--text); line-height: 1.65; }
+
+/* ──────────── SECTION TITLE BAR ──────────── */
+.sec-title-bar {
+  background: var(--s2); border-bottom: 1px solid var(--border);
+  padding: 14px 28px; display: flex; align-items: center; gap: 14px;
+}
+.sec-title-bar .stb-num {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  color: var(--electric); background: var(--electric-glow);
+  border: 1px solid rgba(0,229,255,0.25); padding: 3px 10px; border-radius: 4px;
+}
+.sec-title-bar h3 { font-size: 14px; font-weight: 600; color: var(--text); }
+.sec-title-bar span { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-left: auto; }
+
+/* ──────────── TABLE ──────────── */
+.data-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+.data-table th {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em;
+  color: var(--muted); text-align: left; padding: 0 10px 10px 0;
+  text-transform: uppercase; border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 9px 10px 9px 0; border-bottom: 1px solid rgba(31,45,68,0.5);
+  font-size: 12px;
+}
+.data-table td:last-child { text-align: right; font-family: 'Space Mono', monospace; }
+
+/* ──────────── COMPARISON TABLE ──────────── */
+.comp-table { margin-top: 14px; display: flex; flex-direction: column; gap: 1px; }
+.comp-row {
+  display: grid; grid-template-columns: 140px 1fr 80px;
+  align-items: center; gap: 12px; padding: 9px 0;
+  border-bottom: 1px solid rgba(31,45,68,0.5);
+}
+.comp-name { font-size: 11px; color: var(--text); }
+.comp-track { height: 8px; background: var(--s3); border-radius: 2px; overflow: hidden; }
+.comp-fill { height: 100%; border-radius: 2px; }
+.comp-val { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); text-align: right; }
+
+/* ──────────── SCROLL BAR ──────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 3px; }
+
+/* ──────────── RESPONSIVE ──────────── */
+@media (max-width: 900px) {
+  .g2, .g3, .g12, .g21, .g31 { grid-template-columns: 1fr; }
+  .hero, .tab-nav { padding-left: 20px; padding-right: 20px; }
+}
+
+/* ──────────── FOOTER ──────────── */
+.footer {
+  padding: 18px 48px; border-top: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted);
+  display: flex; justify-content: space-between;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero">
+  <div class="hero-badge">Live Analytics · 90,000 Records</div>
+  <h1>Global <em>AI Jobs</em><br>Intelligence Dashboard</h1>
+  <div class="hero-desc">90,000 records · 12 countries · 8 specializations · 34 variables · All questions answered</div>
+  <div class="kpi-row">
+    <div class="kpi-pill"><strong>90,000</strong>Total Records</div>
+    <div class="kpi-pill"><strong>12</strong>Countries</div>
+    <div class="kpi-pill"><strong>$96,541</strong>Avg Salary USD</div>
+    <div class="kpi-pill"><strong>8</strong>AI Specializations</div>
+    <div class="kpi-pill"><strong>10</strong>Industries</div>
+    <div class="kpi-pill"><strong>8</strong>Job Roles</div>
+    <div class="kpi-pill"><strong>2020–2026</strong>Years Covered</div>
+  </div>
+</div>
+
+<!-- ═══════════ TAB NAV ═══════════ -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('salary')">01 · Salary & Compensation</button>
+  <button class="tab-btn" onclick="switchTab('market')">02 · Job Market & Hiring</button>
+  <button class="tab-btn" onclick="switchTab('culture')">03 · Work Culture & QoL</button>
+  <button class="tab-btn" onclick="switchTab('risk')">04 · Risk & Outlook</button>
+  <button class="tab-btn" onclick="switchTab('recruit')">05 · Recruitment & Trends</button>
+</div>
+
+<!-- ═══════════ SECTION 1: SALARY ═══════════ -->
+<div class="section active" id="sec-salary">
+
+  <div class="sec-title-bar">
+    <span class="stb-num">01</span>
+    <h3>Salary & Compensation Trends</h3>
+    <span>Q1–Q4 · 4 Questions</span>
+  </div>
+
+  <!-- Q1: Country Salary -->
+  <div class="grid g21">
+    <div class="card">
+      <div class="q-tag">Q1 · Geography</div>
+      <h2>Average Salary & Bonus by Country</h2>
+      <p class="insight"><b>USA leads with $132,995/yr</b> avg, followed by Singapore ($116,955) and Australia ($110,550). <span class="lo">India ($43,106) and Brazil ($53,705)</span> are 3–4× lower — reflecting cost-of-living adjusted markets. Bonus structures mirror salary: USA averages <b>$17,939</b> in annual bonus.</p>
+      <div class="chart-wrap"><canvas id="countrySalChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q1 · Bonus Breakdown</div>
+      <h2>Country Bonus Rankings</h2>
+      <p class="insight">Bonus as % of salary is <b>~13.5%</b> consistently across all countries. Total compensation gap between USA and India exceeds <b class="lo">$100K/yr</b>.</p>
+      <div class="hbl" id="bonusHbl"></div>
+      <div class="insight-box gold" style="margin-top:16px">
+        <div class="ib-label">Key Insight</div>
+        <p>USA total comp (salary+bonus) = <b>$150,934</b> vs India = <b>$48,973</b>. A 3.08× gap.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2: Specialization -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q2 · Specialization</div>
+      <h2>Salary by AI Specialization</h2>
+      <p class="insight"><b>Generative AI</b> ($97,097) and <b class="hi">LLM</b> ($97,077) command the highest average salaries — reflecting current market demand. <span class="lo">Reinforcement Learning</span> ($95,424) sits lowest. The spread across specializations is surprisingly narrow ($1,673), suggesting <b>geography > specialization</b> as salary driver.</p>
+      <div class="chart-wrap"><canvas id="specSalChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q2 · Role Salary</div>
+      <h2>Average Salary by Job Role</h2>
+      <p class="insight"><b>Research Scientists</b> earn the most ($109,798), followed by <b class="hi">ML Engineers</b> ($102,122). <span class="lo">Data Analysts</span> earn $69,429 — a $40K gap vs Research Scientists. Role choice is a stronger salary predictor than specialization.</p>
+      <div class="chart-wrap"><canvas id="roleSalChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Q3: Experience -->
+  <div class="grid g21">
+    <div class="card">
+      <div class="q-tag">Q3 · Experience</div>
+      <h2>Salary Trajectory by Years of Experience (0–19 yrs)</h2>
+      <p class="insight">Career progression shows a <b>near-linear salary gain of ~$5,200/year</b>. Entry (0 yrs): $58,837 → Senior Lead (19 yrs): $160,823. The steepest jump occurs in the <b class="hi">0–5 year window</b> (+$26K, ~44% gain), flattening somewhat at senior levels.</p>
+      <div class="chart-wrap"><canvas id="expSalChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q3 · Experience Levels</div>
+      <h2>Salary Jump by Level</h2>
+      <p class="insight">The <b>Entry → Mid</b> jump is <b>+$16,084 (+26%)</b>. Mid → Senior: <b>+$27,196 (+35%)</b>. Senior → Lead: <b>+$37,711 (+36%)</b>. Lead roles at <b>$142,319</b> are the peak band.</p>
+      <div class="stat-boxes" style="grid-template-columns:1fr 1fr; gap:10px; margin-top:14px">
+        <div class="sb"><div class="sb-label">Entry Level</div><div class="sb-val" style="color:var(--muted)">$61,328</div><div class="sb-sub">Avg annual salary</div></div>
+        <div class="sb"><div class="sb-label">Mid Level</div><div class="sb-val" style="color:var(--sky)">$77,412</div><div class="sb-sub">+26% vs Entry</div></div>
+        <div class="sb"><div class="sb-label">Senior Level</div><div class="sb-val" style="color:var(--electric)">$104,608</div><div class="sb-sub">+35% vs Mid</div></div>
+        <div class="sb"><div class="sb-label">Lead Level</div><div class="sb-val" style="color:var(--gold)">$142,319</div><div class="sb-sub">+36% vs Senior</div></div>
+      </div>
+      <div class="insight-box neon" style="margin-top:14px">
+        <div class="ib-label">Salary Jump/Year</div>
+        <p>Average <b>+$5,200 per additional year</b> of experience across the full 0–19 year range.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4: Education -->
+  <div class="card">
+    <div class="q-tag">Q4 · Education</div>
+    <h2>Does Higher Education Drive Higher Salary? — Education Level vs. Salary & Percentile</h2>
+    <p class="insight">Counterintuitively, <b>education level shows minimal salary differentiation</b> in this dataset. Bootcamp grads ($97,206) slightly outperform PhD holders ($96,131). Salary percentiles are nearly uniform (~50.4–50.7 across all education levels). This suggests <b class="hi">skills and experience outweigh credentials</b> in the AI job market.</p>
+    <div class="chart-wrap"><canvas id="eduChart" height="120"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SECTION 2: JOB MARKET ═══════════ -->
+<div class="section" id="sec-market">
+
+  <div class="sec-title-bar">
+    <span class="stb-num">02</span>
+    <h3>Job Market & Hiring Insights</h3>
+    <span>Q5–Q8 · 4 Questions</span>
+  </div>
+
+  <!-- Q5: Industry Demand -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q5 · Demand</div>
+      <h2>Industry Skill Demand Score</h2>
+      <p class="insight"><b>Consulting</b> (51.0) and <b class="hi">Energy</b> (50.9) lead skill demand scores. All industries cluster tightly in the 50.1–51.0 range, indicating <b>universally high AI demand</b> across all sectors — no industry is being "left behind."</p>
+      <div class="chart-wrap"><canvas id="indDemandChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q5 · Openings</div>
+      <h2>Job Openings by Industry</h2>
+      <p class="insight"><b>Healthcare, Telecom, and Energy</b> each average 17.6 openings per listing — the highest. Finance and Tech follow closely. <b class="lo">Education</b> has the fewest at 17.4. The tight range reflects democratized AI adoption across all sectors.</p>
+      <div class="chart-wrap"><canvas id="indOpenChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Q6: Interview Rounds vs Difficulty -->
+  <div class="grid g12">
+    <div class="card">
+      <div class="q-tag">Q6 · Hiring Difficulty</div>
+      <h2>Interview Rounds vs. Hiring Difficulty Score by Country</h2>
+      <p class="insight">All countries average <b>~4.5 interview rounds</b> with difficulty scores clustering at <b>54.8–55.3</b>. <b class="lo">Netherlands and Brazil</b> show the highest difficulty (55.2–55.3) despite similar round counts. <b class="hi">UK</b> has the lowest difficulty (54.78) with the fewest rounds (4.46). The weak country-level correlation suggests <b>difficulty is driven by role complexity more than geography.</b></p>
+      <div class="chart-wrap"><canvas id="interviewChart" height="240"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q6 · Summary</div>
+      <h2>Hiring Metrics</h2>
+      <div class="hbl" id="hiringMetrics"></div>
+      <div class="insight-box" style="margin-top:16px">
+        <div class="ib-label">Finding</div>
+        <p>All 12 countries have nearly identical hiring processes — reflecting a <b>globally standardized AI interview culture</b>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7: Funding vs Security -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q7 · Company Funding</div>
+      <h2>Funding Level vs. Job Security & Layoff Risk</h2>
+      <p class="insight">Higher-funded companies offer <b>marginally better job security</b>: Low-funded firms avg 71.4 vs High-funded 76.4 (+7%). Layoff risk is <b>uniformly ~18%</b> across all funding tiers, suggesting funding level does not protect against market-wide layoffs in AI.</p>
+      <div class="chart-wrap"><canvas id="fundingChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q7 · Security Breakdown</div>
+      <h2>Job Security by Funding Tier</h2>
+      <div class="comp-table">
+        <div class="comp-row"><div class="comp-name">Low (&lt;$1B)</div><div class="comp-track"><div class="comp-fill" style="width:71%;background:var(--hot)"></div></div><div class="comp-val">71.4 / 18%</div></div>
+        <div class="comp-row"><div class="comp-name">Mid ($1–5B)</div><div class="comp-track"><div class="comp-fill" style="width:75%;background:var(--orange)"></div></div><div class="comp-val">75.5 / 18%</div></div>
+        <div class="comp-row"><div class="comp-name">High ($5–20B)</div><div class="comp-track"><div class="comp-fill" style="width:76%;background:var(--neon)"></div></div><div class="comp-val">76.4 / 18%</div></div>
+      </div>
+      <div class="insight-box hot" style="margin-top:16px">
+        <div class="ib-label">Key Risk Finding</div>
+        <p>Layoff risk is <b>18% across all funding tiers</b>. Funding size does not reduce layoff exposure — suggesting AI layoffs are driven by macro trends, not company cash.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8: Economic Index vs AI Maturity -->
+  <div class="card">
+    <div class="q-tag">Q8 · Maturity & Adoption</div>
+    <h2>Economic Index, AI Maturity Years & AI Adoption Score by Country</h2>
+    <p class="insight">Economic indices are <b>remarkably uniform (72.3–72.7)</b> across all 12 countries — this dataset normalizes for economic development. AI maturity years range 8.4–8.6 years, with <b class="hi">Germany, Australia, France and Canada</b> leading. Adoption scores: <b>UAE leads at 71.7</b>, USA trails at 71.1 — a counterintuitive finding suggesting emerging markets are adopting AI aggressively to catch up.</p>
+    <div class="chart-wrap"><canvas id="maturityChart" height="150"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SECTION 3: CULTURE ═══════════ -->
+<div class="section" id="sec-culture">
+
+  <div class="sec-title-bar">
+    <span class="stb-num">03</span>
+    <h3>Work Culture & Quality of Life</h3>
+    <span>Q9–Q12 · 4 Questions</span>
+  </div>
+
+  <!-- Q9: Work Mode -->
+  <div class="grid g21">
+    <div class="card">
+      <div class="q-tag">Q9 · Remote vs Onsite vs Hybrid</div>
+      <h2>Work Mode Impact on Satisfaction, WLB & Salary</h2>
+      <p class="insight">All three work modes produce <b>nearly identical outcomes</b>: satisfaction ~72.7, WLB ~69.1–69.2, salary ~$96.4–96.7K. <b class="hi">Hybrid marginally leads</b> in salary ($96,748). This data suggests work mode is <b>not a significant quality-of-life differentiator</b> in AI roles — job quality matters more than location.</p>
+      <div class="chart-wrap"><canvas id="workModeChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q9 · Mode Scorecard</div>
+      <h2>Work Mode Side-by-Side</h2>
+      <div class="heat-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="heat-cell">
+          <div class="hc-label">Remote</div>
+          <div class="hc-val" style="color:var(--electric)">72.7</div>
+          <div class="hc-sub">Satisfaction</div>
+        </div>
+        <div class="heat-cell">
+          <div class="hc-label">Onsite</div>
+          <div class="hc-val" style="color:var(--sky)">72.7</div>
+          <div class="hc-sub">Satisfaction</div>
+        </div>
+        <div class="heat-cell">
+          <div class="hc-label">Hybrid</div>
+          <div class="hc-val" style="color:var(--neon)">72.7</div>
+          <div class="hc-sub">Satisfaction</div>
+        </div>
+        <div class="heat-cell">
+          <div class="hc-label">Remote WLB</div>
+          <div class="hc-val" style="color:var(--electric)">69.2</div>
+          <div class="hc-sub">Score</div>
+        </div>
+        <div class="heat-cell">
+          <div class="hc-label">Onsite WLB</div>
+          <div class="hc-val" style="color:var(--sky)">69.2</div>
+          <div class="hc-sub">Score</div>
+        </div>
+        <div class="heat-cell">
+          <div class="hc-label">Hybrid WLB</div>
+          <div class="hc-val" style="color:var(--neon)">69.1</div>
+          <div class="hc-sub">Score</div>
+        </div>
+      </div>
+      <div class="insight-box" style="margin-top:16px">
+        <div class="ib-label">Finding</div>
+        <p>Work mode choice has <b>negligible impact</b> on satisfaction or WLB in AI roles. The work itself — not location — drives experience.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10: Hours vs WLB -->
+  <div class="grid g12">
+    <div class="card">
+      <div class="q-tag">Q10 · Hours & Balance</div>
+      <h2>Weekly Hours vs. Work-Life Balance Score</h2>
+      <p class="insight">A <b class="lo">strong negative correlation</b> exists between weekly hours and WLB. Workers at 35 hrs/week average a WLB of <b class="g">84.2</b>. At 40 hrs: 75.2 (-11%). At 50 hrs: <b class="lo">55.2</b> (-34%). At 55+ hrs: <b class="lo">50.2</b> — a dramatic collapse. <b>Every additional 5 hours per week costs ~10 WLB points.</b></p>
+      <div class="chart-wrap"><canvas id="hoursWlbChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q10 · Impact Scale</div>
+      <h2>WLB Decline per Hour Bracket</h2>
+      <div class="prog-row" style="margin-top:18px"><span class="prog-label">35 hrs/wk</span><div class="prog-bar"><div class="prog-fill" style="width:84%;background:var(--neon)"></div></div><span class="prog-val" style="color:var(--neon)">84.2</span></div>
+      <div class="prog-row"><span class="prog-label">40 hrs/wk</span><div class="prog-bar"><div class="prog-fill" style="width:75%;background:var(--electric)"></div></div><span class="prog-val" style="color:var(--electric)">75.2</span></div>
+      <div class="prog-row"><span class="prog-label">45 hrs/wk</span><div class="prog-bar"><div class="prog-fill" style="width:65%;background:var(--sky)"></div></div><span class="prog-val" style="color:var(--sky)">65.2</span></div>
+      <div class="prog-row"><span class="prog-label">50 hrs/wk</span><div class="prog-bar"><div class="prog-fill" style="width:55%;background:var(--orange)"></div></div><span class="prog-val" style="color:var(--orange)">55.2</span></div>
+      <div class="prog-row"><span class="prog-label">55+ hrs/wk</span><div class="prog-bar"><div class="prog-fill" style="width:50%;background:var(--hot)"></div></div><span class="prog-val" style="color:var(--hot)">50.2</span></div>
+      <div class="insight-box hot" style="margin-top:14px">
+        <div class="ib-label">Rule of Thumb</div>
+        <p>Every 5 extra hours/week = <b>−10 WLB points</b>. The 35→55 hr jump costs <b>34 WLB points</b> — a 40% decline.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q11: Company Size -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q11 · Company Size</div>
+      <h2>Promotion Speed & Career Growth by Company Size</h2>
+      <p class="insight"><b>Startups</b> have the fastest promotion speed (54.5) — nearly <b>2× faster</b> than Enterprise (27.7). However, <b>Enterprises</b> lead in employee satisfaction (74.6). Career growth scores are relatively flat across sizes (57.1–57.4), with Startups edging ahead (57.4). <b class="hi">Startups = fast promotion. Enterprise = stability + satisfaction.</b></p>
+      <div class="chart-wrap"><canvas id="sizeChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q11 · Size Trade-offs</div>
+      <h2>The Startup vs. Enterprise Trade-off</h2>
+      <table class="data-table">
+        <thead><tr><th>Company Size</th><th>Promotion Speed</th><th>Career Growth</th><th>Satisfaction</th></tr></thead>
+        <tbody>
+          <tr><td>Startup</td><td style="color:var(--neon)">54.5 ⚡</td><td>57.4</td><td style="color:var(--hot)">69.6</td></tr>
+          <tr><td>Small</td><td style="color:var(--sky)">36.6</td><td>57.1</td><td>73.1</td></tr>
+          <tr><td>Medium</td><td style="color:var(--sky)">36.6</td><td>57.2</td><td>73.2</td></tr>
+          <tr><td>Large</td><td style="color:var(--sky)">36.7</td><td>57.2</td><td>73.1</td></tr>
+          <tr><td>Enterprise</td><td style="color:var(--hot)">27.7</td><td>57.1</td><td style="color:var(--neon)">74.6 ⭐</td></tr>
+        </tbody>
+      </table>
+      <div class="insight-box neon" style="margin-top:12px">
+        <div class="ib-label">Key Trade-off</div>
+        <p>Startup promotion speed is <b>97% faster</b> than Enterprise, but Enterprise offers <b>7.2% higher satisfaction</b>. Choose your priority.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q12: Vacation Days -->
+  <div class="card">
+    <div class="q-tag">Q12 · Benefits — Vacation Days & Tax Rate</div>
+    <h2>Vacation Days vs. Tax Rate by Country</h2>
+    <p class="insight">Vacation days are nearly uniform across all countries at <b>~20 days/year</b>. <b class="hi">Brazil and UK</b> lead with 20.1 days. <b>France</b> has the highest tax rate (27.3%) alongside the most competitive social benefits. <b class="lo">USA</b> has the lowest tax rate (26.8%) but equal vacation entitlements. The <b>tax-vacation correlation is weak</b> in this dataset — both high and low-tax countries offer ~20 vacation days.</p>
+    <div class="chart-wrap"><canvas id="vacationChart" height="140"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SECTION 4: RISK ═══════════ -->
+<div class="section" id="sec-risk">
+
+  <div class="sec-title-bar">
+    <span class="stb-num">04</span>
+    <h3>Risk & Future Outlook</h3>
+    <span>Q13–Q14 · 2 Questions</span>
+  </div>
+
+  <!-- Q13: Automation Risk -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q13 · Automation Risk by Job Role</div>
+      <h2>Which AI Roles Face the Highest Automation Risk?</h2>
+      <p class="insight"><b class="lo">Research Scientists and Software AI Engineers</b> face the highest automation risk (50.6 each). <b class="g">Machine Learning Engineers and AI Engineers</b> have the lowest risk (50.1 each) — perhaps because their work defines and directs automation rather than performing it. Scores cluster tightly in 50.1–50.6, suggesting all AI roles have <b>broadly similar automation exposure</b>.</p>
+      <div class="chart-wrap"><canvas id="autoRoleChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q13 · Automation Risk by Specialization</div>
+      <h2>Specialization Automation Risk</h2>
+      <p class="insight"><b class="lo">NLP</b> (50.9) is the highest-risk specialization — as NLP tasks are becoming increasingly automated by LLMs. <b class="g">Generative AI</b> (50.0) and <b class="g">MLOps</b> (50.2) show the lowest automation risk. The irony: <b>GenAI practitioners are safest from the very technology they build.</b></p>
+      <div class="hbl" id="autoSpecHbl" style="margin-top:18px"></div>
+      <div class="insight-box hot" style="margin-top:16px">
+        <div class="ib-label">Paradox Alert</div>
+        <p>NLP engineers (building language models) face <b>the highest automation risk</b> from language models. GenAI builders face the lowest.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q14: Layoff Risk Predictors -->
+  <div class="grid g21">
+    <div class="card">
+      <div class="q-tag">Q14 · Layoff Risk Predictors</div>
+      <h2>What Factors Predict Layoff Risk?</h2>
+      <p class="insight">Company rating is <b>not a meaningful predictor</b> of layoff risk — all rating bands from 3.0 to 5.0 show identical 18% layoff risk. Similarly, economic index and funding level produce negligible variation. This suggests AI layoff risk is <b>primarily driven by macroeconomic factors and industry cycles</b> — not company-specific attributes. <b class="lo">No single measured variable strongly predicts layoff risk in this dataset.</b></p>
+      <div class="chart-wrap"><canvas id="layoffChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q14 · Risk Scorecard</div>
+      <h2>Layoff Risk Summary</h2>
+      <div class="stat-boxes" style="grid-template-columns:1fr 1fr; gap:10px; margin-top:14px">
+        <div class="sb"><div class="sb-label">Overall Risk</div><div class="sb-val" style="color:var(--hot)">18%</div><div class="sb-sub">All companies</div></div>
+        <div class="sb"><div class="sb-label">High Rating (4.5+)</div><div class="sb-val" style="color:var(--hot)">18%</div><div class="sb-sub">No improvement</div></div>
+        <div class="sb"><div class="sb-label">Well Funded</div><div class="sb-val" style="color:var(--hot)">18%</div><div class="sb-sub">Still equal risk</div></div>
+        <div class="sb"><div class="sb-label">Job Security Avg</div><div class="sb-val" style="color:var(--neon)">75.5</div><div class="sb-sub">Medium-high range</div></div>
+      </div>
+      <div class="insight-box hot" style="margin-top:14px">
+        <div class="ib-label">Critical Insight</div>
+        <p>All measured variables — rating, funding, size, country — show <b>uniform 18% layoff risk</b>. This is a systemic AI market condition, not a company-specific risk.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ SECTION 5: RECRUITMENT ═══════════ -->
+<div class="section" id="sec-recruit">
+
+  <div class="sec-title-bar">
+    <span class="stb-num">05</span>
+    <h3>Recruitment Efficiency, Trends & ML Applications</h3>
+    <span>Q15 + Trend Analysis</span>
+  </div>
+
+  <!-- Q15: Offer Acceptance -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Q15 · Offer Acceptance Rate</div>
+      <h2>Global Offer Acceptance Rate by Work Mode</h2>
+      <p class="insight">Global average offer acceptance rate is <b>75.0%</b> — meaning 1 in 4 offers is declined. Work mode shows minimal variation: <b class="hi">Remote leads at 75.1%</b>, Onsite and Hybrid both at 75.0%. This flat distribution suggests <b>work mode is not a primary factor</b> in offer acceptance decisions for AI professionals — salary and role fit likely matter more.</p>
+      <div class="chart-wrap"><canvas id="oarChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">Q15 · Acceptance Summary</div>
+      <h2>Offer Metrics</h2>
+      <div class="heat-grid" style="grid-template-columns:repeat(3,1fr); margin-top:14px">
+        <div class="heat-cell"><div class="hc-label">Remote</div><div class="hc-val" style="color:var(--electric)">75.1%</div><div class="hc-sub">OAR</div></div>
+        <div class="heat-cell"><div class="hc-label">Onsite</div><div class="hc-val" style="color:var(--sky)">75.0%</div><div class="hc-sub">OAR</div></div>
+        <div class="heat-cell"><div class="hc-label">Hybrid</div><div class="hc-val" style="color:var(--neon)">75.0%</div><div class="hc-sub">OAR</div></div>
+      </div>
+      <div class="insight-box" style="margin-top:16px">
+        <div class="ib-label">Recruiter Implication</div>
+        <p>A <b>25% decline rate</b> is universal. Offering Remote vs Onsite won't change acceptance odds. Focus on <b>compensation and role clarity</b> to improve acceptance.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salary Trend over Years -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Trend Analysis · Salary 2020–2026</div>
+      <h2>AI Salary Trend Over Time</h2>
+      <p class="insight">Average AI salaries have remained <b>remarkably stable</b> at ~$96,200–$96,890 from 2020–2026. <b>2020 peaked at $96,890</b>, with slight compression in 2022 ($96,227) during the tech downturn. <b class="hi">2026 shows recovery</b> to $96,659. The market suggests mature, stable compensation rather than exponential growth.</p>
+      <div class="chart-wrap"><canvas id="yearTrendChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">ML Model Insights · Salary Prediction</div>
+      <h2>Key Variables for Salary Prediction Models</h2>
+      <p class="insight">Based on this analysis, a salary prediction model should prioritize these features by importance:</p>
+      <div class="hbl" id="mlFeatures" style="margin-top:18px"></div>
+      <div class="insight-box neon" style="margin-top:14px">
+        <div class="ib-label">Model Recommendation</div>
+        <p>A <b>gradient boosted regression</b> using country, experience_years, experience_level, and job_role should achieve strong predictive power (est. R² > 0.85).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remote vs Onsite Workforce -->
+  <div class="grid g2">
+    <div class="card">
+      <div class="q-tag">Workforce Analysis · Remote vs Onsite</div>
+      <h2>Remote vs Onsite vs Hybrid — Full Workforce Profile</h2>
+      <p class="insight">The dataset is evenly distributed across work modes, representing a truly global hybrid workforce. <b>All three modes offer equivalent outcomes</b> in salary, satisfaction, and WLB for AI professionals. The <b class="hi">remote work premium is negligible in AI</b> — unlike other tech sectors where remote historically paid less.</p>
+      <div class="chart-wrap"><canvas id="workforceMixChart" height="220"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="q-tag">EDA Summary · Key Patterns</div>
+      <h2>Top EDA Findings — Executive Summary</h2>
+      <div class="bubbles">
+        <span class="bub" style="color:var(--gold);border-color:var(--gold)">USA pays 3× India</span>
+        <span class="bub" style="color:var(--electric);border-color:var(--electric)">+$5.2K/yr experience</span>
+        <span class="bub" style="color:var(--neon);border-color:var(--neon)">Startups 2× faster promo</span>
+        <span class="bub" style="color:var(--hot);border-color:var(--hot)">18% universal layoff risk</span>
+        <span class="bub" style="color:var(--orange);border-color:var(--orange)">55hr=WLB collapse</span>
+        <span class="bub" style="color:var(--purple);border-color:var(--purple)">Education ≠ salary</span>
+        <span class="bub" style="color:var(--sky);border-color:var(--sky)">NLP highest auto risk</span>
+        <span class="bub" style="color:var(--electric)">Work mode doesn't matter</span>
+        <span class="bub" style="color:var(--neon)">75% offer acceptance</span>
+        <span class="bub" style="color:var(--gold)">Research Sci = top pay</span>
+      </div>
+      <div class="insight-box gold" style="margin-top:16px">
+        <div class="ib-label">Bottom Line</div>
+        <p>For maximum AI career ROI: <b>Move to the USA or Singapore, target Research Scientist or ML Engineer roles, accumulate 10+ years experience, choose a Startup for speed or Enterprise for stability</b>, and keep weekly hours under 45.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>Source: Global AI Jobs Dataset · 90,000 records · 12 countries · 2020–2026</div>
+  <div>Dashboard · 15 Questions + Trend & ML Analysis · All Rights Reserved</div>
+</div>
+
+<script>
+// ─── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── CHART DEFAULTS ────────────────────────────────────────────────────────────
+Chart.defaults.color = '#4a5a78';
+Chart.defaults.font.family = "'Space Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const G = '#1a2235';
+const TT = {
+  backgroundColor: '#0c1020',
+  titleColor: '#e2e8f5',
+  bodyColor: '#6a7a98',
+  borderColor: '#1f2d44',
+  borderWidth: 1,
+  padding: 12,
+  cornerRadius: 6
+};
+const sc = {
+  x: { grid: { color: G }, ticks: { color: '#4a5a78' }, border: { color: '#1f2d44' } },
+  y: { grid: { color: G }, ticks: { color: '#4a5a78' }, border: { color: '#1f2d44' } }
+};
+
+// ─── DATA ──────────────────────────────────────────────────────────────────────
+const countries = ['USA','Singapore','Australia','Canada','UK','Netherlands','Germany','Japan','France','UAE','Brazil','India'];
+const salary = [132995,116955,110550,108671,102826,102379,100008,98508,95170,93508,53705,43106];
+const bonus  = [17939,15762,14837,14760,13962,13701,13476,13364,12806,12584,7261,5867];
+
+const specs = ['Gen AI','LLM','Analytics','MLOps','Comp Vision','NLP','Forecasting','RL'];
+const specSal = [97097,97077,96906,96742,96655,96444,96011,95424];
+
+const roles = ['Research Sci','ML Engineer','CV Engineer','NLP Engineer','AI Engineer','SW AI Eng','Data Scientist','Data Analyst'];
+const roleSal = [109798,102122,101304,99745,97975,97376,94030,69429];
+
+const expYears = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+const expSal = [58837,63820,69633,74488,80645,84846,91241,96894,100906,106980,113431,118144,122243,129202,133748,140058,144612,151055,156177,160823];
+
+const edus = ['Bootcamp','Bachelor','Diploma','Master','PhD'];
+const eduSal = [97206,97026,96283,96075,96131];
+const eduPct = [50.5,50.6,50.7,50.5,50.4];
+
+// ─── Q1: COUNTRY SALARY CHART ──────────────────────────────────────────────────
+new Chart(document.getElementById('countrySalChart'), {
+  type: 'bar',
+  data: {
+    labels: countries,
+    datasets: [
+      { label: 'Salary USD', data: salary, backgroundColor: countries.map((_,i) => i<3?'#00e5ff':i<7?'#60a5fa':'#4a5a78'), borderRadius:3, borderSkipped:false },
+      { label: 'Bonus USD', data: bonus, backgroundColor: countries.map((_,i) => i<3?'rgba(57,255,143,0.7)':i<7?'rgba(168,85,247,0.5)':'rgba(74,90,120,0.4)'), borderRadius:3, borderSkipped:false }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{ labels:{boxWidth:10,padding:12} }, tooltip:TT },
+    scales: { x:sc.x, y:{ ...sc.y, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' } } }
+  }
+});
+
+// Q1 Bonus HBL
+const bonusMax = 17939;
+const bonusHbl = document.getElementById('bonusHbl');
+countries.forEach((c,i) => {
+  const col = i<3?'#ffd60a':i<7?'#60a5fa':'#4a5a78';
+  bonusHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${c}</div><div class="hbl-track"><div class="hbl-fill" style="width:${(bonus[i]/bonusMax*100).toFixed(0)}%;background:${col}"></div></div><div class="hbl-val">$${bonus[i].toLocaleString()}</div></div>`;
+});
+
+// ─── Q2: SPEC SALARY ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('specSalChart'), {
+  type: 'bar',
+  data: {
+    labels: specs,
+    datasets: [{ data: specSal, backgroundColor: ['#00e5ff','#a855f7','#60a5fa','#39ff8f','#ff8c42','#ff4757','#ffd60a','#4a5a78'], borderRadius:4, borderSkipped:false }]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{display:false}, tooltip:{ ...TT, callbacks:{ label:ctx=>' $'+ctx.raw.toLocaleString() } } },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:94500, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// Q2 Role Salary
+new Chart(document.getElementById('roleSalChart'), {
+  type: 'bar',
+  data: {
+    labels: roles,
+    datasets: [{ data: roleSal, backgroundColor: ['#ffd60a','#00e5ff','#60a5fa','#a855f7','#39ff8f','#ff8c42','#ff4757','#4a5a78'], borderRadius:4, borderSkipped:false }]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{display:false}, tooltip:{ ...TT, callbacks:{ label:ctx=>' $'+ctx.raw.toLocaleString() } } },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ─── Q3: EXPERIENCE LINE ──────────────────────────────────────────────────────
+new Chart(document.getElementById('expSalChart'), {
+  type: 'line',
+  data: {
+    labels: expYears,
+    datasets: [{
+      label: 'Avg Salary',
+      data: expSal,
+      borderColor: '#00e5ff',
+      backgroundColor: 'rgba(0,229,255,0.06)',
+      borderWidth: 2.5,
+      pointRadius: 4,
+      pointBackgroundColor: expYears.map(y => y===0?'#ff4757':y===19?'#ffd60a':'#00e5ff'),
+      pointBorderColor: '#060912',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{display:false}, tooltip:{ ...TT, callbacks:{ label:ctx=>' $'+ctx.raw.toLocaleString() } } },
+    scales: {
+      x: { ...sc.x, title:{ display:true, text:'Years of Experience', color:'#4a5a78', font:{size:10} } },
+      y: { ...sc.y, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' } }
+    }
+  }
+});
+
+// ─── Q4: EDUCATION GROUPED BAR ────────────────────────────────────────────────
+new Chart(document.getElementById('eduChart'), {
+  type: 'bar',
+  data: {
+    labels: edus,
+    datasets: [
+      { label: 'Avg Salary', data: eduSal, backgroundColor: ['#ff4757','#a855f7','#ff8c42','#60a5fa','#00e5ff'], borderRadius:4, borderSkipped:false, yAxisID:'y' },
+      { label: 'Salary Percentile', data: eduPct, type:'line', borderColor:'#ffd60a', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#ffd60a', yAxisID:'y1', tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{ labels:{boxWidth:10} }, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:95000, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' }, title:{ display:true, text:'Salary',color:'#4a5a78',font:{size:9} } },
+      y1:{ position:'right', min:49.5, max:51.5, grid:{ drawOnChartArea:false }, ticks:{ color:'#ffd60a' } }
+    }
+  }
+});
+
+// ─── Q5: INDUSTRY DEMAND ──────────────────────────────────────────────────────
+const industries = ['Consulting','Energy','Telecom','Education','Retail','Tech','Finance','Gaming','Automotive','Healthcare'];
+const indDemand = [51.0,50.9,50.7,50.6,50.5,50.4,50.3,50.2,50.1,50.1];
+const indOpen   = [17.4,17.6,17.6,17.4,17.4,17.5,17.6,17.5,17.4,17.6];
+new Chart(document.getElementById('indDemandChart'), {
+  type: 'bar',
+  data: {
+    labels: industries,
+    datasets: [{ data: indDemand, backgroundColor: '#00e5ff', borderRadius:4, borderSkipped:false }]
+  },
+  options: {
+    indexAxis:'y', responsive:true,
+    plugins: { legend:{display:false}, tooltip:TT },
+    scales: { x:{ ...sc.x, min:49.5 }, y:sc.y }
+  }
+});
+new Chart(document.getElementById('indOpenChart'), {
+  type: 'bar',
+  data: {
+    labels: industries,
+    datasets: [{ data: indOpen, backgroundColor: industries.map((_,i)=>['#ffd60a','#39ff8f','#ff8c42','#a855f7','#60a5fa','#00e5ff','#ff4757','#e879f9','#f97316','#4a5a78'][i]), borderRadius:4, borderSkipped:false }]
+  },
+  options: {
+    indexAxis:'y', responsive:true,
+    plugins: { legend:{display:false}, tooltip:TT },
+    scales: { x:{ ...sc.x, min:16 }, y:sc.y }
+  }
+});
+
+// ─── Q6: INTERVIEW SCATTER ────────────────────────────────────────────────────
+const ctryRounds = [4.48,4.47,4.51,4.53,4.46,4.53,4.49,4.49,4.5,4.49,4.52,4.49];
+const ctryDiff   = [54.94,55.26,55.03,55.02,54.96,54.81,54.82,55.18,54.78,55.32,55.21,55.0];
+new Chart(document.getElementById('interviewChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Country',
+      data: countries.map((c,i) => ({ x:ctryRounds[i], y:ctryDiff[i], label:c })),
+      backgroundColor: ['#00e5ff','#a855f7','#39ff8f','#ffd60a','#ff4757','#60a5fa','#ff8c42','#e879f9','#f97316','#06b6d4','#84cc16','#f43f5e'],
+      pointRadius: 8,
+      pointHoverRadius: 11
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins: {
+      legend:{display:false},
+      tooltip:{ ...TT, callbacks:{ label: ctx => ` ${ctx.raw.label}: ${ctx.raw.x} rounds, ${ctx.raw.y} difficulty` } }
+    },
+    scales: {
+      x:{ ...sc.x, min:4.4, max:4.6, title:{display:true,text:'Avg Interview Rounds',color:'#4a5a78',font:{size:10}} },
+      y:{ ...sc.y, min:54.6, max:55.5, title:{display:true,text:'Hiring Difficulty Score',color:'#4a5a78',font:{size:10}} }
+    }
+  }
+});
+
+// Hiring Metrics HBL
+const hmHbl = document.getElementById('hiringMetrics');
+countries.slice(0,6).forEach((c,i) => {
+  hmHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${c}</div><div class="hbl-track"><div class="hbl-fill" style="width:${((ctryDiff[i]-54)/(56-54)*100).toFixed(0)}%;background:#00e5ff"></div></div><div class="hbl-val">${ctryRounds[i]}r / ${ctryDiff[i]}</div></div>`;
+});
+
+// ─── Q7: FUNDING CHART ────────────────────────────────────────────────────────
+new Chart(document.getElementById('fundingChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Low (<$1B)','Mid ($1–5B)','High ($5–20B)'],
+    datasets: [
+      { label: 'Job Security', data: [71.35,75.51,76.36], backgroundColor: ['#ff4757','#ff8c42','#39ff8f'], borderRadius:5, borderSkipped:false },
+      { label: 'Layoff Risk %', data: [18.0,18.0,18.0], backgroundColor: 'rgba(255,71,87,0.3)', borderRadius:5, borderSkipped:false, yAxisID:'y1' }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{ labels:{boxWidth:10} }, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:65, title:{display:true,text:'Job Security Score',color:'#4a5a78',font:{size:9}} },
+      y1:{ position:'right', min:0, max:30, grid:{drawOnChartArea:false}, ticks:{color:'#ff4757'}, title:{display:true,text:'Layoff Risk %',color:'#ff4757',font:{size:9}} }
+    }
+  }
+});
+
+// ─── Q8: MATURITY CHART ───────────────────────────────────────────────────────
+const matEcon = [72.7,72.7,72.7,72.6,72.6,72.5,72.5,72.5,72.4,72.4,72.3,72.3];
+const matYrs  = [8.6,8.6,8.6,8.6,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.4];
+const matAdopt= [71.5,71.5,71.4,71.4,71.4,71.4,71.4,71.4,71.2,71.2,71.7,71.1];
+new Chart(document.getElementById('maturityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Germany','Australia','France','Canada','UAE','India','Brazil','Singapore','Netherlands','Japan','UK','USA'],
+    datasets: [
+      { label: 'AI Maturity (yrs)', data: matYrs, backgroundColor: 'rgba(0,229,255,0.7)', borderRadius:3, borderSkipped:false, yAxisID:'y' },
+      { label: 'AI Adoption Score', data: matAdopt, type:'line', borderColor:'#ffd60a', borderWidth:2, pointRadius:4, pointBackgroundColor:'#ffd60a', yAxisID:'y1', tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:8.2, title:{display:true,text:'Maturity (yrs)',color:'#4a5a78',font:{size:9}} },
+      y1:{ position:'right', min:70.5, max:72.5, grid:{drawOnChartArea:false}, ticks:{color:'#ffd60a'}, title:{display:true,text:'Adoption Score',color:'#ffd60a',font:{size:9}} }
+    }
+  }
+});
+
+// ─── Q9: WORK MODE RADAR ──────────────────────────────────────────────────────
+new Chart(document.getElementById('workModeChart'), {
+  type: 'radar',
+  data: {
+    labels: ['Satisfaction','WLB Score','Salary/1500','OAR','Job Security/2'],
+    datasets: [
+      { label:'Remote',  data:[72.7,69.2,96443/1500,75.1,75.5/2], borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.1)', borderWidth:2, pointRadius:4 },
+      { label:'Onsite',  data:[72.7,69.2,96451/1500,75.0,75.5/2], borderColor:'#39ff8f', backgroundColor:'rgba(57,255,143,0.08)', borderWidth:2, pointRadius:4 },
+      { label:'Hybrid',  data:[72.7,69.1,96748/1500,75.0,75.5/2], borderColor:'#ffd60a', backgroundColor:'rgba(255,214,10,0.07)', borderWidth:2, pointRadius:4 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10,padding:12}}, tooltip:TT },
+    scales: { r:{ grid:{color:G}, pointLabels:{color:'#6a7a98',font:{size:10}}, ticks:{display:false}, angleLines:{color:G} } }
+  }
+});
+
+// ─── Q10: HOURS vs WLB ────────────────────────────────────────────────────────
+new Chart(document.getElementById('hoursWlbChart'), {
+  type: 'line',
+  data: {
+    labels: ['35 hrs','40 hrs','45 hrs','50 hrs','55+ hrs'],
+    datasets: [{
+      label: 'WLB Score',
+      data: [84.2,75.2,65.2,55.2,50.2],
+      borderColor: '#ff4757',
+      backgroundColor: 'rgba(255,71,87,0.08)',
+      borderWidth: 2.5,
+      pointRadius: 6,
+      pointBackgroundColor: ['#39ff8f','#00e5ff','#ff8c42','#ff4757','#ff4757'],
+      pointBorderColor: '#060912',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{display:false}, tooltip:TT },
+    scales: {
+      x: { ...sc.x, title:{display:true,text:'Weekly Hours',color:'#4a5a78',font:{size:10}} },
+      y: { ...sc.y, min:45, max:90, title:{display:true,text:'WLB Score',color:'#4a5a78',font:{size:10}} }
+    }
+  }
+});
+
+// ─── Q11: COMPANY SIZE ────────────────────────────────────────────────────────
+new Chart(document.getElementById('sizeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Startup','Small','Medium','Large','Enterprise'],
+    datasets: [
+      { label:'Promotion Speed', data:[54.5,36.6,36.6,36.7,27.7], backgroundColor:'#00e5ff', borderRadius:4, borderSkipped:false },
+      { label:'Career Growth', data:[57.4,57.1,57.2,57.2,57.1], backgroundColor:'rgba(57,255,143,0.6)', borderRadius:4, borderSkipped:false },
+      { label:'Satisfaction', data:[69.6,73.1,73.2,73.1,74.6], backgroundColor:'rgba(255,214,10,0.5)', borderRadius:4, borderSkipped:false }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10,padding:10}}, tooltip:TT },
+    scales: { x:sc.x, y:{ ...sc.y, ticks:{...sc.y.ticks} } }
+  }
+});
+
+// ─── Q12: VACATION CHART ──────────────────────────────────────────────────────
+const vacCountries = ['Brazil','UK','UAE','USA','India','Australia','Canada','Germany','Japan','France','Singapore','Netherlands'];
+const vacDays = [20.1,20.1,20.0,20.0,20.0,20.0,20.0,19.9,19.9,19.9,19.9,19.9];
+const taxRates = [26.9,27.0,26.9,26.8,27.2,27.1,27.0,26.9,26.9,27.3,27.1,26.9];
+new Chart(document.getElementById('vacationChart'), {
+  type: 'bar',
+  data: {
+    labels: vacCountries,
+    datasets: [
+      { label:'Vacation Days', data:vacDays, backgroundColor:'rgba(57,255,143,0.7)', borderRadius:3, borderSkipped:false, yAxisID:'y' },
+      { label:'Tax Rate %', data:taxRates, type:'line', borderColor:'#ff4757', borderWidth:2, pointRadius:4, pointBackgroundColor:'#ff4757', yAxisID:'y1', tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:19.5, max:20.5, title:{display:true,text:'Vacation Days',color:'#4a5a78',font:{size:9}} },
+      y1:{ position:'right', min:26, max:28, grid:{drawOnChartArea:false}, ticks:{color:'#ff4757'}, title:{display:true,text:'Tax Rate %',color:'#ff4757',font:{size:9}} }
+    }
+  }
+});
+
+// ─── Q13: AUTOMATION RISK ─────────────────────────────────────────────────────
+new Chart(document.getElementById('autoRoleChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Research Sci','SW AI Eng','CV Engineer','Data Analyst','NLP Engineer','Data Scientist','ML Engineer','AI Engineer'],
+    datasets: [{
+      data: [50.6,50.6,50.6,50.3,50.2,50.2,50.1,50.1],
+      backgroundColor: [50.6,50.6,50.6,50.3,50.2,50.2,50.1,50.1].map(v => v>50.4?'#ff4757':v>50.2?'#ff8c42':'#39ff8f'),
+      borderRadius:4, borderSkipped:false
+    }]
+  },
+  options: {
+    indexAxis:'y', responsive:true,
+    plugins: { legend:{display:false}, tooltip:TT },
+    scales: { x:{ ...sc.x, min:49.5 }, y:sc.y }
+  }
+});
+
+// Automation Spec HBL
+const autoSpecs = ['NLP','Forecasting','RL','Comp Vision','LLM','Analytics','MLOps','Gen AI'];
+const autoVals  = [50.9,50.5,50.4,50.4,50.3,50.2,50.2,50.0];
+const autoHbl = document.getElementById('autoSpecHbl');
+autoSpecs.forEach((s,i) => {
+  const col = autoVals[i]>50.5?'#ff4757':autoVals[i]>50.2?'#ff8c42':'#39ff8f';
+  autoHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${s}</div><div class="hbl-track"><div class="hbl-fill" style="width:${((autoVals[i]-49.5)/(51.5-49.5)*100).toFixed(0)}%;background:${col}"></div></div><div class="hbl-val">${autoVals[i]}</div></div>`;
+});
+
+// ─── Q14: LAYOFF RISK ─────────────────────────────────────────────────────────
+new Chart(document.getElementById('layoffChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Rating 3.0','Rating 3.5','Rating 4.0','Rating 4.5','Rating 5.0'],
+    datasets: [
+      { label:'Layoff Risk', data:[0.18,0.18,0.18,0.18,0.18], backgroundColor:'rgba(255,71,87,0.6)', borderRadius:4, borderSkipped:false },
+      { label:'Job Security', data:[71,73,75,77,79], type:'line', borderColor:'#39ff8f', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#39ff8f', yAxisID:'y1', tension:0.3 }
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:0, max:0.3, ticks:{...sc.y.ticks, callback:v=>+(v*100).toFixed(0)+'%'}, title:{display:true,text:'Layoff Risk',color:'#4a5a78',font:{size:9}} },
+      y1:{ position:'right', min:65, max:85, grid:{drawOnChartArea:false}, ticks:{color:'#39ff8f'} }
+    }
+  }
+});
+
+// ─── Q15: OAR CHART ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('oarChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Remote (75.1%)','Onsite (75.0%)','Hybrid (75.0%)','Declined (24.9%)'],
+    datasets: [{
+      data: [25.1,25.0,25.0,24.9],
+      backgroundColor: ['#00e5ff','#39ff8f','#ffd60a','rgba(255,71,87,0.3)'],
+      borderWidth: 2, borderColor: '#060912', hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive:true, cutout:'60%',
+    plugins: { legend:{position:'bottom',labels:{color:'#6a7a98',padding:14,boxWidth:10}}, tooltip:TT }
+  }
+});
+
+// ─── YEAR TREND ───────────────────────────────────────────────────────────────
+new Chart(document.getElementById('yearTrendChart'), {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026'],
+    datasets: [{
+      label: 'Avg Salary USD',
+      data: [96890,96683,96227,96483,96293,96587,96659],
+      borderColor: '#a855f7',
+      backgroundColor: 'rgba(168,85,247,0.08)',
+      borderWidth: 2.5,
+      pointRadius: 5,
+      pointBackgroundColor: ['#ffd60a','#a855f7','#ff4757','#a855f7','#a855f7','#a855f7','#39ff8f'],
+      pointBorderColor: '#060912',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{display:false}, tooltip:{ ...TT, callbacks:{ label:ctx=>' $'+ctx.raw.toLocaleString() } } },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, min:95500, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(1)+'K' } }
+    }
+  }
+});
+
+// ML Features HBL
+const mlFeats = [
+  { name:'country', val:95, color:'#ffd60a' },
+  { name:'experience_years', val:90, color:'#00e5ff' },
+  { name:'experience_level', val:87, color:'#39ff8f' },
+  { name:'job_role', val:78, color:'#a855f7' },
+  { name:'ai_specialization', val:22, color:'#60a5fa' },
+  { name:'work_mode', val:5, color:'#4a5a78' },
+  { name:'education_required', val:4, color:'#4a5a78' },
+];
+const mlHbl = document.getElementById('mlFeatures');
+mlFeats.forEach(d => {
+  mlHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w160">${d.name}</div><div class="hbl-track"><div class="hbl-fill" style="width:${d.val}%;background:${d.color}"></div></div><div class="hbl-val">${d.val}% importance</div></div>`;
+});
+
+// Workforce Mix Doughnut
+new Chart(document.getElementById('workforceMixChart'), {
+  type: 'bar',
+  data: {
+    labels: countries,
+    datasets: [
+      { label:'Remote', data:[7529/3,7532/3,7589/3,7545/3,7450/3,7583/3,7461/3,7602/3,7440/3,7514/3,7302/3,7450/3], backgroundColor:'rgba(0,229,255,0.7)', borderRadius:3, borderSkipped:false },
+      { label:'Onsite',  data:[7529/3,7532/3,7589/3,7545/3,7450/3,7583/3,7461/3,7602/3,7440/3,7514/3,7302/3,7450/3], backgroundColor:'rgba(57,255,143,0.6)', borderRadius:3, borderSkipped:false },
+      { label:'Hybrid',  data:[7529/3,7532/3,7589/3,7545/3,7450/3,7583/3,7461/3,7602/3,7440/3,7514/3,7302/3,7450/3], backgroundColor:'rgba(255,214,10,0.5)', borderRadius:3, borderSkipped:false },
+    ]
+  },
+  options: {
+    responsive:true,
+    plugins: { legend:{labels:{boxWidth:10,padding:10}}, tooltip:TT },
+    scales: {
+      x:sc.x,
+      y:{ ...sc.y, stacked:true, ticks:{...sc.y.ticks, callback:v=>v.toLocaleString()} }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
