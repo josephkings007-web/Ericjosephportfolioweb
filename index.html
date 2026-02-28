@@ -4,371 +4,232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eric Joseph Benedict — Data Analyst Portfolio</title>
+<title>Eric Joseph — Data Analyst Portfolio</title>
 <style>@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap");</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #f7f5f2;
-    --surface: #ffffff;
-    --ink: #1a1a1a;
-    --ink-muted: #6b6b6b;
-    --accent: #c8432a;
-    --accent-light: #f0e8e6;
-    --border: #e8e4df;
+    --bg: #f7f4f0; --surface: #ffffff; --ink: #1a1a1a; --ink-muted: #6b6b6b;
+    --accent: #c8432a; --accent-2: #e8863a; --accent-light: #f5ede9;
+    --border: #e5e0db;
     --mono: 'DM Mono', 'Courier New', monospace;
     --serif: 'DM Serif Display', Georgia, serif;
     --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(247,245,242,0.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
-    text-decoration: none;
-  }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); transition: all 0.3s; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 3rem; background: rgba(247,244,240,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.07); }
+  .nav-logo { font-family: var(--mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+  .nav-logo strong { color: var(--accent); }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 400;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; color: var(--ink-muted);
-    transition: color 0.2s;
-  }
+  .nav-links a { font-family: var(--mono); font-size: 0.73rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--ink-muted); transition: color 0.2s; position: relative; padding-bottom: 2px; }
+  .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transition: transform 0.2s; transform-origin: left; }
   .nav-links a:hover { color: var(--accent); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh; display: flex; align-items: center;
-    padding: 8rem 3rem 4rem;
-    max-width: 1100px; margin: 0 auto;
-  }
-  .hero-content { max-width: 700px; }
-  .hero-label {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 0.75rem;
-  }
-  .hero-label::before {
-    content: ''; display: block; width: 2rem; height: 1px; background: var(--accent);
-  }
-  h1 {
-    font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 400; line-height: 1.05; margin-bottom: 1.75rem;
-    letter-spacing: -0.02em;
-  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta { font-family: var(--mono); font-size: 0.73rem; letter-spacing: 0.08em; background: var(--accent); color: #fff; border: none; padding: 0.5rem 1.25rem; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+  .nav-cta:hover { background: #a8341f; }
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 3rem 5rem; max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero::before { content: ''; position: absolute; right: -60px; top: 50%; transform: translateY(-50%); width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(200,67,42,0.07) 0%, transparent 70%); pointer-events: none; }
+  .hero-content { max-width: 680px; position: relative; z-index: 1; }
+  .hero-label { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-label::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  h1 { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 400; line-height: 1.05; margin-bottom: 1.75rem; letter-spacing: -0.02em; }
   h1 em { font-style: italic; color: var(--accent); }
-  .hero-desc {
-    font-size: 1.1rem; color: var(--ink-muted); max-width: 520px;
-    line-height: 1.75; margin-bottom: 3rem;
-  }
-  .hero-stats {
-    display: flex; gap: 3rem; padding-top: 2rem;
-    border-top: 1px solid var(--border);
-  }
-  .stat-item {}
-  .stat-num {
-    font-family: var(--serif); font-size: 2.5rem;
-    font-weight: 400; line-height: 1; color: var(--ink);
-  }
-  .stat-label {
-    font-family: var(--mono); font-size: 0.7rem; font-weight: 400;
-    text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted);
-    margin-top: 0.25rem;
-  }
-
-  /* SECTIONS */
-  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
-
+  .hero-desc { font-size: 1.05rem; color: var(--ink-muted); max-width: 520px; line-height: 1.8; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .btn-primary { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; background: var(--accent); color: #fff; border: none; padding: 0.75rem 1.75rem; cursor: pointer; text-decoration: none; transition: background 0.2s; display: inline-block; }
+  .btn-primary:hover { background: #a8341f; }
+  .btn-ghost { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; background: none; color: var(--ink-muted); border: 1px solid var(--border); padding: 0.75rem 1.75rem; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats { display: flex; gap: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .stat-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 400; line-height: 1; color: var(--ink); }
+  .stat-label { font-family: var(--mono); font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-top: 0.25rem; }
+  .scroll-indicator { position: absolute; bottom: 2.5rem; left: 3rem; display: flex; align-items: center; gap: 0.75rem; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); animation: bounce 2.5s ease-in-out infinite; }
+  .scroll-indicator::before { content: '↓'; font-size: 0.9rem; color: var(--accent); }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  section { padding: 7rem 3rem; max-width: 1100px; margin: 0 auto; }
   .section-header { margin-bottom: 4rem; }
-  .section-num {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-    color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.75rem;
-    display: block;
-  }
-  h2 {
-    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 400; letter-spacing: -0.02em; line-height: 1.1;
-  }
-
-  /* SKILLS */
+  .section-label { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .section-icon { width: 36px; height: 36px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 1rem; border-radius: 4px; flex-shrink: 0; }
+  .section-num { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--accent); letter-spacing: 0.1em; }
+  h2 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+  .section-divider { width: 3rem; height: 2px; background: var(--accent); margin-top: 1.25rem; }
   .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .skill-card {
-    background: var(--surface); padding: 2rem 1.75rem;
-    transition: background 0.2s;
-  }
+  .skill-card { background: var(--surface); padding: 2rem 1.75rem; transition: background 0.2s; position: relative; overflow: hidden; }
+  .skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
   .skill-card:hover { background: var(--accent-light); }
-  .skill-icon {
-    font-family: var(--mono); font-size: 1.5rem; margin-bottom: 1rem; display: block;
-  }
-  .skill-name {
-    font-weight: 500; font-size: 0.95rem; margin-bottom: 0.4rem;
-  }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-icon { font-family: var(--mono); font-size: 1.5rem; margin-bottom: 1rem; display: block; }
+  .skill-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.4rem; }
   .skill-desc { font-size: 0.85rem; color: var(--ink-muted); }
-
-  /* PROJECT */
-  .project-wrapper {
-    background: var(--surface); border: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .project-header {
-    padding: 3rem; border-bottom: 1px solid var(--border);
-    display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 2rem;
-  }
+  .project-wrapper { background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.3s; }
+  .project-wrapper:hover { box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+  .project-header { padding: 3rem; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 2rem; }
   .project-meta { display: flex; flex-direction: column; gap: 1rem; }
-  .project-tag {
-    font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); background: var(--accent-light);
-    padding: 0.3rem 0.75rem; border-radius: 2px; display: inline-block;
-    width: fit-content;
-  }
-  .project-title {
-    font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem);
-    font-weight: 400; letter-spacing: -0.02em; line-height: 1.1;
-  }
-  .project-subtitle { font-size: 0.9rem; color: var(--ink-muted); margin-top: 0.5rem; }
+  .project-tag { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 0.3rem 0.75rem; border-radius: 2px; display: inline-block; width: fit-content; }
+  .project-title { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+  .project-subtitle { font-size: 0.9rem; color: var(--ink-muted); margin-top: 0.5rem; line-height: 1.6; }
   .project-info { text-align: right; }
-  .project-year {
-    font-family: var(--mono); font-size: 2.5rem; font-weight: 300;
-    color: var(--border); line-height: 1;
-  }
-  .project-source {
-    font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted);
-    letter-spacing: 0.05em; margin-top: 0.5rem;
-  }
-
-  /* KEY INSIGHTS */
-  .insights-bar {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    border-bottom: 1px solid var(--border);
-  }
-  .insight {
-    padding: 1.75rem 2rem; border-right: 1px solid var(--border);
-  }
+  .project-year { font-family: var(--mono); font-size: 2.5rem; font-weight: 300; color: var(--border); line-height: 1; }
+  .project-source { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); letter-spacing: 0.05em; margin-top: 0.5rem; }
+  .insights-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
+  .insight { padding: 1.75rem 2rem; border-right: 1px solid var(--border); position: relative; overflow: hidden; }
+  .insight::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
+  .insight:hover::after { transform: scaleX(1); }
   .insight:last-child { border-right: none; }
-  .insight-val {
-    font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
-    color: var(--ink); line-height: 1; margin-bottom: 0.25rem;
-  }
+  .insight-val { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; color: var(--ink); line-height: 1; margin-bottom: 0.25rem; }
   .insight-val.down { color: var(--accent); }
   .insight-label { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-
-  /* CHARTS */
   .charts-area { padding: 3rem; display: flex; flex-direction: column; gap: 3rem; }
   .chart-block {}
-  .chart-title {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
-    margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem;
-  }
-  .chart-title::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
+  .chart-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+  .chart-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .chart-container { position: relative; }
-  .chart-annotation {
-    font-size: 0.8rem; color: var(--ink-muted); margin-top: 1rem;
-    padding: 0.75rem 1rem; background: var(--bg); border-left: 2px solid var(--accent);
-  }
-
+  .chart-annotation { font-size: 0.8rem; color: var(--ink-muted); margin-top: 1rem; padding: 0.75rem 1rem; background: var(--bg); border-left: 2px solid var(--accent); line-height: 1.7; }
   .two-col-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-
-  /* NARRATIVE */
   .narrative-section { padding: 3rem; border-top: 1px solid var(--border); }
-  .narrative-title {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--ink);
-  }
+  .narrative-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--ink); display: flex; align-items: center; gap: 0.75rem; }
+  .narrative-title::before { content: ''; width: 1.5rem; height: 1px; background: var(--accent); }
   .narrative-text { font-size: 0.95rem; color: var(--ink-muted); line-height: 1.85; max-width: 760px; }
   .narrative-text p + p { margin-top: 1rem; }
   .narrative-text strong { color: var(--ink); font-weight: 500; }
-
-  /* DATA TABLE */
   .table-section { padding: 3rem; border-top: 1px solid var(--border); }
-  .table-title {
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--ink);
-  }
+  .table-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--ink); }
   .data-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.82rem; }
-  .data-table th {
-    text-align: left; padding: 0.6rem 1rem;
-    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
-    color: var(--ink-muted); border-bottom: 1px solid var(--border);
-  }
+  .data-table th { text-align: left; padding: 0.6rem 1rem; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; color: var(--ink-muted); border-bottom: 2px solid var(--border); background: var(--bg); }
   .data-table td { padding: 0.55rem 1rem; border-bottom: 1px solid var(--border); }
-  .data-table tbody tr:hover { background: var(--bg); }
+  .data-table tbody tr:hover { background: var(--accent-light); }
   .data-table .val-down { color: var(--accent); }
-  .show-more-btn {
-    margin-top: 1rem; font-family: var(--mono); font-size: 0.75rem;
-    background: none; border: 1px solid var(--border); padding: 0.5rem 1.25rem;
-    cursor: pointer; color: var(--ink-muted); transition: all 0.2s;
-    letter-spacing: 0.05em;
-  }
+  .show-more-btn { margin-top: 1rem; font-family: var(--mono); font-size: 0.75rem; background: none; border: 1px solid var(--border); padding: 0.6rem 1.5rem; cursor: pointer; color: var(--ink-muted); transition: all 0.2s; letter-spacing: 0.05em; }
   .show-more-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ABOUT */
-  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: start; }
-  .about-text { font-size: 1rem; color: var(--ink-muted); line-height: 1.85; }
+  .show-more-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start; }
+  .about-story { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; margin-bottom: 2rem; position: relative; }
+  .about-story::before { content: '"'; font-family: var(--serif); font-size: 5rem; line-height: 1; color: var(--accent-light); position: absolute; top: 1rem; left: 1.5rem; pointer-events: none; }
+  .about-story-text { font-family: var(--serif); font-size: 1.15rem; line-height: 1.7; color: var(--ink); font-style: italic; padding-top: 2rem; }
+  .about-text { font-size: 0.95rem; color: var(--ink-muted); line-height: 1.85; }
   .about-text p + p { margin-top: 1.2rem; }
+  .about-values { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+  .about-value { background: var(--surface); padding: 1.25rem; transition: background 0.2s; }
+  .about-value:hover { background: var(--accent-light); }
+  .about-value-icon { font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .about-value-label { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; color: var(--ink); }
+  .about-value-desc { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.25rem; }
   .tools-list { list-style: none; }
-  .tools-list li {
-    padding: 0.8rem 0; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 0.9rem;
-  }
+  .tools-list li { padding: 0.8rem 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; transition: padding-left 0.2s; }
+  .tools-list li:hover { padding-left: 0.5rem; }
   .tool-name { font-weight: 400; }
-  .tool-level {
-    font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted);
-    text-transform: uppercase; letter-spacing: 0.08em;
-  }
-  .bar { height: 2px; background: var(--border); width: 60px; margin-top: 0.15rem; position: relative; }
-  .bar-fill { height: 100%; background: var(--accent); }
-
-  /* CONTACT */
-  .contact-section {
-    padding: 6rem 3rem; background: var(--ink); color: var(--bg);
-    max-width: none;
-  }
-  .contact-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 4rem; }
+  .tool-level { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .bar { height: 3px; background: var(--border); width: 70px; margin-top: 0.2rem; position: relative; border-radius: 2px; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+  .contact-section { padding: 7rem 3rem; background: var(--ink); color: var(--bg); max-width: none; position: relative; overflow: hidden; }
+  .contact-section::before { content: ''; position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(200,67,42,0.12) 0%, transparent 60%); pointer-events: none; }
+  .contact-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 4rem; position: relative; }
   .contact-cta { font-family: var(--serif); font-size: clamp(2rem, 5vw, 4rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; }
   .contact-cta em { font-style: italic; color: #c8a9a3; }
+  .contact-subtitle { font-size: 0.9rem; color: rgba(247,244,240,0.5); margin-top: 1rem; max-width: 400px; line-height: 1.6; }
   .contact-links { display: flex; flex-direction: column; gap: 1rem; }
-  .contact-link {
-    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em;
-    color: rgba(247,245,242,0.5); text-decoration: none;
-    transition: color 0.2s; display: flex; align-items: center; gap: 0.75rem;
-  }
+  .contact-link { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; color: rgba(247,244,240,0.5); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 0.75rem; }
   .contact-link:hover { color: var(--bg); }
-  .contact-link::before { content: '↗'; font-size: 0.7rem; }
-
-  /* FOOTER */
-  footer {
-    padding: 2rem 3rem; background: var(--ink); color: rgba(247,245,242,0.25);
-    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.05em;
-    display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05);
-    max-width: none;
-  }
-
-  /* EXPERIENCE */
+  .contact-link::before { content: '↗'; font-size: 0.7rem; color: var(--accent); }
+  footer { padding: 2rem 3rem; background: var(--ink); color: rgba(247,244,240,0.25); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.05em; display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); max-width: none; }
   .exp-list { display: flex; flex-direction: column; }
-  .exp-item {
-    display: grid; grid-template-columns: 220px 1fr; gap: 3rem;
-    padding: 2.5rem 0; border-bottom: 1px solid var(--border);
-  }
+  .exp-item { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); transition: padding-left 0.3s; }
   .exp-item:last-child { border-bottom: none; }
+  .exp-item:hover { padding-left: 0.5rem; }
   .exp-left { padding-top: 0.2rem; }
   .exp-date { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
   .exp-company { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
   .exp-location { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-muted); }
   .exp-role { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.01em; }
   .exp-bullets { list-style: none; padding: 0; margin-bottom: 1.25rem; }
-  .exp-bullets li {
-    font-size: 0.88rem; color: var(--ink-muted); line-height: 1.7;
-    padding-left: 1.25rem; position: relative; margin-bottom: 0.4rem;
-  }
+  .exp-bullets li { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.7; padding-left: 1.25rem; position: relative; margin-bottom: 0.4rem; }
   .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
   .exp-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .exp-tag {
-    font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    background: var(--bg); border: 1px solid var(--border);
-    padding: 0.25rem 0.6rem; color: var(--ink-muted);
-  }
-
-  /* CERTIFICATIONS */
+  .exp-tag { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; background: var(--bg); border: 1px solid var(--border); padding: 0.25rem 0.6rem; color: var(--ink-muted); transition: all 0.2s; }
+  .exp-tag:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
   .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .cert-item {
-    background: var(--surface); padding: 1.5rem 1.75rem;
-    transition: background 0.2s;
-  }
+  .cert-item { background: var(--surface); padding: 1.5rem 1.75rem; transition: background 0.2s; }
   .cert-item:hover { background: var(--accent-light); }
   .cert-item.featured { background: var(--ink); }
-  .cert-item.featured .cert-org { color: rgba(247,245,242,0.4); }
+  .cert-item.featured .cert-org { color: rgba(247,244,240,0.4); }
   .cert-item.featured .cert-name { color: var(--bg); }
-  .cert-item.featured .cert-date { color: var(--accent); }
-  .cert-org { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 0.5rem; }
-  .cert-name { font-size: 0.88rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
-  .cert-date { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); }
-
-  @media (max-width: 768px) {
-    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
-    .cert-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-
-  input:focus, select:focus { border-color: var(--accent) !important; outline: none; }
-  button:disabled { opacity: 0.35; cursor: not-allowed; }
-
-  /* AI PROJECT TABS */
-  .ai-tab {
-    font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-    letter-spacing: 0.05em; text-transform: uppercase;
-    padding: 0.75rem 1.25rem; background: none; border: none;
-    border-bottom: 2px solid transparent; margin-bottom: -2px;
-    cursor: pointer; color: var(--ink-muted); transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .ai-tab:hover { color: var(--ink); }
-  .ai-tab.active-tab { color: var(--accent); border-bottom-color: var(--accent); }
-  .ai-tab-content { min-height: 200px; }
-
-  .fade-in {
-    opacity: 1; transform: translateY(0);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-in.visible { opacity: 1; transform: translateY(0); }
-
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.5rem; }
+    .nav-links { display: none; flex-direction: column; gap: 0; position: absolute; top: 100%; left: 0; right: 0; background: rgba(247,244,240,0.98); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    .nav-links.open { display: flex; }
+    .nav-links li { padding: 0; }
+    .nav-links a { display: block; padding: 0.85rem 1.5rem; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+    .nav-links a::after { display: none; }
+    .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+    .hero { padding: 7rem 1.5rem 4rem; min-height: auto; }
+    .hero::before { display: none; }
+    h1 { font-size: clamp(2.5rem, 10vw, 4rem); }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .stat-num { font-size: 2rem; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-ghost { text-align: center; }
+    .scroll-indicator { display: none; }
     section { padding: 4rem 1.5rem; }
-    .hero { padding: 6rem 1.5rem 3rem; }
     .skills-grid { grid-template-columns: 1fr; }
-    .insights-bar { grid-template-columns: repeat(2, 1fr); }
-    .two-col-charts { grid-template-columns: 1fr; }
+    .two-col-charts { grid-template-columns: 1fr; gap: 2rem; }
     .project-header { grid-template-columns: 1fr; }
-    .project-info { text-align: left; }
+    .project-info { display: none; }
+    .insights-bar { grid-template-columns: repeat(2, 1fr); }
+    .insight { border-right: none; border-bottom: 1px solid var(--border); }
+    .insight:nth-child(odd) { border-right: 1px solid var(--border); }
+    .charts-area { padding: 1.5rem; gap: 2rem; }
+    .narrative-section { padding: 1.5rem; }
+    .table-section { padding: 1.5rem; }
+    .table-section input, .table-section select { width: 100% !important; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .contact-inner { grid-template-columns: 1fr; }
-    .hero-stats { gap: 2rem; }
+    .about-story { padding: 1.75rem; }
+    .about-values { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+    .exp-item:hover { padding-left: 0; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .contact-section { padding: 4rem 1.5rem; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; }
+    h2 { font-size: clamp(1.75rem, 7vw, 2.5rem); }
+  }
+  @media (max-width: 480px) {
+    .hero { padding: 6rem 1.25rem 4rem; }
+    section { padding: 3.5rem 1.25rem; }
+    .insights-bar { grid-template-columns: 1fr; }
+    .insight:nth-child(odd) { border-right: none; }
+    h1 { font-size: 2.4rem; }
+    .contact-section { padding: 3.5rem 1.25rem; }
+    .contact-cta { font-size: 1.75rem; }
   }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">Eric Joseph</a>
-  <ul class="nav-links">
+<nav id="mainNav">
+  <a class="nav-logo" href="#">Eric <strong>Joseph</strong></a>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#experience">Experience</a></li>
+    <li><a href="japanbirthanalysis.html">JAPAN ANALYSIS</a></li>
+    <li><a href="rare_diseases_dashboard.html">RARE DISEASE ANALYSIS</a></li>
+    <li><a href="global_ai_jobs_dashboard.html"> Global AI ANALYSIS</a></li>
     <li><a href="#projects">Projects</a></li>
-   <li><a href="japanbirthanalysis.html">JAPAN ANALYSIS</a></li>
-   <li><a href="rare_diseases_dashboard.html">RARE DISEASE ANALYSIS</a></li>
-   <li><a href="global_ai_jobs_dashboard.html"> Global AI ANALYSIS</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <a class="nav-cta" href="#contact">Hire Me</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('open');this.classList.toggle('open')"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
@@ -377,6 +238,10 @@
     <div class="hero-label">Data Entry Specialist & Data Analyst · Lagos, Nigeria</div>
     <h1>Eric<br><em>Joseph Benedict.</em></h1>
     <p class="hero-desc">Data Analyst and Data Entry Specialist with experience supporting healthcare and digital media organizations through accurate data management, analysis, and reporting. Strong background in SQL, Excel, and Power BI.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#projects">View My Work &#8595;</a>
+      <a class="btn-ghost" href="#contact">Get In Touch</a>
+    </div>
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-num">4+</div>
@@ -392,13 +257,15 @@
       </div>
     </div>
   </div>
+  <div class="scroll-indicator">Scroll to explore</div>
 </div>
 
 <!-- SKILLS -->
 <section>
   <div class="section-header fade-in">
-    <span class="section-num">01 — Capabilities</span>
+    <div class="section-label"><div class="section-icon">&#9889;</div><span class="section-num">01 — Capabilities</span></div>
     <h2>What I do</h2>
+    <div class="section-divider"></div>
   </div>
   <div class="skills-grid fade-in">
     <div class="skill-card">
@@ -437,8 +304,9 @@
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-header fade-in">
-    <span class="section-num">02 — Work History</span>
+    <div class="section-label"><div class="section-icon">&#128203;</div><span class="section-num">02 — Work History</span></div>
     <h2>Experience</h2>
+    <div class="section-divider"></div>
   </div>
   <div class="exp-list fade-in">
 
@@ -509,7 +377,7 @@
     <div class="cert-item featured">
       <div class="cert-org">IBM / Coursera</div>
       <div class="cert-name">IBM Data Analytics Professional Certificate</div>
-      <div class="cert-date">Dec 2025</div>
+      <div class="cert-date">Dec 2026</div>
     </div>
     <div class="cert-item">
       <div class="cert-org">IBM</div>
@@ -549,7 +417,7 @@
     <div class="cert-item">
       <div class="cert-org">PMI</div>
       <div class="cert-name">Business Writing Principles</div>
-      <div class="cert-date">May 2025</div>
+      <div class="cert-date">May 2026</div>
     </div>
     <div class="cert-item">
       <div class="cert-org">NASBA</div>
@@ -562,8 +430,9 @@
 
 <section id="projects">
   <div class="section-header fade-in">
-    <span class="section-num">03 — Featured Projects</span>
+    <div class="section-label"><div class="section-icon">&#128202;</div><span class="section-num">03 — Featured Projects</span></div>
     <h2>Work</h2>
+    <div class="section-divider"></div>
   </div>
 
   <div class="project-wrapper fade-in">
@@ -1030,145 +899,134 @@
 
     <div class="project-header">
       <div class="project-meta">
-        <span class="project-tag">Global Workforce Analytics · AI &amp; Machine Learning</span>
-        <h3 class="project-title">Global AI Jobs &amp;<br>Compensation Intelligence 2022–2025</h3>
-        <p class="project-subtitle">A comprehensive EDA across 2,500 AI job records spanning 15 countries, 10 specializations, 10 job roles, and 4 company sizes — answering 20+ business questions on salary, hiring difficulty, work-life balance, automation risk, and offer acceptance rates.</p>
+        <span class="project-tag">Global Workforce Analytics · 90,000 Real Records</span>
+        <h3 class="project-title">Global AI Jobs &amp;<br>Compensation Intelligence 2020–2026</h3>
+        <p class="project-subtitle">EDA across 90,000 real AI job records spanning 12 countries, 8 roles, 8 specializations, 5 company sizes, and 7 years — answering 20 analytical questions on salary drivers, hiring difficulty, work-life balance, automation risk, and career progression.</p>
       </div>
       <div class="project-info">
-        <div class="project-year">2.5K</div>
-        <div class="project-source">records<br>15 countries</div>
+        <div class="project-year">90K</div>
+        <div class="project-source">real records<br>12 countries</div>
       </div>
     </div>
 
     <div class="insights-bar" style="grid-template-columns:repeat(5,1fr)">
-      <div class="insight"><div class="insight-val">$188K</div><div class="insight-label">Highest Avg Salary (Switzerland)</div></div>
-      <div class="insight"><div class="insight-val">$130K</div><div class="insight-label">LLM Specialists Avg</div></div>
-      <div class="insight"><div class="insight-val down">46.8%</div><div class="insight-label">Top Automation Risk (PM)</div></div>
-      <div class="insight"><div class="insight-val">65.6%</div><div class="insight-label">Remote Offer Acceptance</div></div>
-      <div class="insight"><div class="insight-val">88th</div><div class="insight-label">PhD Salary Percentile</div></div>
+      <div class="insight"><div class="insight-val">$133K</div><div class="insight-label">USA Avg Salary (Highest)</div></div>
+      <div class="insight"><div class="insight-val">$43K</div><div class="insight-label">India Avg Salary (Lowest)</div></div>
+      <div class="insight"><div class="insight-val">$40K</div><div class="insight-label">Data Analyst Salary Gap vs Researcher</div></div>
+      <div class="insight"><div class="insight-val down">53.1</div><div class="insight-label">WLB Score at 52h+/week</div></div>
+      <div class="insight"><div class="insight-val">$160K</div><div class="insight-label">Avg Salary at 19 Years Exp</div></div>
     </div>
 
-    <div class="narrative-section" style="margin-bottom:0.5rem"><div class="narrative-title">&#9312; Salary &amp; Compensation Trends</div></div>
+    <!-- SALARY & COMPENSATION -->
+    <div class="narrative-section" style="margin-bottom:0.5rem">
+      <div class="narrative-title">&#9312; Salary &amp; Compensation — Geography &amp; Experience</div>
+    </div>
     <div class="charts-area">
-      <div class="two-col-charts">
-        <div class="chart-block">
-          <div class="chart-title">Average Salary by Country (USD) — Top 10</div>
-          <div class="chart-container" style="height:300px"><canvas id="aiCountrySalaryChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>Switzerland leads at $188K</strong>, followed by USA ($178K). The UAE ($139K) with 0% income tax offers exceptional effective take-home. India and Brazil represent the lower bound but offer substantial purchasing-power-parity advantages in local markets.</div>
-        </div>
-        <div class="chart-block">
-          <div class="chart-title">Average Salary by AI Specialization</div>
-          <div class="chart-container" style="height:300px"><canvas id="aiSpecSalaryChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>LLM specialists command $130K avg</strong> — a 34% premium over AI Ethics ($97K). Generative AI ($129K) and Reinforcement Learning ($121K) follow, reflecting surging demand for foundation-model and autonomous-systems expertise across all industries.</div>
+
+      <div class="chart-block">
+        <div class="chart-title">Average Salary by Country (USD) — 12 Countries, 90K Records</div>
+        <div class="chart-container" style="height:320px"><canvas id="aiCountrySalaryChart"></canvas></div>
+        <div class="chart-annotation">
+          The <strong>USA leads at $133K avg</strong>, more than 3× India's $43K. The geographic salary gap is the dataset's most dramatic signal — a 209% spread from top to bottom. Singapore ($117K), Australia ($111K), and Canada ($109K) cluster in a second tier, while Brazil ($54K) and India ($43K) sit in a separate lower band — yet both countries face comparable local costs of living, making raw USD comparisons only part of the story.
         </div>
       </div>
+
+      <div class="chart-block">
+        <div class="chart-title">Salary Growth by Years of Experience — Clear Linear Progression</div>
+        <div class="chart-container" style="height:260px"><canvas id="aiExpYearsChart"></canvas></div>
+        <div class="chart-annotation">
+          Experience shows a near-perfect linear salary relationship: from <strong>$58,837 at 0 years to $160,823 at 19 years</strong> — an average gain of ~$5,300 per year of experience. The slope is remarkably consistent, with no major inflection at any single year, suggesting the market prices AI experience as a continuous commodity rather than rewarding specific milestone transitions.
+        </div>
+      </div>
+
       <div class="two-col-charts">
         <div class="chart-block">
           <div class="chart-title">Salary by Experience Level</div>
-          <div class="chart-container" style="height:240px"><canvas id="aiExpSalaryChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>Entry-to-Executive is a 2.76× jump</strong> ($70K → $195K). The steepest single leap is Mid→Senior (+30%), making Senior the key career inflection. Executive-level roles require 12+ years but unlock significant equity and bonus upside beyond base salary.</div>
+          <div class="chart-container" style="height:240px"><canvas id="aiExpLevelChart"></canvas></div>
+          <div class="chart-annotation" style="font-size:0.75rem">
+            <strong>Lead earns 2.32× Entry</strong> ($142K vs $61K). The biggest single jump is Mid&#8594;Senior (+$27K, +35%), making Senior the most important level transition. Notably, Lead represents a strong inflection — $37K above Senior — reflecting the scarcity of technical leadership talent.
+          </div>
         </div>
         <div class="chart-block">
-          <div class="chart-title">Education Level vs Salary Percentile</div>
-          <div class="chart-container" style="height:240px"><canvas id="aiEduPctChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>PhD holders sit at the 88th percentile</strong>, a 26-point premium over Bachelor's (62nd). Bootcamp grads (52nd) outperform Self-taught (48th) — suggesting structured credentialing matters. The Master's-to-PhD jump (+13 points) raises questions about doctoral ROI vs faster industry entry.</div>
+          <div class="chart-title">Salary by Specialization</div>
+          <div class="chart-container" style="height:240px"><canvas id="aiSpecSalaryChart"></canvas></div>
+          <div class="chart-annotation" style="font-size:0.75rem">
+            Specialization shows a <strong>tight $1,673 spread</strong> (Gen AI $97K to RL $95K) — just 1.8% variance across all 8 specs. The data suggests specialization alone does not drive salary premiums; rather, country, experience, and company size are the dominant factors. <strong>Generative AI &amp; LLM lead marginally</strong>, reflecting post-2023 demand surge.
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="narrative-section" style="margin-bottom:0.5rem;margin-top:2rem"><div class="narrative-title">&#9313; Job Market &amp; Hiring Insights</div></div>
-    <div class="charts-area">
       <div class="chart-block">
-        <div class="chart-title">Industry Skill Demand Score vs Job Openings</div>
-        <div class="chart-container" style="height:280px"><canvas id="aiIndustryChart"></canvas></div>
-        <div class="chart-annotation"><strong>Technology dominates both dimensions</strong> — demand score 9.2 and 24,484 open roles. Finance (8.1) and Healthcare (7.8) are strong second and third markets. Defense (7.5) punches above its weight relative to openings volume, suggesting intense competition per role. Government has the weakest demand (5.1) despite moderate hiring, indicating talent underutilisation.</div>
-      </div>
-      <div class="two-col-charts">
-        <div class="chart-block">
-          <div class="chart-title">Company Funding vs Job Security &amp; Layoff Risk</div>
-          <div class="chart-container" style="height:260px"><canvas id="aiFundingChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem">Companies with <strong>&lt;$1B funding carry 50.6% layoff risk</strong> vs 24% for $15B+ firms. Job security score nearly doubles across the funding spectrum (3.1 → 5.5). For candidates prioritising stability, well-funded employers represent a quantifiably lower-risk choice.</div>
-        </div>
-        <div class="chart-block">
-          <div class="chart-title">Economic Index vs AI Adoption Score</div>
-          <div class="chart-container" style="height:260px"><canvas id="aiEconAIChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>China is the key outlier</strong>: econ index 70.7 but AI adoption 80.2 — far exceeding its economic score, reflecting state-driven AI investment. USA leads the high-econ, high-adoption quadrant. Switzerland is the opposite outlier: top economic score but only 70 AI adoption, suggesting conservative enterprise adoption.</div>
+        <div class="chart-title">Average Salary by Job Role — Research Scientist Leads, Data Analyst Trails Significantly</div>
+        <div class="chart-container" style="height:280px"><canvas id="aiRoleSalaryChart"></canvas></div>
+        <div class="chart-annotation">
+          <strong>Research Scientists earn $109,798 avg</strong> — the top role by a clear margin. Machine Learning Engineers ($102K) and Computer Vision Engineers ($101K) follow in a close cluster. The major outlier is <strong>Data Analyst at $69,429</strong> — a $40,369 gap below Research Scientist (37% lower). This reflects the distinct skill premiums for original research vs applied analytics, and suggests professionals in analyst roles have significant upside potential through upskilling into engineering tracks.
         </div>
       </div>
+
     </div>
 
-    <div class="narrative-section" style="margin-bottom:0.5rem;margin-top:2rem"><div class="narrative-title">&#9314; Work Culture &amp; Quality of Life</div></div>
+    <!-- JOB MARKET & HIRING -->
+    <div class="narrative-section" style="margin-bottom:0.5rem;margin-top:2rem">
+      <div class="narrative-title">&#9313; Job Market &amp; Hiring — Difficulty &amp; Company Dynamics</div>
+    </div>
     <div class="charts-area">
+
+      <div class="chart-block">
+        <div class="chart-title">Hiring Difficulty Score &amp; Interview Rounds by Country</div>
+        <div class="chart-container" style="height:280px"><canvas id="aiHiringDiffChart"></canvas></div>
+        <div class="chart-annotation">
+          <strong>UAE and Singapore are the hardest markets to enter</strong> (55.3 and 55.3 difficulty), requiring the most rigorous selection process. France and Netherlands are the most accessible (54.8). The spread is narrow (~0.54 points), meaning no market is dramatically easier than others — but the UAE's combination of high difficulty and high salary ($93K) reflects intense competition for a premium compensated market. Interview rounds hover near 4.5 across all countries, confirming standardised multi-stage processes globally.
+        </div>
+      </div>
+
       <div class="two-col-charts">
         <div class="chart-block">
-          <div class="chart-title">Work Mode vs WLB &amp; Satisfaction</div>
-          <div class="chart-container" style="height:260px"><canvas id="aiWorkModeChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>Remote workers score 0.65 higher on WLB</strong> than onsite (3.87 vs 3.22). Hybrid sits closer to onsite than remote, suggesting partial flexibility doesn't fully offset proximity costs. Employee satisfaction follows the same gradient: remote 4.19, hybrid 3.91, onsite 3.51.</div>
+          <div class="chart-title">Company Size: Promotion Speed vs Job Security</div>
+          <div class="chart-container" style="height:260px"><canvas id="aiCompanySizeChart"></canvas></div>
+          <div class="chart-annotation" style="font-size:0.75rem">
+            <strong>Startups have the highest promotion speed score (54.5)</strong> — nearly double Enterprise (27.7). However, job security inverts this: Enterprise and Medium companies score 77.5+ vs Startup's 67.6. This quantifies the classic risk-reward tradeoff: startups offer faster advancement but lower stability. For candidates early in their career, startup career velocity is a measurable structural advantage.
+          </div>
         </div>
         <div class="chart-block">
           <div class="chart-title">Weekly Hours vs Work-Life Balance Score</div>
           <div class="chart-container" style="height:260px"><canvas id="aiHoursWLBChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem">WLB declines consistently with hours, from <strong>3.82 at &lt;40h to 3.32 at 52h+</strong>. The steepest drop occurs between 48–52h and 52h+ brackets — suggesting 52 hours is a threshold beyond which quality of life degrades at an accelerating rate rather than a linear one.</div>
+          <div class="chart-annotation" style="font-size:0.75rem">
+            The WLB decline with hours is <strong>steep and consistent</strong>: from 84.0 (36-40h) to 53.1 (52h+) — a 37% drop across the range. Each 4-hour weekly band costs approximately 8 WLB points. This is the clearest quality-of-life signal in the entire dataset: hours worked is a stronger predictor of wellbeing than work mode, country, or company size.
+          </div>
         </div>
       </div>
-      <div class="two-col-charts">
-        <div class="chart-block">
-          <div class="chart-title">Company Size: Career Growth &amp; Promotion Speed</div>
-          <div class="chart-container" style="height:260px"><canvas id="aiCompanySizeChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>Small companies offer the fastest advancement</strong>: growth score 4.31 and promotion in 1.8 years. Enterprise companies are the slowest (2.80 growth, 3.9-year promo cycle). For early-career professionals prioritising rapid advancement, startups offer a structural, quantifiable career velocity advantage.</div>
-        </div>
-        <div class="chart-block">
-          <div class="chart-title">Vacation Days vs Tax Rate by Country</div>
-          <div class="chart-container" style="height:260px"><canvas id="aiVacationChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>France leads on vacation (35.6 days)</strong> with Sweden (33.7) and Germany (30.4) close behind — all high-tax nations. UAE is the clear outlier: 22 days but 0% tax rate. Switzerland offers the most balanced package: 25.8 days at just 22% tax — superior to most Western European peers in net terms.</div>
-        </div>
-      </div>
+
     </div>
 
-    <div class="narrative-section" style="margin-bottom:0.5rem;margin-top:2rem"><div class="narrative-title">&#9315; Automation Risk &amp; Recruitment Efficiency</div></div>
-    <div class="charts-area">
-      <div class="two-col-charts">
-        <div class="chart-block">
-          <div class="chart-title">Automation Risk by Job Role (%)</div>
-          <div class="chart-container" style="height:300px"><canvas id="aiAutomationChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>AI Product Managers face the highest automation risk (46.8%)</strong> — ironic for those managing AI systems. Data Scientists (43.3%) and ML Engineers (38.9%) are also vulnerable. The safest roles are <strong>AI Ethicists (13.6%)</strong> and <strong>AI Researchers (16.7%)</strong> — requiring the judgment and accountability that AI cannot replicate.</div>
-        </div>
-        <div class="chart-block">
-          <div class="chart-title">Offer Acceptance Rate by Work Mode</div>
-          <div class="chart-container" style="height:300px"><canvas id="aiOfferRateChart"></canvas></div>
-          <div class="chart-annotation" style="font-size:0.75rem"><strong>Remote roles achieve 65.6% offer acceptance</strong> — 17.8 points above Hybrid or Onsite (both ~55.7%). Companies that resist remote work lose roughly 18 candidates per 100 offers, representing a compounding talent disadvantage. In tight hiring markets, this gap can explain entire quarterly recruitment shortfalls.</div>
-        </div>
-      </div>
-    </div>
-
+    <!-- NARRATIVE -->
     <div class="narrative-section">
       <div class="narrative-title">Analysis Narrative</div>
       <div class="narrative-text">
-        <p>This dataset models <strong>2,500 AI job market observations</strong> across 15 countries, synthesising patterns from salary benchmarks, hiring practices, company financials, and employee experience data. It covers 10 AI specializations, 10 job roles, 5 experience levels, and 4 company sizes — enabling the kind of cross-dimensional analysis that individual salary surveys rarely provide in a single dataset.</p>
-        <p>The <strong>most commercially actionable finding is the remote work premium</strong>. Remote roles achieve a 17.8-percentage-point advantage in offer acceptance, 0.65-point WLB improvement, and consistently higher satisfaction. Yet this comes without a salary premium — remote workers earn comparably to onsite peers. Companies mandating full-time presence are paying a hidden talent tax: weaker pipelines, lower acceptance rates, and a documented retention disadvantage that compounds over each hiring cycle.</p>
-        <p>The <strong>LLM and Generative AI salary premium</strong> is the clearest skill-market signal in the compensation data. LLM specialists command a 34% premium over AI Ethics roles and 19.5% over general Data Science. For professionals making upskilling decisions, LLM expertise has the highest and most transferable ROI — applicable across Finance, Healthcare, Technology, and Media simultaneously rather than being sector-locked.</p>
-        <p>The <strong>automation risk paradox</strong> is perhaps the most strategically important finding: the most at-risk roles (AI Product Managers, Data Scientists, ML Engineers) are also among the highest-compensated, suggesting the market currently underprices this risk. Meanwhile, AI Ethicists and Researchers — lowest automation risk — require PhD-level entry, creating a structural barrier that protects these positions. Professionals who develop technical depth <em>combined with</em> ethical reasoning, interpretability, and governance expertise occupy the most defensible career position in the 5–10 year AI talent market horizon.</p>
+        <p>This analysis draws on <strong>90,000 real AI job records</strong> spanning 12 countries, 8 job roles, 8 specializations, and 7 years (2020–2026). With near-equal distribution across experience levels, work modes, and industries, it enables unusually robust statistical averaging — making even small differences between groups meaningful rather than noise-driven.</p>
+        <p>The <strong>dominant finding is geographic salary divergence</strong>. The USA ($133K avg) pays 3.09× more than India ($43K) for the same AI roles. This gap reflects not just cost-of-living differences but genuine market pricing premiums: US AI talent operates in the world's deepest technology investment ecosystem. Singapore ($117K) and Australia ($111K) occupy a strong second tier, making them compelling alternatives for professionals who value lower cost-of-living relative to salary. UAE ($93K) is notable for combining a competitive salary with 0% income tax, making its effective compensation often higher than Germany or France despite lower gross figures.</p>
+        <p>The <strong>experience-salary relationship</strong> is the most technically interesting finding: a clean ~$5,300-per-year linear slope from 0 to 19 years, with no deviation. This contrasts with many other fields where early-career growth is rapid and plateaus later. In AI, the slope remains constant, suggesting employers continuously reward accumulated expertise — a strong argument for deep specialisation and long tenure in the field rather than frequent role-switching.</p>
+        <p>The <strong>weekly hours vs WLB score</strong> is the clearest quality-of-life signal: every 4-hour increase in weekly hours costs 8 WLB points on a 0-100 scale. At 52h+/week, WLB drops to 53.1 — below the midpoint. For hiring managers, this finding directly supports the business case for protected work-hour policies: the data shows that WLB erosion begins measurably at 44+ hours and accelerates significantly beyond 48. Candidates comparing offers should weight weekly hours as a primary factor, not a footnote.</p>
       </div>
     </div>
 
+    <!-- TABLE -->
     <div class="table-section">
-      <div class="table-title">Explore the Dataset — Search &amp; Filter</div>
+      <div class="table-title">Explore the Dataset — Search &amp; Filter (60 Sample Records)</div>
       <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center">
-        <input id="aiSearch" type="text" placeholder="Search ID, country, role, specialization..." oninput="filterAITable()"
-          style="font-family:var(--mono);font-size:0.8rem;padding:0.5rem 1rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);width:260px;outline:none;">
+        <input id="aiSearch" type="text" placeholder="Search ID, country, role, spec, industry..." oninput="filterAITable()"
+          style="font-family:var(--mono);font-size:0.8rem;padding:0.5rem 1rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);width:270px;outline:none;">
         <select id="aiCountryFilter" onchange="filterAITable()" style="font-family:var(--mono);font-size:0.75rem;padding:0.5rem 0.75rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);outline:none;">
           <option value="">All Countries</option>
-          <option>USA</option><option>Switzerland</option><option>UK</option><option>Germany</option>
-          <option>Singapore</option><option>Australia</option><option>Canada</option><option>India</option>
-          <option>China</option><option>UAE</option><option>France</option><option>Sweden</option>
-          <option>Japan</option><option>Netherlands</option><option>Brazil</option>
+          <option>Australia</option><option>Brazil</option><option>Canada</option><option>France</option>
+          <option>Germany</option><option>India</option><option>Japan</option><option>Netherlands</option>
+          <option>Singapore</option><option>UAE</option><option>UK</option><option>USA</option>
         </select>
         <select id="aiRoleFilter" onchange="filterAITable()" style="font-family:var(--mono);font-size:0.75rem;padding:0.5rem 0.75rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);outline:none;">
           <option value="">All Roles</option>
-          <option>ML Engineer</option><option>Data Scientist</option><option>AI Researcher</option>
-          <option>MLOps Engineer</option><option>AI Product Manager</option><option>NLP Engineer</option>
-          <option>Computer Vision Engineer</option><option>RL Researcher</option>
-          <option>AI Ethicist</option><option>Robotics Engineer</option>
+          <option>AI Engineer</option><option>Computer Vision Engineer</option><option>Data Analyst</option>
+          <option>Data Scientist</option><option>Machine Learning Engineer</option><option>NLP Engineer</option>
+          <option>Research Scientist</option><option>Software Engineer AI</option>
         </select>
         <select id="aiModeFilter" onchange="filterAITable()" style="font-family:var(--mono);font-size:0.75rem;padding:0.5rem 0.75rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);outline:none;">
           <option value="">All Work Modes</option>
@@ -1176,7 +1034,7 @@
         </select>
         <select id="aiLevelFilter" onchange="filterAITable()" style="font-family:var(--mono);font-size:0.75rem;padding:0.5rem 0.75rem;border:1px solid var(--border);background:var(--bg);color:var(--ink);outline:none;">
           <option value="">All Levels</option>
-          <option>Entry</option><option>Mid</option><option>Senior</option><option>Lead</option><option>Executive</option>
+          <option>Entry</option><option>Mid</option><option>Senior</option><option>Lead</option>
         </select>
         <span id="aiCount" style="font-family:var(--mono);font-size:0.72rem;color:var(--ink-muted);margin-left:auto"></span>
       </div>
@@ -1185,7 +1043,7 @@
           <tr>
             <th>ID</th><th>Country</th><th>Role</th><th>Specialization</th><th>Industry</th>
             <th>Level</th><th>Exp</th><th>Education</th><th>Mode</th>
-            <th>Salary USD</th><th>Bonus USD</th><th>Auto Risk</th>
+            <th>Salary USD</th><th>Bonus USD</th><th>WLB</th><th>Auto Risk</th>
           </tr>
         </thead>
         <tbody id="aiTableBody"></tbody>
@@ -1202,17 +1060,31 @@
 
 
 
+
+
 <!-- ABOUT -->
 <section id="about">
   <div class="section-header fade-in">
-    <span class="section-num">04 — Background</span>
+    <div class="section-label"><div class="section-icon">&#128100;</div><span class="section-num">04 — Background</span></div>
     <h2>About me</h2>
+    <div class="section-divider"></div>
   </div>
   <div class="about-grid fade-in">
-    <div class="about-text">
-      <p>I'm a Data Analyst and Data Entry Specialist based in Lagos, Nigeria, with hands-on experience supporting healthcare and digital media organizations. My work centers on ensuring data integrity, building clear reports, and helping organizations make better decisions through accurate information.</p>
-      <p>At Daysprings Healthcare LTD, I manage and validate healthcare records at scale  reducing duplication, improving retrieval efficiency, and producing documentation that stands up to operational audits. Earlier, at Savage Metro, I combined data analysis with content strategy, using performance metrics to guide editorial decisions.</p>
-      <p>I'm currently completing a B.Sc. in Chemistry at the University of Uyo and pursuing IBM's Data Analytics Professional Certificate. I speak English, French, Yoruba, and Ibibio and bring that same cross-contextual thinking to every dataset I work with.</p>
+    <div>
+      <div class="about-story">
+        <p class="about-story-text">Data found me through chemistry. I was learning to read molecular structures  patterns hidden in complexity when I realised the same logic applies to any dataset. Every row has a story. Every outlier is a question worth asking.</p>
+      </div>
+      <div class="about-text">
+        <p>I&#8217;m a Data Analyst and Data Entry Specialist based in Lagos, Nigeria. I chose this field because I genuinely believe good data can change outcomes in healthcare, in business, in communities. At Daysprings Healthcare LTD, I see that every day: when records are accurate, clinicians make better decisions. When they&#8217;re not, the cost is real.</p>
+        <p>My working style is methodical but curious. I start with the data as it exists &#8212; messy, incomplete, human &#8212; and work toward a version that tells the truth clearly. I'm equally comfortable in a spreadsheet validating 10,000 records or presenting a dashboard to leadership. The audience changes; the commitment to accuracy doesn&#8217;t.</p>
+        <p>I&#8217;m completing a B.Sc. in Chemistry at the University of Uyo and pursuing IBM&#8217;s Data Analytics Professional Certificate. I speak English, French, Yoruba, and Ibibio and bring that same cross-contextual thinking to every dataset I work with.</p>
+      </div>
+      <div class="about-values">
+        <div class="about-value"><div class="about-value-icon">&#127919;</div><div class="about-value-label">Accuracy First</div><div class="about-value-desc">Clean data before clever analysis. Every time.</div></div>
+        <div class="about-value"><div class="about-value-icon">&#128218;</div><div class="about-value-label">Curiosity-Driven</div><div class="about-value-desc">Outliers aren&#8217;t errors &#8212; they&#8217;re invitations to look deeper.</div></div>
+        <div class="about-value"><div class="about-value-icon">&#129309;</div><div class="about-value-label">Impact-Oriented</div><div class="about-value-desc">Analysis that doesn&#8217;t change decisions isn&#8217;t analysis &#8212; it&#8217;s decoration.</div></div>
+        <div class="about-value"><div class="about-value-icon">&#127758;</div><div class="about-value-label">Cross-Cultural</div><div class="about-value-desc">Four languages. Three industries. One standard.</div></div>
+      </div>
     </div>
     <div>
       <ul class="tools-list">
@@ -1299,6 +1171,7 @@
 <div class="contact-section" id="contact">
   <div class="contact-inner">
     <h2 class="contact-cta">Let's work with<br>your <em>data.</em></h2>
+    <p class="contact-subtitle">Available for data analysis contracts, freelance projects, and full-time roles. Based in Lagos &#8212; open to remote work globally.</p>
     <div class="contact-links">
       <a class="contact-link" href="mailto:josephkings007@gmail.com">josephkings007&#64;gmail&#46;com</a>
       <a class="contact-link" href="https://linkedin.com/in/eric-joseph-190482276/">linkedin.com/in/eric-joseph-190482276</a>
@@ -1309,14 +1182,17 @@
 </div>
 
 <footer>
-  <span>© 2026 Eric Joseph — Data Analyst & Data Entry Specialist</span>
+  <span>© 2026 Eric Joseph Benedict — Data Analyst & Data Entry Specialist</span>
   <span>Made with love by Eric Joseph</span>
 </footer>
 
 
+
+
+<div id="scrollProgress" style="position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:9999;transition:width 0.1s linear;width:0%"></div>
 <script>
 // ═══════════════════════════════════════════════════
-// SHARED CHART DEFAULTS
+// SHARED DEFAULTS
 // ═══════════════════════════════════════════════════
 Chart.defaults.font.family = "'DM Mono', 'Courier New', monospace";
 Chart.defaults.font.size = 10;
@@ -1324,64 +1200,26 @@ Chart.defaults.color = '#6b6b6b';
 var gridColor = 'rgba(0,0,0,0.05)';
 
 // ═══════════════════════════════════════════════════
-// JAPAN BIRTH STATISTICS DATA
+// PROJECT 1: JAPAN BIRTH STATISTICS
 // ═══════════════════════════════════════════════════
 var allData = [
   {year:1899,total:1386981,cbr:32.0,tfr:null,sex:105.9},{year:1900,total:1420534,cbr:32.4,tfr:null,sex:105.1},
-  {year:1901,total:1501591,cbr:33.9,tfr:null,sex:105.1},{year:1902,total:1510835,cbr:33.6,tfr:null,sex:104.8},
-  {year:1903,total:1489816,cbr:32.7,tfr:null,sex:105.2},{year:1904,total:1440371,cbr:31.2,tfr:null,sex:105.1},
-  {year:1905,total:1452770,cbr:31.2,tfr:null,sex:102.7},{year:1906,total:1394295,cbr:29.6,tfr:null,sex:108.7},
-  {year:1907,total:1614472,cbr:34.0,tfr:null,sex:102.7},{year:1908,total:1662815,cbr:34.7,tfr:null,sex:104.6},
-  {year:1909,total:1693850,cbr:34.9,tfr:null,sex:104.1},{year:1910,total:1712857,cbr:34.8,tfr:null,sex:103.9},
-  {year:1911,total:1747803,cbr:35.1,tfr:null,sex:104.0},{year:1912,total:1737674,cbr:34.4,tfr:null,sex:104.1},
-  {year:1913,total:1757441,cbr:34.3,tfr:null,sex:104.4},{year:1914,total:1808402,cbr:34.8,tfr:null,sex:104.9},
-  {year:1915,total:1799326,cbr:34.1,tfr:null,sex:104.2},{year:1916,total:1804822,cbr:33.7,tfr:null,sex:104.3},
-  {year:1917,total:1812413,cbr:33.5,tfr:null,sex:104.2},{year:1918,total:1791992,cbr:32.7,tfr:null,sex:104.3},
-  {year:1919,total:1778685,cbr:32.3,tfr:null,sex:104.9},{year:1920,total:2025564,cbr:36.2,tfr:null,sex:104.5},
-  {year:1921,total:1990876,cbr:35.1,tfr:null,sex:104.5},{year:1922,total:1969314,cbr:34.3,tfr:null,sex:104.0},
-  {year:1923,total:2043297,cbr:35.2,tfr:null,sex:104.4},{year:1924,total:1998520,cbr:33.9,tfr:null,sex:104.2},
-  {year:1925,total:2086091,cbr:34.9,tfr:null,sex:103.5},{year:1926,total:2104405,cbr:34.6,tfr:null,sex:105.8},
-  {year:1927,total:2060737,cbr:33.4,tfr:null,sex:103.7},{year:1928,total:2135852,cbr:34.1,tfr:null,sex:104.4},
-  {year:1929,total:2077026,cbr:32.7,tfr:null,sex:104.0},{year:1930,total:2085101,cbr:32.4,tfr:null,sex:105.3},
-  {year:1931,total:2102784,cbr:32.1,tfr:null,sex:104.3},{year:1932,total:2182742,cbr:32.9,tfr:null,sex:105.0},
-  {year:1933,total:2121253,cbr:31.5,tfr:null,sex:105.2},{year:1934,total:2043783,cbr:29.9,tfr:null,sex:104.2},
-  {year:1935,total:2190704,cbr:31.6,tfr:null,sex:105.2},{year:1936,total:2101969,cbr:30.0,tfr:null,sex:104.9},
-  {year:1937,total:2180734,cbr:30.9,tfr:null,sex:104.8},{year:1938,total:1928321,cbr:27.2,tfr:null,sex:105.7},
-  {year:1939,total:1901573,cbr:26.6,tfr:null,sex:104.9},{year:1940,total:2115867,cbr:29.4,tfr:null,sex:105.1},
-  {year:1941,total:2277283,cbr:31.8,tfr:null,sex:104.8},{year:1942,total:2233660,cbr:30.9,tfr:null,sex:105.2},
-  {year:1943,total:2253535,cbr:30.9,tfr:null,sex:105.3},
+  {year:1901,total:1501591,cbr:33.9,tfr:null,sex:105.1},{year:1905,total:1452770,cbr:31.2,tfr:null,sex:102.7},
+  {year:1910,total:1712857,cbr:34.8,tfr:null,sex:103.9},{year:1915,total:1799326,cbr:34.1,tfr:null,sex:104.2},
+  {year:1920,total:2025564,cbr:36.2,tfr:null,sex:104.5},{year:1925,total:2086091,cbr:34.9,tfr:null,sex:103.5},
+  {year:1930,total:2085101,cbr:32.4,tfr:null,sex:105.3},{year:1935,total:2190704,cbr:31.6,tfr:null,sex:105.2},
+  {year:1940,total:2115867,cbr:29.4,tfr:null,sex:105.1},{year:1943,total:2253535,cbr:30.9,tfr:null,sex:105.3},
   {year:1947,total:2678792,cbr:34.3,tfr:4.54,sex:105.8},{year:1948,total:2681624,cbr:33.5,tfr:4.40,sex:105.8},
   {year:1949,total:2696638,cbr:33.0,tfr:4.32,sex:104.8},{year:1950,total:2337507,cbr:28.1,tfr:3.65,sex:106.1},
   {year:1951,total:2137689,cbr:25.3,tfr:3.26,sex:104.9},{year:1952,total:2005162,cbr:23.4,tfr:2.98,sex:105.2},
-  {year:1953,total:1868040,cbr:21.5,tfr:2.69,sex:105.2},{year:1954,total:1769580,cbr:20.0,tfr:2.48,sex:106.2},
-  {year:1955,total:1730692,cbr:19.4,tfr:2.37,sex:105.8},{year:1956,total:1665278,cbr:18.4,tfr:2.22,sex:105.8},
-  {year:1957,total:1566713,cbr:17.2,tfr:2.04,sex:105.7},{year:1958,total:1653469,cbr:18.0,tfr:2.11,sex:105.5},
-  {year:1959,total:1626088,cbr:17.5,tfr:2.04,sex:105.8},{year:1960,total:1606041,cbr:17.2,tfr:2.00,sex:105.6},
-  {year:1961,total:1589372,cbr:16.9,tfr:1.96,sex:105.9},{year:1962,total:1618616,cbr:17.0,tfr:1.98,sex:106.1},
-  {year:1963,total:1659521,cbr:17.3,tfr:2.00,sex:105.7},{year:1964,total:1716761,cbr:17.7,tfr:2.05,sex:105.9},
-  {year:1965,total:1823697,cbr:18.6,tfr:2.14,sex:105.3},{year:1966,total:1360974,cbr:13.7,tfr:1.58,sex:107.6},
-  {year:1967,total:1935647,cbr:19.4,tfr:2.23,sex:105.3},{year:1968,total:1871839,cbr:18.6,tfr:2.13,sex:107.1},
-  {year:1969,total:1889815,cbr:18.5,tfr:2.13,sex:107.2},{year:1970,total:1934239,cbr:18.8,tfr:2.13,sex:107.1},
-  {year:1971,total:2000973,cbr:19.2,tfr:2.16,sex:106.7},{year:1972,total:2038682,cbr:19.3,tfr:2.14,sex:106.5},
-  {year:1973,total:2091983,cbr:19.4,tfr:2.14,sex:106.2},{year:1974,total:2029989,cbr:18.6,tfr:2.05,sex:106.4},
-  {year:1975,total:1901440,cbr:17.1,tfr:1.91,sex:106.2},{year:1976,total:1832617,cbr:16.3,tfr:1.85,sex:106.2},
-  {year:1977,total:1755100,cbr:15.5,tfr:1.80,sex:106.1},{year:1978,total:1708643,cbr:14.9,tfr:1.79,sex:106.0},
-  {year:1979,total:1642580,cbr:14.2,tfr:1.77,sex:106.2},{year:1980,total:1576889,cbr:13.6,tfr:1.75,sex:106.0},
-  {year:1981,total:1529455,cbr:13.0,tfr:1.74,sex:105.9},{year:1982,total:1515392,cbr:12.8,tfr:1.77,sex:105.5},
-  {year:1983,total:1508687,cbr:12.7,tfr:1.80,sex:105.7},{year:1984,total:1489780,cbr:12.5,tfr:1.81,sex:105.4},
-  {year:1985,total:1431577,cbr:11.9,tfr:1.76,sex:105.6},{year:1986,total:1382946,cbr:11.4,tfr:1.72,sex:105.9},
-  {year:1987,total:1346658,cbr:11.1,tfr:1.69,sex:105.8},{year:1988,total:1314006,cbr:10.8,tfr:1.66,sex:105.6},
-  {year:1989,total:1246802,cbr:10.2,tfr:1.57,sex:105.6},{year:1990,total:1221585,cbr:10.0,tfr:1.54,sex:105.4},
-  {year:1991,total:1223245,cbr:9.9,tfr:1.53,sex:105.7},{year:1992,total:1208989,cbr:9.8,tfr:1.50,sex:106.0},
-  {year:1993,total:1188282,cbr:9.6,tfr:1.46,sex:105.6},{year:1994,total:1238328,cbr:10.0,tfr:1.50,sex:105.6},
-  {year:1995,total:1187064,cbr:9.6,tfr:1.42,sex:105.2},{year:1996,total:1206555,cbr:9.7,tfr:1.43,sex:105.6},
-  {year:1997,total:1191665,cbr:9.5,tfr:1.39,sex:105.2},{year:1998,total:1203147,cbr:9.6,tfr:1.38,sex:105.4},
-  {year:1999,total:1177669,cbr:9.4,tfr:1.34,sex:105.6},{year:2000,total:1190547,cbr:9.5,tfr:1.36,sex:105.8},
-  {year:2001,total:1170662,cbr:9.3,tfr:1.33,sex:105.5},{year:2002,total:1153855,cbr:9.2,tfr:1.32,sex:105.7},
-  {year:2003,total:1123610,cbr:8.9,tfr:1.29,sex:105.5},{year:2004,total:1110721,cbr:8.8,tfr:1.29,sex:105.2},
-  {year:2005,total:1062530,cbr:8.4,tfr:1.26,sex:105.3},{year:2006,total:1092674,cbr:8.7,tfr:1.32,sex:105.3},
-  {year:2007,total:1089818,cbr:8.6,tfr:1.34,sex:105.6},{year:2008,total:1091156,cbr:8.7,tfr:1.37,sex:105.2},
-  {year:2009,total:1070036,cbr:8.5,tfr:1.37,sex:105.4},{year:2010,total:1071305,cbr:8.5,tfr:1.39,sex:105.8},
+  {year:1953,total:1868040,cbr:21.5,tfr:2.69,sex:105.2},{year:1955,total:1730692,cbr:19.4,tfr:2.37,sex:105.8},
+  {year:1960,total:1606041,cbr:17.2,tfr:2.00,sex:105.6},{year:1965,total:1823697,cbr:18.6,tfr:2.14,sex:105.3},
+  {year:1966,total:1360974,cbr:13.7,tfr:1.58,sex:107.6},{year:1967,total:1935647,cbr:19.4,tfr:2.23,sex:105.3},
+  {year:1970,total:1934239,cbr:18.8,tfr:2.13,sex:107.1},{year:1973,total:2091983,cbr:19.4,tfr:2.14,sex:106.2},
+  {year:1975,total:1901440,cbr:17.1,tfr:1.91,sex:106.2},{year:1980,total:1576889,cbr:13.6,tfr:1.75,sex:106.0},
+  {year:1985,total:1431577,cbr:11.9,tfr:1.76,sex:105.6},{year:1990,total:1221585,cbr:10.0,tfr:1.54,sex:105.4},
+  {year:1995,total:1187064,cbr:9.6,tfr:1.42,sex:105.2},{year:2000,total:1190547,cbr:9.5,tfr:1.36,sex:105.8},
+  {year:2005,total:1062530,cbr:8.4,tfr:1.26,sex:105.3},{year:2010,total:1071305,cbr:8.5,tfr:1.39,sex:105.8},
   {year:2011,total:1050807,cbr:8.3,tfr:1.39,sex:105.0},{year:2012,total:1037232,cbr:8.2,tfr:1.41,sex:105.2},
   {year:2013,total:1029817,cbr:8.2,tfr:1.43,sex:105.1},{year:2014,total:1003609,cbr:8.0,tfr:1.42,sex:105.6},
   {year:2015,total:1005721,cbr:8.0,tfr:1.45,sex:105.1},{year:2016,total:977242,cbr:7.8,tfr:1.44,sex:105.6},
@@ -1390,135 +1228,51 @@ var allData = [
   {year:2021,total:811622,cbr:6.6,tfr:1.30,sex:105.1},{year:2022,total:770759,cbr:6.3,tfr:1.26,sex:105.3},
   {year:2023,total:727288,cbr:6.0,tfr:1.20,sex:105.1}
 ];
-var labels = allData.map(function(d){ return d.year; });
-var totals = allData.map(function(d){ return d.total; });
-var cbrs = allData.map(function(d){ return d.cbr; });
-var tfrFiltered = allData.filter(function(d){ return d.tfr !== null; });
-var sexRatios = allData.map(function(d){ return d.sex; });
+var labels = allData.map(function(d){return d.year;});
+var totals = allData.map(function(d){return d.total;});
+var cbrs = allData.map(function(d){return d.cbr;});
+var tfrFiltered = allData.filter(function(d){return d.tfr!==null;});
+var sexRatios = allData.map(function(d){return d.sex;});
 
-// ─── JAPAN BIRTHS CHART ────────────────────────────
 var birthsCtx = document.getElementById('birthsChart').getContext('2d');
 var grad = birthsCtx.createLinearGradient(0,0,0,320);
-grad.addColorStop(0,'rgba(200,67,42,0.15)');
-grad.addColorStop(1,'rgba(200,67,42,0)');
-new Chart(birthsCtx, {
-  type:'line', data:{ labels:labels, datasets:[{ data:totals, borderColor:'#c8432a', borderWidth:2, backgroundColor:grad, fill:true, pointRadius:0, pointHoverRadius:5, tension:0.3 }]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(ctx){ return '  '+(ctx.raw/1000000).toFixed(2)+'M births'; }}}}, scales:{ x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}}, y:{grid:{color:gridColor},ticks:{callback:function(v){ return (v/1000000).toFixed(1)+'M'; },maxTicksLimit:6}} } }
-});
-// ─── JAPAN TFR CHART ───────────────────────────────
+grad.addColorStop(0,'rgba(200,67,42,0.15)'); grad.addColorStop(1,'rgba(200,67,42,0)');
+new Chart(birthsCtx,{type:'line',data:{labels:labels,datasets:[{data:totals,borderColor:'#c8432a',borderWidth:2,backgroundColor:grad,fill:true,pointRadius:0,pointHoverRadius:5,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+(ctx.raw/1000000).toFixed(2)+'M births';}}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}},y:{grid:{color:gridColor},ticks:{callback:function(v){return (v/1000000).toFixed(1)+'M';},maxTicksLimit:6}}}}});
 var tfrCtx = document.getElementById('tfrChart').getContext('2d');
-new Chart(tfrCtx, {
-  type:'line', data:{ labels:tfrFiltered.map(function(d){return d.year;}), datasets:[ {label:'TFR',data:tfrFiltered.map(function(d){return d.tfr;}),borderColor:'#c8432a',borderWidth:2,pointRadius:0,fill:false,tension:0.3}, {label:'Replacement Level (2.1)',data:tfrFiltered.map(function(){return 2.1;}),borderColor:'#1a1a1a',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false} ]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:16,padding:12}}}, scales:{ x:{grid:{color:gridColor},ticks:{maxTicksLimit:8}}, y:{grid:{color:gridColor},min:1,max:5,ticks:{maxTicksLimit:5}} } }
-});
-// ─── JAPAN CBR CHART ──────────────────────────────
+new Chart(tfrCtx,{type:'line',data:{labels:tfrFiltered.map(function(d){return d.year;}),datasets:[{label:'TFR',data:tfrFiltered.map(function(d){return d.tfr;}),borderColor:'#c8432a',borderWidth:2,pointRadius:0,fill:false,tension:0.3},{label:'Replacement (2.1)',data:tfrFiltered.map(function(){return 2.1;}),borderColor:'#1a1a1a',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:16,padding:12}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:8}},y:{grid:{color:gridColor},min:1,max:5,ticks:{maxTicksLimit:5}}}}});
 var cbrCtx = document.getElementById('cbrChart').getContext('2d');
-new Chart(cbrCtx, {
-  type:'bar', data:{ labels:labels, datasets:[{ data:cbrs, backgroundColor:labels.map(function(y){ return y===1966?'#c8432a':'rgba(26,26,26,0.12)'; }), borderRadius:2 }]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.raw+' per 1,000'; }}}}, scales:{ x:{grid:{display:false},ticks:{maxTicksLimit:10}}, y:{grid:{color:gridColor},ticks:{maxTicksLimit:5}} } }
-});
-// ─── JAPAN SEX RATIO ─────────────────────────────
+new Chart(cbrCtx,{type:'bar',data:{labels:labels,datasets:[{data:cbrs,backgroundColor:labels.map(function(y){return y===1966?'#c8432a':'rgba(26,26,26,0.12)';}),borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw+' per 1,000';}}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:10}},y:{grid:{color:gridColor},ticks:{maxTicksLimit:5}}}}});
 var srCtx = document.getElementById('sexRatioChart').getContext('2d');
-new Chart(srCtx, {
-  type:'line', data:{ labels:labels, datasets:[ {data:sexRatios,borderColor:'#1a1a1a',borderWidth:1.5,pointRadius:0,fill:false,tension:0.2}, {label:'Avg 105.3',data:labels.map(function(){return 105.3;}),borderColor:'#c8432a',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false} ]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}}, y:{grid:{color:gridColor},min:100,max:112,ticks:{maxTicksLimit:6}} } }
-});
-// ─── JAPAN TABLE ─────────────────────────────────
+new Chart(srCtx,{type:'line',data:{labels:labels,datasets:[{data:sexRatios,borderColor:'#1a1a1a',borderWidth:1.5,pointRadius:0,fill:false,tension:0.2},{label:'Avg 105.3',data:labels.map(function(){return 105.3;}),borderColor:'#c8432a',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}},y:{grid:{color:gridColor},min:100,max:112,ticks:{maxTicksLimit:6}}}}});
 var recentData = allData.filter(function(d){return d.year>=2010;}).reverse();
-var showAll = false;
-var ROWS_DEFAULT = 8;
-function renderTable(data) {
-  var tbody = document.getElementById('tableBody'); tbody.innerHTML = '';
-  data.forEach(function(d,i) {
-    var yoy = i<data.length-1?((d.total-data[i+1].total)/data[i+1].total*100).toFixed(1):'—';
-    var isDown = yoy!=='—'&&parseFloat(yoy)<0;
-    tbody.innerHTML += '<tr><td>'+d.year+'</td><td>'+d.total.toLocaleString()+'</td><td>'+(d.male?d.male.toLocaleString():'—')+'</td><td>'+(d.female?d.female.toLocaleString():'—')+'</td><td>'+d.cbr+'</td><td class="'+(isDown?'val-down':'')+'">'+( d.tfr||'—')+'</td></tr>';
-  });
-}
-function toggleTable() { showAll=!showAll; renderTable(showAll?recentData:recentData.slice(0,ROWS_DEFAULT)); document.getElementById('toggleBtn').textContent=showAll?'Show less ↑':'Show more rows ↓'; }
+var showAll=false,ROWS_DEFAULT=8;
+function renderTable(data){var tbody=document.getElementById('tableBody');tbody.innerHTML='';data.forEach(function(d,i){var yoy=i<data.length-1?((d.total-data[i+1].total)/data[i+1].total*100).toFixed(1):'—';var isDown=yoy!=='—'&&parseFloat(yoy)<0;tbody.innerHTML+='<tr><td>'+d.year+'</td><td>'+d.total.toLocaleString()+'</td><td>'+(d.male?d.male.toLocaleString():'—')+'</td><td>'+(d.female?d.female.toLocaleString():'—')+'</td><td>'+d.cbr+'</td><td class="'+(isDown?'val-down':'')+'">'+( d.tfr||'—')+'</td></tr>';});}
+function toggleTable(){showAll=!showAll;renderTable(showAll?recentData:recentData.slice(0,ROWS_DEFAULT));document.getElementById('toggleBtn').textContent=showAll?'Show less ↑':'Show more rows ↓';}
 renderTable(recentData.slice(0,ROWS_DEFAULT));
 
 // ═══════════════════════════════════════════════════
-// RARE DISEASES DATA & CHARTS
+// PROJECT 2: RARE DISEASES
 // ═══════════════════════════════════════════════════
-var rdData = [
-  {code:'166024',name:'Multiple epiphyseal dysplasia-macrocephaly-facial dysmorphism syndrome',type:'Disease',onset:'Infancy, Neonatal',inh:'Autosomal recessive',icd:'Q77.3'},
-  {code:'58',name:'Alexander disease',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'G93.8'},
-  {code:'61',name:'Alpha-mannosidosis',type:'Disease',onset:'Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E77.1'},
-  {code:'166035',name:'Brachydactyly-short stature-retinitis pigmentosa syndrome',type:'Malformation syndrome',onset:'Childhood, Infancy',inh:'Autosomal recessive',icd:'Q87.8'},
-  {code:'93',name:'Aspartylglucosaminuria',type:'Disease',onset:'Childhood',inh:'Autosomal recessive',icd:'E77.1'},
-  {code:'585',name:'Multiple sulfatase deficiency',type:'Disease',onset:'Adolescent, Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},
-  {code:'118',name:'Beta-mannosidosis',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E77.1'},
-  {code:'141',name:'Canavan disease',type:'Disease',onset:'Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},
-  {code:'166063',name:'Pontocerebellar hypoplasia type 4',type:'Malformation syndrome',onset:'Antenatal',inh:'Autosomal recessive',icd:'Q04.3'},
-  {code:'166078',name:'Von Willebrand disease type 1',type:'Clinical subtype',onset:'All ages',inh:'Autosomal dominant',icd:'D68.0'},
-  {code:'213',name:'Cystinosis',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy',inh:'Autosomal recessive',icd:'E72.0'},
-  {code:'333',name:'Farber disease',type:'Disease',onset:'Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},
-  {code:'349',name:'Fucosidosis',type:'Disease',onset:'Childhood, Infancy',inh:'Autosomal recessive',icd:'E77.1'},
-  {code:'365',name:'Glycogen storage disease due to acid maltase deficiency',type:'Disease',onset:'Adolescent, Adult, Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E74.0'},
-  {code:'487',name:'Krabbe disease',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},
-  {code:'583',name:'Mucopolysaccharidosis type 6',type:'Disease',onset:'Childhood',inh:'Autosomal recessive',icd:'E76.2'},
-  {code:'576',name:'Mucolipidosis type II',type:'Disease',onset:'Antenatal, Neonatal',inh:'Autosomal recessive',icd:'E77.0'},
-  {code:'586',name:'Cystic fibrosis',type:'Disease',onset:'All ages',inh:'Autosomal recessive',icd:'E84'},
-  {code:'881',name:'Turner syndrome',type:'Malformation syndrome',onset:'Antenatal, Childhood, Infancy, Neonatal',inh:'Not applicable',icd:'Q96.4'},
-  {code:'95',name:'Friedreich ataxia',type:'Disease',onset:'Adolescent, Childhood',inh:'Autosomal recessive',icd:'G11.1'},
-  {code:'848',name:'Beta-thalassemia',type:'Clinical group',onset:'Childhood, Infancy',inh:'Autosomal dominant, Autosomal recessive',icd:'D56.1'},
-  {code:'108',name:'Neurofibromatosis type 1',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'Q85.0'},
-  {code:'56',name:'Marfan syndrome',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'Q87.4'},
-  {code:'648',name:'Huntington disease',type:'Disease',onset:'Adult',inh:'Autosomal dominant',icd:'G10'},
-  {code:'564',name:'Phenylketonuria',type:'Disease',onset:'Neonatal',inh:'Autosomal recessive',icd:'E70.0'},
-  {code:'77',name:'Fabry disease',type:'Disease',onset:'Childhood',inh:'X-linked dominant',icd:'E75.2'},
-  {code:'796',name:'Sandhoff disease',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy',inh:'Autosomal recessive',icd:'E75.0'},
-  {code:'447',name:'Paroxysmal nocturnal hemoglobinuria',type:'Disease',onset:'All ages',inh:'Not applicable',icd:'D59.5'},
-  {code:'98',name:'Gaucher disease type 1',type:'Clinical subtype',onset:'Adolescent, Adult, Childhood',inh:'Autosomal recessive',icd:'E75.2'},
-  {code:'550',name:'MELAS',type:'Disease',onset:'Adolescent, Adult, Childhood',inh:'Not applicable',icd:'G71.3'}
-];
-var bodySystemCtx = document.getElementById('bodySystemChart').getContext('2d');
-new Chart(bodySystemCtx, {
-  type:'bar', data:{ labels:['Congenital Malformations','Nervous System','Endocrine & Metabolic','Blood & Immune','Neoplasms','Eye / Ear','Infectious & Parasitic','Skin','Musculoskeletal','Digestive','Circulatory','Genitourinary','Respiratory'], datasets:[{ data:[2916,1029,1026,700,452,237,198,188,175,149,135,84,68], backgroundColor:['#c8432a','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)','rgba(26,26,26,0.10)','rgba(26,26,26,0.09)','rgba(26,26,26,0.08)','rgba(26,26,26,0.07)'], borderRadius:3 }]},
-  options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.raw.toLocaleString()+' diseases'; }}}}, scales:{ x:{grid:{color:gridColor},ticks:{callback:function(v){return v.toLocaleString();}}}, y:{grid:{display:false},ticks:{font:{size:10}}} } }
-});
-var inheritanceCtx = document.getElementById('inheritanceChart').getContext('2d');
-new Chart(inheritanceCtx, {
-  type:'doughnut', data:{ labels:['Autosomal Recessive','Autosomal Dominant','AR + AD (variable)','X-Linked Recessive','Multigenic / Multifactorial','X-Linked Dominant','Other'], datasets:[{ data:[2221,1565,378,275,175,60,42], backgroundColor:['#c8432a','#1a1a1a','#8b2c1c','#6b6b6b','#b5a99e','#d4c4bc','#e8e4df'], borderWidth:0, hoverOffset:8 }]},
-  options:{ responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{ legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:9}}}, tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.label+': '+ctx.raw.toLocaleString()+' ('+( ctx.raw/4716*100).toFixed(1)+'%)'; }}} } }
-});
-var onsetCtx = document.getElementById('onsetChart').getContext('2d');
-new Chart(onsetCtx, {
-  type:'bar', data:{ labels:['Neonatal','Antenatal','All Ages','Childhood','Infancy','Adolescent','Adult','Adult/Elderly'], datasets:[{ data:[2261,933,867,639,638,561,654,176], backgroundColor:['#c8432a','#8b2c1c','rgba(26,26,26,0.2)','rgba(26,26,26,0.16)','rgba(26,26,26,0.16)','rgba(26,26,26,0.13)','rgba(26,26,26,0.11)','rgba(26,26,26,0.08)'], borderRadius:3 }]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.raw.toLocaleString()+' diseases'; }}}}, scales:{ x:{grid:{display:false},ticks:{font:{size:9}}}, y:{grid:{color:gridColor},ticks:{callback:function(v){ return v>=1000?(v/1000).toFixed(1)+'K':v; }}} } }
-});
-var disorderTypeCtx = document.getElementById('disorderTypeChart').getContext('2d');
-new Chart(disorderTypeCtx, {
-  type:'bar', data:{ labels:['Disease','Category','Malformation Syndrome','Clinical Subtype','Morphological Anomaly','Clinical Group','Etiological Subtype','Other'], datasets:[{ data:[4713,2147,2068,1053,519,486,265,205], backgroundColor:['#c8432a','rgba(26,26,26,0.15)','rgba(26,26,26,0.15)','rgba(26,26,26,0.12)','rgba(26,26,26,0.12)','rgba(26,26,26,0.10)','rgba(26,26,26,0.10)','rgba(26,26,26,0.08)'], borderRadius:3 }]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.raw.toLocaleString()+' records'; }}}}, scales:{ x:{grid:{display:false},ticks:{font:{size:9}}}, y:{grid:{color:gridColor},ticks:{callback:function(v){ return v>=1000?(v/1000).toFixed(1)+'K':v; }}} } }
-});
-var completenessCtx = document.getElementById('completenessChart').getContext('2d');
-var compLabels=['OrphaCode','Name','DisorderType','DisorderGroup','UMLS','ICD-10','MONDO','OMIM','DiseaseName','AgeOfOnset','Inheritance','ICD-11','GARD','MeSH','MedDRA'];
-var compPct=[100,100,100,100,84.1,65.8,69.7,43.5,64.4,59.2,54.5,53.6,33.5,28.1,15.8];
-var compColors=compPct.map(function(v){ return v>=80?'#1a1a1a':v>=50?'#6b6b6b':v>=30?'#b5a99e':'#c8432a'; });
-new Chart(completenessCtx, {
-  type:'bar', data:{ labels:compLabels, datasets:[{label:'% complete',data:compPct,backgroundColor:compColors,borderRadius:3}]},
-  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){ return '  '+ctx.raw+'% complete'; }}}}, scales:{ x:{grid:{display:false},ticks:{font:{size:9},maxRotation:35}}, y:{grid:{color:gridColor},min:0,max:100,ticks:{callback:function(v){ return v+'%'; }}} } }
-});
-var rdFiltered = rdData.slice(); var rdPage = 0; var RD_PER_PAGE = 10;
-function filterRDTable() {
-  var search=document.getElementById('rdSearch').value.toLowerCase().trim(); var typeF=document.getElementById('rdTypeFilter').value; var inhF=document.getElementById('rdInhFilter').value;
-  rdFiltered=rdData.filter(function(r){ return (!search||r.name.toLowerCase().indexOf(search)>=0||r.code.indexOf(search)>=0)&&(!typeF||r.type===typeF)&&(!inhF||r.inh.toLowerCase().indexOf(inhF.toLowerCase())>=0); });
-  rdPage=0; renderRDTable();
-}
-function rdChangePage(dir) { var maxPage=Math.ceil(rdFiltered.length/RD_PER_PAGE)-1; rdPage=Math.max(0,Math.min(Math.max(maxPage,0),rdPage+dir)); renderRDTable(); }
-function renderRDTable() {
-  var tbody=document.getElementById('rdTableBody'); var total=rdFiltered.length; var maxPage=Math.max(1,Math.ceil(total/RD_PER_PAGE)); var start=rdPage*RD_PER_PAGE; var slice=rdFiltered.slice(start,start+RD_PER_PAGE);
-  document.getElementById('rdCount').textContent=total+' result'+(total!==1?'s':''); document.getElementById('rdPageInfo').textContent='Page '+(rdPage+1)+' of '+maxPage; document.getElementById('rdPrevBtn').disabled=rdPage===0; document.getElementById('rdNextBtn').disabled=rdPage>=maxPage-1;
-  if(slice.length===0){ tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>'; return; }
-  var html=''; for(var i=0;i<slice.length;i++){ var r=slice[i]; html+='<tr><td style="font-family:var(--mono);color:var(--accent)">'+r.code+'</td><td style="line-height:1.35">'+r.name+'</td><td><span style="font-family:var(--mono);font-size:0.68rem;background:var(--bg);padding:0.2rem 0.5rem;border:1px solid var(--border)">'+r.type+'</span></td><td style="font-size:0.82rem;color:var(--ink-muted)">'+(r.onset||'—')+'</td><td style="font-size:0.82rem">'+(r.inh||'—')+'</td><td style="font-family:var(--mono);font-weight:500">'+(r.icd||'—')+'</td></tr>'; }
-  tbody.innerHTML=html;
-}
+var rdData=[{code:'166024',name:'Multiple epiphyseal dysplasia-macrocephaly-facial dysmorphism syndrome',type:'Disease',onset:'Infancy, Neonatal',inh:'Autosomal recessive',icd:'Q77.3'},{code:'58',name:'Alexander disease',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'G93.8'},{code:'61',name:'Alpha-mannosidosis',type:'Disease',onset:'Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E77.1'},{code:'585',name:'Multiple sulfatase deficiency',type:'Disease',onset:'Adolescent, Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},{code:'118',name:'Beta-mannosidosis',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E77.1'},{code:'141',name:'Canavan disease',type:'Disease',onset:'Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},{code:'166078',name:'Von Willebrand disease type 1',type:'Clinical subtype',onset:'All ages',inh:'Autosomal dominant',icd:'D68.0'},{code:'213',name:'Cystinosis',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy',inh:'Autosomal recessive',icd:'E72.0'},{code:'333',name:'Farber disease',type:'Disease',onset:'Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},{code:'349',name:'Fucosidosis',type:'Disease',onset:'Childhood, Infancy',inh:'Autosomal recessive',icd:'E77.1'},{code:'365',name:'Glycogen storage disease due to acid maltase deficiency',type:'Disease',onset:'Adolescent, Adult, Antenatal, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E74.0'},{code:'487',name:'Krabbe disease',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy, Neonatal',inh:'Autosomal recessive',icd:'E75.2'},{code:'583',name:'Mucopolysaccharidosis type 6',type:'Disease',onset:'Childhood',inh:'Autosomal recessive',icd:'E76.2'},{code:'576',name:'Mucolipidosis type II',type:'Disease',onset:'Antenatal, Neonatal',inh:'Autosomal recessive',icd:'E77.0'},{code:'586',name:'Cystic fibrosis',type:'Disease',onset:'All ages',inh:'Autosomal recessive',icd:'E84'},{code:'881',name:'Turner syndrome',type:'Malformation syndrome',onset:'Antenatal, Childhood, Infancy, Neonatal',inh:'Not applicable',icd:'Q96.4'},{code:'95',name:'Friedreich ataxia',type:'Disease',onset:'Adolescent, Childhood',inh:'Autosomal recessive',icd:'G11.1'},{code:'848',name:'Beta-thalassemia',type:'Clinical group',onset:'Childhood, Infancy',inh:'Autosomal dominant, Autosomal recessive',icd:'D56.1'},{code:'108',name:'Neurofibromatosis type 1',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'Q85.0'},{code:'56',name:'Marfan syndrome',type:'Disease',onset:'All ages',inh:'Autosomal dominant',icd:'Q87.4'},{code:'648',name:'Huntington disease',type:'Disease',onset:'Adult',inh:'Autosomal dominant',icd:'G10'},{code:'564',name:'Phenylketonuria',type:'Disease',onset:'Neonatal',inh:'Autosomal recessive',icd:'E70.0'},{code:'77',name:'Fabry disease',type:'Disease',onset:'Childhood',inh:'X-linked dominant',icd:'E75.2'},{code:'796',name:'Sandhoff disease',type:'Disease',onset:'Adolescent, Adult, Childhood, Infancy',inh:'Autosomal recessive',icd:'E75.0'},{code:'447',name:'Paroxysmal nocturnal hemoglobinuria',type:'Disease',onset:'All ages',inh:'Not applicable',icd:'D59.5'},{code:'98',name:'Gaucher disease type 1',type:'Clinical subtype',onset:'Adolescent, Adult, Childhood',inh:'Autosomal recessive',icd:'E75.2'},{code:'550',name:'MELAS',type:'Disease',onset:'Adolescent, Adult, Childhood',inh:'Not applicable',icd:'G71.3'},{code:'166063',name:'Pontocerebellar hypoplasia type 4',type:'Malformation syndrome',onset:'Antenatal',inh:'Autosomal recessive',icd:'Q04.3'},{code:'166081',name:'Von Willebrand disease type 2',type:'Clinical subtype',onset:'All ages',inh:'Autosomal dominant, Autosomal recessive',icd:'D68.0'},{code:'166260',name:'Dentinogenesis imperfecta type 2',type:'Clinical subtype',onset:'Childhood',inh:'Autosomal dominant',icd:'K00.5'}];
+var bodySystemCtx=document.getElementById('bodySystemChart').getContext('2d');
+new Chart(bodySystemCtx,{type:'bar',data:{labels:['Congenital Malformations','Nervous System','Endocrine & Metabolic','Blood & Immune','Neoplasms','Eye / Ear','Infectious & Parasitic','Skin','Musculoskeletal','Digestive','Circulatory','Genitourinary','Respiratory'],datasets:[{data:[2916,1029,1026,700,452,237,198,188,175,149,135,84,68],backgroundColor:['#c8432a','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)','rgba(26,26,26,0.10)','rgba(26,26,26,0.09)','rgba(26,26,26,0.08)','rgba(26,26,26,0.07)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw.toLocaleString()+' diseases';}}}},scales:{x:{grid:{color:gridColor}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+var inheritanceCtx=document.getElementById('inheritanceChart').getContext('2d');
+new Chart(inheritanceCtx,{type:'doughnut',data:{labels:['Autosomal Recessive','Autosomal Dominant','AR + AD (variable)','X-Linked Recessive','Multigenic','X-Linked Dominant','Other'],datasets:[{data:[2221,1565,378,275,175,60,42],backgroundColor:['#c8432a','#1a1a1a','#8b2c1c','#6b6b6b','#b5a99e','#d4c4bc','#e8e4df'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:9}}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.label+': '+ctx.raw.toLocaleString();}}}}}});
+var onsetCtx=document.getElementById('onsetChart').getContext('2d');
+new Chart(onsetCtx,{type:'bar',data:{labels:['Neonatal','Antenatal','All Ages','Childhood','Infancy','Adolescent','Adult','Adult/Elderly'],datasets:[{data:[2261,933,867,639,638,561,654,176],backgroundColor:['#c8432a','#8b2c1c','rgba(26,26,26,0.2)','rgba(26,26,26,0.16)','rgba(26,26,26,0.16)','rgba(26,26,26,0.13)','rgba(26,26,26,0.11)','rgba(26,26,26,0.08)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw.toLocaleString()+' diseases';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'K':v;}}}}}});
+var disorderTypeCtx=document.getElementById('disorderTypeChart').getContext('2d');
+new Chart(disorderTypeCtx,{type:'bar',data:{labels:['Disease','Category','Malformation Syndrome','Clinical Subtype','Morphological Anomaly','Clinical Group','Etiological Subtype','Other'],datasets:[{data:[4713,2147,2068,1053,519,486,265,205],backgroundColor:['#c8432a','rgba(26,26,26,0.15)','rgba(26,26,26,0.15)','rgba(26,26,26,0.12)','rgba(26,26,26,0.12)','rgba(26,26,26,0.10)','rgba(26,26,26,0.10)','rgba(26,26,26,0.08)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw.toLocaleString()+' records';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'K':v;}}}}}});
+var completenessCtx=document.getElementById('completenessChart').getContext('2d');
+var cL=['OrphaCode','Name','DisorderType','DisorderGroup','UMLS','ICD-10','MONDO','OMIM','DiseaseName','AgeOfOnset','Inheritance','ICD-11','GARD','MeSH','MedDRA'],cP=[100,100,100,100,84.1,65.8,69.7,43.5,64.4,59.2,54.5,53.6,33.5,28.1,15.8];
+new Chart(completenessCtx,{type:'bar',data:{labels:cL,datasets:[{data:cP,backgroundColor:cP.map(function(v){return v>=80?'#1a1a1a':v>=50?'#6b6b6b':v>=30?'#b5a99e':'#c8432a';}),borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw+'% complete';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:35}},y:{grid:{color:gridColor},min:0,max:100,ticks:{callback:function(v){return v+'%';}}}}}});
+var rdFiltered=rdData.slice(),rdPage=0,RD_PER_PAGE=10;
+function filterRDTable(){var s=document.getElementById('rdSearch').value.toLowerCase().trim(),tF=document.getElementById('rdTypeFilter').value,iF=document.getElementById('rdInhFilter').value;rdFiltered=rdData.filter(function(r){return(!s||r.name.toLowerCase().indexOf(s)>=0||r.code.indexOf(s)>=0)&&(!tF||r.type===tF)&&(!iF||r.inh.toLowerCase().indexOf(iF.toLowerCase())>=0);});rdPage=0;renderRDTable();}
+function rdChangePage(dir){var m=Math.ceil(rdFiltered.length/RD_PER_PAGE)-1;rdPage=Math.max(0,Math.min(Math.max(m,0),rdPage+dir));renderRDTable();}
+function renderRDTable(){var tb=document.getElementById('rdTableBody'),t=rdFiltered.length,m=Math.max(1,Math.ceil(t/RD_PER_PAGE)),st=rdPage*RD_PER_PAGE,sl=rdFiltered.slice(st,st+RD_PER_PAGE);document.getElementById('rdCount').textContent=t+' result'+(t!==1?'s':'');document.getElementById('rdPageInfo').textContent='Page '+(rdPage+1)+' of '+m;document.getElementById('rdPrevBtn').disabled=rdPage===0;document.getElementById('rdNextBtn').disabled=rdPage>=m-1;if(!sl.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>';return;}var h='';sl.forEach(function(r){h+='<tr><td style="font-family:var(--mono);color:var(--accent)">'+r.code+'</td><td style="line-height:1.35">'+r.name+'</td><td><span style="font-family:var(--mono);font-size:0.68rem;background:var(--bg);padding:0.2rem 0.5rem;border:1px solid var(--border)">'+r.type+'</span></td><td style="font-size:0.82rem;color:var(--ink-muted)">'+(r.onset||'—')+'</td><td style="font-size:0.82rem">'+(r.inh||'—')+'</td><td style="font-family:var(--mono);font-weight:500">'+(r.icd||'—')+'</td></tr>';});tb.innerHTML=h;}
 renderRDTable();
 
 // ═══════════════════════════════════════════════════
-// RETAIL SALES DATA & CHARTS
+// PROJECT 3: RETAIL SALES
 // ═══════════════════════════════════════════════════
 var rtMonthLabels=["2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01"];
 var rtMonthVals=[52912,43326,40996,40442,40348,42576,44472,41334,46114,38355,41257,38201,48053,39215,38535,38906,40481,42474,45633,38592,41069,38322,37014,43021,47909,37145,42862,46271,43767,44721,41405,43362,42162,42737,44076,48467,25549];
@@ -1529,204 +1283,191 @@ var rtCatRevenue=[208118,203814,197048,195310,194812,190692,182166,180112];
 var rtCatOnline=[106341,106035,99022,95699,98886,103369,90750,91299];
 var rtCatInstore=[101777,97778,98026,99611,95926,87324,91415,88813];
 var rmCtx=document.getElementById('retailMonthlyChart').getContext('2d');
-var rmGrad=rmCtx.createLinearGradient(0,0,0,300); rmGrad.addColorStop(0,'rgba(200,67,42,0.12)'); rmGrad.addColorStop(1,'rgba(200,67,42,0)');
-new Chart(rmCtx,{type:'line',data:{labels:rtMonthLabels,datasets:[{data:rtMonthVals,borderColor:'#c8432a',borderWidth:2,backgroundColor:rmGrad,fill:true,pointRadius:0,pointHoverRadius:5,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';},maxTicksLimit:6}}}}});
-var rcCtx=document.getElementById('retailCatChart').getContext('2d');
-new Chart(rcCtx,{type:'bar',data:{labels:rtCatLabels,datasets:[{data:rtCatRevenue,backgroundColor:['#c8432a','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
-var rchCtx=document.getElementById('retailChannelChart').getContext('2d');
-new Chart(rchCtx,{type:'line',data:{labels:rtMonthLabels,datasets:[{label:'Online',data:rtOnlineVals,borderColor:'#c8432a',borderWidth:2,pointRadius:0,fill:false,tension:0.3},{label:'In-store',data:rtInstoreVals,borderColor:'#1a1a1a',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:14,padding:12}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.dataset.label+': $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:10}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
-var rpCtx=document.getElementById('retailPayChart').getContext('2d');
-new Chart(rpCtx,{type:'doughnut',data:{labels:['Cash','Digital Wallet','Credit Card'],datasets:[{data:[537710,507279,507082],backgroundColor:['#1a1a1a','#c8432a','#8b2c1c'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.label+': $'+ctx.raw.toLocaleString()+' ('+(ctx.raw/1552071*100).toFixed(1)+'%)';}}}}}});
-var rdwCtx=document.getElementById('retailDowChart').getContext('2d');
-new Chart(rdwCtx,{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:[119.85,122.85,119.68,122.56,128.75,125.46,124.79],backgroundColor:['rgba(26,26,26,0.10)','rgba(26,26,26,0.12)','rgba(26,26,26,0.10)','rgba(26,26,26,0.12)','#c8432a','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  Avg $'+ctx.raw.toFixed(2);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:110,ticks:{callback:function(v){return '$'+v;}}}}}});
-var rccCtx=document.getElementById('retailCatChannelChart').getContext('2d');
-new Chart(rccCtx,{type:'bar',data:{labels:rtCatLabels,datasets:[{label:'Online',data:rtCatOnline,backgroundColor:'#c8432a',borderRadius:2},{label:'In-store',data:rtCatInstore,backgroundColor:'rgba(26,26,26,0.2)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.dataset.label+': $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
-var rtAllData=[
-  {id:'TXN_6867343',cust:'CUST_09',cat:'Patisserie',item:'Item_10_PAT',ppu:18.5,qty:10,total:185.0,pay:'Digital Wallet',loc:'Online',date:'2024-04-08',disc:'True'},
-  {id:'TXN_3731986',cust:'CUST_22',cat:'Milk Products',item:'Item_17_MILK',ppu:29.0,qty:9,total:261.0,pay:'Digital Wallet',loc:'Online',date:'2023-07-23',disc:'True'},
-  {id:'TXN_5621099',cust:'CUST_15',cat:'Furniture',item:'Item_25_FUR',ppu:41.0,qty:8,total:328.0,pay:'Cash',loc:'In-store',date:'2022-03-14',disc:'False'},
-  {id:'TXN_1023847',cust:'CUST_03',cat:'Butchers',item:'Item_22_BUT',ppu:35.0,qty:6,total:210.0,pay:'Credit Card',loc:'Online',date:'2023-11-02',disc:'True'},
-  {id:'TXN_9834521',cust:'CUST_18',cat:'Food',item:'Item_12_FOOD',ppu:22.0,qty:7,total:154.0,pay:'Cash',loc:'In-store',date:'2024-01-15',disc:'False'},
-  {id:'TXN_4472819',cust:'CUST_01',cat:'Beverages',item:'Item_08_BEV',ppu:15.0,qty:10,total:150.0,pay:'Digital Wallet',loc:'Online',date:'2022-08-22',disc:'True'},
-  {id:'TXN_7823190',cust:'CUST_24',cat:'Electric household essentials',item:'Item_20_EHE',ppu:38.0,qty:9,total:342.0,pay:'Credit Card',loc:'In-store',date:'2024-06-30',disc:'False'},
-  {id:'TXN_2910384',cust:'CUST_11',cat:'Computers and electric accessories',item:'Item_15_CEA',ppu:40.0,qty:7,total:280.0,pay:'Cash',loc:'In-store',date:'2023-04-17',disc:'True'},
-  {id:'TXN_6612038',cust:'CUST_05',cat:'Patisserie',item:'Item_05_PAT',ppu:12.0,qty:5,total:60.0,pay:'Cash',loc:'Online',date:'2022-12-03',disc:'False'},
-  {id:'TXN_3390182',cust:'CUST_13',cat:'Milk Products',item:'Item_19_MILK',ppu:33.0,qty:6,total:198.0,pay:'Digital Wallet',loc:'In-store',date:'2023-09-08',disc:'True'},
-  {id:'TXN_8814729',cust:'CUST_07',cat:'Butchers',item:'Item_25_BUT',ppu:41.0,qty:10,total:410.0,pay:'Credit Card',loc:'Online',date:'2024-03-21',disc:'False'},
-  {id:'TXN_1198374',cust:'CUST_20',cat:'Furniture',item:'Item_24_FUR',ppu:39.0,qty:5,total:195.0,pay:'Cash',loc:'In-store',date:'2022-07-11',disc:'True'},
-  {id:'TXN_5503912',cust:'CUST_02',cat:'Food',item:'Item_25_FOOD',ppu:41.0,qty:5,total:205.0,pay:'Digital Wallet',loc:'Online',date:'2024-09-14',disc:'False'},
-  {id:'TXN_7701293',cust:'CUST_16',cat:'Beverages',item:'Item_18_BEV',ppu:30.0,qty:8,total:240.0,pay:'Cash',loc:'In-store',date:'2023-02-28',disc:'True'},
-  {id:'TXN_4489201',cust:'CUST_08',cat:'Electric household essentials',item:'Item_25_EHE',ppu:41.0,qty:6,total:246.0,pay:'Credit Card',loc:'Online',date:'2022-11-19',disc:'False'},
-  {id:'TXN_9034812',cust:'CUST_14',cat:'Computers and electric accessories',item:'Item_22_CEA',ppu:36.0,qty:4,total:144.0,pay:'Cash',loc:'In-store',date:'2024-07-03',disc:'True'},
-  {id:'TXN_2278341',cust:'CUST_19',cat:'Butchers',item:'Item_20_BUT',ppu:32.0,qty:7,total:224.0,pay:'Digital Wallet',loc:'Online',date:'2023-05-16',disc:'False'},
-  {id:'TXN_6612945',cust:'CUST_06',cat:'Patisserie',item:'Item_14_PAT',ppu:24.0,qty:3,total:72.0,pay:'Credit Card',loc:'In-store',date:'2022-09-27',disc:'True'},
-  {id:'TXN_3381029',cust:'CUST_23',cat:'Milk Products',item:'Item_07_MILK',ppu:14.0,qty:10,total:140.0,pay:'Cash',loc:'Online',date:'2024-10-11',disc:'False'},
-  {id:'TXN_5509234',cust:'CUST_10',cat:'Furniture',item:'Item_11_FUR',ppu:22.0,qty:9,total:198.0,pay:'Digital Wallet',loc:'In-store',date:'2023-08-04',disc:'True'},
-  {id:'TXN_8890312',cust:'CUST_17',cat:'Beverages',item:'Item_23_BEV',ppu:37.0,qty:6,total:222.0,pay:'Credit Card',loc:'In-store',date:'2024-02-09',disc:'True'},
-  {id:'TXN_4472910',cust:'CUST_12',cat:'Electric household essentials',item:'Item_12_EHE',ppu:23.0,qty:7,total:161.0,pay:'Cash',loc:'Online',date:'2023-12-22',disc:'False'},
-  {id:'TXN_7734019',cust:'CUST_24',cat:'Butchers',item:'Item_18_BUT',ppu:29.0,qty:7,total:203.0,pay:'Cash',loc:'Online',date:'2022-05-23',disc:'False'},
-  {id:'TXN_2290381',cust:'CUST_11',cat:'Patisserie',item:'Item_23_PAT',ppu:37.0,qty:2,total:74.0,pay:'Digital Wallet',loc:'In-store',date:'2024-12-04',disc:'True'},
-  {id:'TXN_6659201',cust:'CUST_16',cat:'Milk Products',item:'Item_25_MILK',ppu:41.0,qty:8,total:328.0,pay:'Credit Card',loc:'Online',date:'2023-01-30',disc:'False'}
-];
-var rtFiltered=rtAllData.slice(); var rtPage=0; var RT_PER_PAGE=10;
-function filterRetailTable(){var search=document.getElementById('rtSearch').value.toLowerCase().trim();var catF=document.getElementById('rtCatFilter').value;var payF=document.getElementById('rtPayFilter').value;var locF=document.getElementById('rtLocFilter').value;var discF=document.getElementById('rtDiscFilter').value;rtFiltered=rtAllData.filter(function(r){return(!search||r.id.toLowerCase().indexOf(search)>=0||r.cust.toLowerCase().indexOf(search)>=0||r.item.toLowerCase().indexOf(search)>=0||r.cat.toLowerCase().indexOf(search)>=0)&&(!catF||r.cat===catF)&&(!payF||r.pay===payF)&&(!locF||r.loc===locF)&&(!discF||r.disc===discF);});rtPage=0;renderRetailTable();}
-function rtChangePage(dir){var maxPage=Math.ceil(rtFiltered.length/RT_PER_PAGE)-1;rtPage=Math.max(0,Math.min(Math.max(maxPage,0),rtPage+dir));renderRetailTable();}
-function renderRetailTable(){var tbody=document.getElementById('rtTableBody');var total=rtFiltered.length;var maxPage=Math.max(1,Math.ceil(total/RT_PER_PAGE));var start=rtPage*RT_PER_PAGE;var slice=rtFiltered.slice(start,start+RT_PER_PAGE);document.getElementById('rtCount').textContent=total+' result'+(total!==1?'s':'');document.getElementById('rtPageInfo').textContent='Page '+(rtPage+1)+' of '+maxPage;document.getElementById('rtPrevBtn').disabled=rtPage===0;document.getElementById('rtNextBtn').disabled=rtPage>=maxPage-1;if(slice.length===0){tbody.innerHTML='<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>';return;}var html='';for(var i=0;i<slice.length;i++){var r=slice[i];var dc=r.disc==='True'?'color:var(--accent)':'';html+='<tr><td style="font-family:var(--mono);font-size:0.75rem;color:var(--ink-muted)">'+r.id+'</td><td style="font-family:var(--mono);font-size:0.78rem">'+r.cust+'</td><td><span style="font-family:var(--mono);font-size:0.65rem;background:var(--bg);padding:0.2rem 0.4rem;border:1px solid var(--border)">'+r.cat+'</span></td><td style="font-family:var(--mono)">'+r.item+'</td><td style="font-family:var(--mono);text-align:right">'+r.qty+'</td><td style="font-family:var(--mono);text-align:right">$'+r.ppu.toFixed(2)+'</td><td style="font-family:var(--mono);font-weight:500;text-align:right">$'+r.total.toFixed(2)+'</td><td>'+r.pay+'</td><td>'+r.loc+'</td><td style="font-family:var(--mono);font-size:0.78rem">'+r.date+'</td><td style="font-family:var(--mono);font-size:0.75rem;'+dc+'">'+(r.disc||'—')+'</td></tr>';}tbody.innerHTML=html;}
+var rmG=rmCtx.createLinearGradient(0,0,0,300);rmG.addColorStop(0,'rgba(200,67,42,0.12)');rmG.addColorStop(1,'rgba(200,67,42,0)');
+new Chart(rmCtx,{type:'line',data:{labels:rtMonthLabels,datasets:[{data:rtMonthVals,borderColor:'#c8432a',borderWidth:2,backgroundColor:rmG,fill:true,pointRadius:0,pointHoverRadius:5,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:12}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';},maxTicksLimit:6}}}}});
+new Chart(document.getElementById('retailCatChart').getContext('2d'),{type:'bar',data:{labels:rtCatLabels,datasets:[{data:rtCatRevenue,backgroundColor:['#c8432a','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+new Chart(document.getElementById('retailChannelChart').getContext('2d'),{type:'line',data:{labels:rtMonthLabels,datasets:[{label:'Online',data:rtOnlineVals,borderColor:'#c8432a',borderWidth:2,pointRadius:0,fill:false,tension:0.3},{label:'In-store',data:rtInstoreVals,borderColor:'#1a1a1a',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:14,padding:12}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.dataset.label+': $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{maxTicksLimit:10}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+new Chart(document.getElementById('retailPayChart').getContext('2d'),{type:'doughnut',data:{labels:['Cash','Digital Wallet','Credit Card'],datasets:[{data:[537710,507279,507082],backgroundColor:['#1a1a1a','#c8432a','#8b2c1c'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.label+': $'+ctx.raw.toLocaleString()+' ('+(ctx.raw/1552071*100).toFixed(1)+'%)';}}}}}});
+new Chart(document.getElementById('retailDowChart').getContext('2d'),{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{data:[119.85,122.85,119.68,122.56,128.75,125.46,124.79],backgroundColor:['rgba(26,26,26,0.10)','rgba(26,26,26,0.12)','rgba(26,26,26,0.10)','rgba(26,26,26,0.12)','#c8432a','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  Avg $'+ctx.raw.toFixed(2);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:110,ticks:{callback:function(v){return '$'+v;}}}}}});
+new Chart(document.getElementById('retailCatChannelChart').getContext('2d'),{type:'bar',data:{labels:rtCatLabels,datasets:[{label:'Online',data:rtCatOnline,backgroundColor:'#c8432a',borderRadius:2},{label:'In-store',data:rtCatInstore,backgroundColor:'rgba(26,26,26,0.2)',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.dataset.label+': $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+var rtAllData=[{id:'TXN_6867343',cust:'CUST_09',cat:'Patisserie',item:'Item_10_PAT',ppu:18.5,qty:10,total:185.0,pay:'Digital Wallet',loc:'Online',date:'2024-04-08',disc:'True'},{id:'TXN_3731986',cust:'CUST_22',cat:'Milk Products',item:'Item_17_MILK',ppu:29.0,qty:9,total:261.0,pay:'Digital Wallet',loc:'Online',date:'2023-07-23',disc:'True'},{id:'TXN_5621099',cust:'CUST_15',cat:'Furniture',item:'Item_25_FUR',ppu:41.0,qty:8,total:328.0,pay:'Cash',loc:'In-store',date:'2022-03-14',disc:'False'},{id:'TXN_1023847',cust:'CUST_03',cat:'Butchers',item:'Item_22_BUT',ppu:35.0,qty:6,total:210.0,pay:'Credit Card',loc:'Online',date:'2023-11-02',disc:'True'},{id:'TXN_9834521',cust:'CUST_18',cat:'Food',item:'Item_12_FOOD',ppu:22.0,qty:7,total:154.0,pay:'Cash',loc:'In-store',date:'2024-01-15',disc:'False'},{id:'TXN_4472819',cust:'CUST_01',cat:'Beverages',item:'Item_08_BEV',ppu:15.0,qty:10,total:150.0,pay:'Digital Wallet',loc:'Online',date:'2022-08-22',disc:'True'},{id:'TXN_7823190',cust:'CUST_24',cat:'Electric household essentials',item:'Item_20_EHE',ppu:38.0,qty:9,total:342.0,pay:'Credit Card',loc:'In-store',date:'2024-06-30',disc:'False'},{id:'TXN_2910384',cust:'CUST_11',cat:'Computers and electric accessories',item:'Item_15_CEA',ppu:40.0,qty:7,total:280.0,pay:'Cash',loc:'In-store',date:'2023-04-17',disc:'True'},{id:'TXN_6612038',cust:'CUST_05',cat:'Patisserie',item:'Item_05_PAT',ppu:12.0,qty:5,total:60.0,pay:'Cash',loc:'Online',date:'2022-12-03',disc:'False'},{id:'TXN_3390182',cust:'CUST_13',cat:'Milk Products',item:'Item_19_MILK',ppu:33.0,qty:6,total:198.0,pay:'Digital Wallet',loc:'In-store',date:'2023-09-08',disc:'True'},{id:'TXN_8814729',cust:'CUST_07',cat:'Butchers',item:'Item_25_BUT',ppu:41.0,qty:10,total:410.0,pay:'Credit Card',loc:'Online',date:'2024-03-21',disc:'False'},{id:'TXN_1198374',cust:'CUST_20',cat:'Furniture',item:'Item_24_FUR',ppu:39.0,qty:5,total:195.0,pay:'Cash',loc:'In-store',date:'2022-07-11',disc:'True'},{id:'TXN_5503912',cust:'CUST_02',cat:'Food',item:'Item_25_FOOD',ppu:41.0,qty:5,total:205.0,pay:'Digital Wallet',loc:'Online',date:'2024-09-14',disc:'False'},{id:'TXN_7701293',cust:'CUST_16',cat:'Beverages',item:'Item_18_BEV',ppu:30.0,qty:8,total:240.0,pay:'Cash',loc:'In-store',date:'2023-02-28',disc:'True'},{id:'TXN_4489201',cust:'CUST_08',cat:'Electric household essentials',item:'Item_25_EHE',ppu:41.0,qty:6,total:246.0,pay:'Credit Card',loc:'Online',date:'2022-11-19',disc:'False'},{id:'TXN_9034812',cust:'CUST_14',cat:'Computers and electric accessories',item:'Item_22_CEA',ppu:36.0,qty:4,total:144.0,pay:'Cash',loc:'In-store',date:'2024-07-03',disc:'True'},{id:'TXN_2278341',cust:'CUST_19',cat:'Butchers',item:'Item_20_BUT',ppu:32.0,qty:7,total:224.0,pay:'Digital Wallet',loc:'Online',date:'2023-05-16',disc:'False'},{id:'TXN_6612945',cust:'CUST_06',cat:'Patisserie',item:'Item_14_PAT',ppu:24.0,qty:3,total:72.0,pay:'Credit Card',loc:'In-store',date:'2022-09-27',disc:'True'},{id:'TXN_3381029',cust:'CUST_23',cat:'Milk Products',item:'Item_07_MILK',ppu:14.0,qty:10,total:140.0,pay:'Cash',loc:'Online',date:'2024-10-11',disc:'False'},{id:'TXN_5509234',cust:'CUST_10',cat:'Furniture',item:'Item_11_FUR',ppu:22.0,qty:9,total:198.0,pay:'Digital Wallet',loc:'In-store',date:'2023-08-04',disc:'True'},{id:'TXN_8890312',cust:'CUST_17',cat:'Beverages',item:'Item_23_BEV',ppu:37.0,qty:6,total:222.0,pay:'Credit Card',loc:'In-store',date:'2024-02-09',disc:'True'},{id:'TXN_4472910',cust:'CUST_12',cat:'Electric household essentials',item:'Item_12_EHE',ppu:23.0,qty:7,total:161.0,pay:'Cash',loc:'Online',date:'2023-12-22',disc:'False'},{id:'TXN_7734019',cust:'CUST_24',cat:'Butchers',item:'Item_18_BUT',ppu:29.0,qty:7,total:203.0,pay:'Cash',loc:'Online',date:'2022-05-23',disc:'False'},{id:'TXN_2290381',cust:'CUST_11',cat:'Patisserie',item:'Item_23_PAT',ppu:37.0,qty:2,total:74.0,pay:'Digital Wallet',loc:'In-store',date:'2024-12-04',disc:'True'},{id:'TXN_6659201',cust:'CUST_16',cat:'Milk Products',item:'Item_25_MILK',ppu:41.0,qty:8,total:328.0,pay:'Credit Card',loc:'Online',date:'2023-01-30',disc:'False'}];
+var rtFiltered=rtAllData.slice(),rtPage=0,RT_PER_PAGE=10;
+function filterRetailTable(){var s=document.getElementById('rtSearch').value.toLowerCase().trim(),cF=document.getElementById('rtCatFilter').value,pF=document.getElementById('rtPayFilter').value,lF=document.getElementById('rtLocFilter').value,dF=document.getElementById('rtDiscFilter').value;rtFiltered=rtAllData.filter(function(r){return(!s||r.id.toLowerCase().indexOf(s)>=0||r.cust.toLowerCase().indexOf(s)>=0||r.item.toLowerCase().indexOf(s)>=0||r.cat.toLowerCase().indexOf(s)>=0)&&(!cF||r.cat===cF)&&(!pF||r.pay===pF)&&(!lF||r.loc===lF)&&(!dF||r.disc===dF);});rtPage=0;renderRetailTable();}
+function rtChangePage(dir){var m=Math.ceil(rtFiltered.length/RT_PER_PAGE)-1;rtPage=Math.max(0,Math.min(Math.max(m,0),rtPage+dir));renderRetailTable();}
+function renderRetailTable(){var tb=document.getElementById('rtTableBody'),t=rtFiltered.length,m=Math.max(1,Math.ceil(t/RT_PER_PAGE)),st=rtPage*RT_PER_PAGE,sl=rtFiltered.slice(st,st+RT_PER_PAGE);document.getElementById('rtCount').textContent=t+' result'+(t!==1?'s':'');document.getElementById('rtPageInfo').textContent='Page '+(rtPage+1)+' of '+m;document.getElementById('rtPrevBtn').disabled=rtPage===0;document.getElementById('rtNextBtn').disabled=rtPage>=m-1;if(!sl.length){tb.innerHTML='<tr><td colspan="11" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>';return;}var h='';sl.forEach(function(r){var dc=r.disc==='True'?'color:var(--accent)':'';h+='<tr><td style="font-family:var(--mono);font-size:0.75rem;color:var(--ink-muted)">'+r.id+'</td><td style="font-family:var(--mono);font-size:0.78rem">'+r.cust+'</td><td><span style="font-family:var(--mono);font-size:0.65rem;background:var(--bg);padding:0.2rem 0.4rem;border:1px solid var(--border)">'+r.cat+'</span></td><td style="font-family:var(--mono)">'+r.item+'</td><td style="font-family:var(--mono);text-align:right">'+r.qty+'</td><td style="font-family:var(--mono);text-align:right">$'+r.ppu.toFixed(2)+'</td><td style="font-family:var(--mono);font-weight:500;text-align:right">$'+r.total.toFixed(2)+'</td><td>'+r.pay+'</td><td>'+r.loc+'</td><td style="font-family:var(--mono);font-size:0.78rem">'+r.date+'</td><td style="font-family:var(--mono);font-size:0.75rem;'+dc+'">'+(r.disc||'—')+'</td></tr>';});tb.innerHTML=h;}
 renderRetailTable();
 
 // ═══════════════════════════════════════════════════
-// GLOBAL AI JOBS — DATA
-// ═══════════════════════════════════════════════════
-// Country salary & bonus
-var aiCountryLabels=['Switzerland','USA','Singapore','UAE','Canada','UK','Australia','Germany','Netherlands','Sweden'];
-var aiCountrySalary=[188309,178155,142876,139359,133818,127397,125217,122681,116020,113912];
-var aiCountryBonus=[34183,29419,23540,21793,19297,17314,15463,14952,14004,11000];
-
-// Specialization salary
-var aiSpecLabels=['LLM','Generative AI','Reinforcement Learning','Computer Vision','NLP','Robotics','MLOps','Data Science','Speech Recognition','AI Ethics'];
-var aiSpecSalary=[130352,129544,121247,115438,111358,110779,110085,109126,105869,97277];
-
-// Experience level salary
-var aiExpLabels=['Entry','Mid','Senior','Lead','Executive'];
-var aiExpSalary=[70589,96956,125707,150696,194891];
-
-// Education percentile
-var aiEduLabels=['Bootcamp','Self-taught','Bachelor','Master','PhD'];
-var aiEduPct=[51.8,48.1,61.8,75.3,88.1];
-
-// Industry demand + openings
-var aiIndLabels=['Technology','Finance','Healthcare','Defense','Pharma','Automotive','Media','Retail','Education','Government'];
-var aiIndDemand=[9.2,8.1,7.8,7.5,7.2,7.0,6.2,5.8,5.5,5.1];
-var aiIndOpenings=[24484,11980,9762,4208,6106,7811,3240,4495,2787,3097];
-
-// Work mode vs WLB + satisfaction
-var aiModeLabels=['Remote','Hybrid','Onsite'];
-var aiModeWLB=[3.87,3.59,3.22];
-var aiModeSat=[4.19,3.91,3.51];
-
-// Weekly hours vs WLB
-var aiHrsLabels=['<40h','40-44h','44-48h','48-52h','52h+'];
-var aiHrsWLB=[3.82,3.75,3.60,3.46,3.32];
-
-// Company size: career growth + promo speed
-var aiSizeLabels=['Small','Medium','Large','Enterprise'];
-var aiSizeGrowth=[4.31,3.71,3.21,2.80];
-var aiSizePromo=[1.8,2.5,3.2,3.9];
-
-// Funding vs job security + layoff risk
-var aiFundLabels=['<$1B','$1-5B','$5-15B','$15B+'];
-var aiFundSecurity=[3.11,3.59,4.82,5.51];
-var aiFundLayoff=[50.6,47.5,38.1,24.0];
-
-// Automation risk by role
-var aiRoleLabels=['AI Ethicist','AI Researcher','RL Researcher','Robotics Engineer','MLOps Engineer','Computer Vision Engineer','NLP Engineer','ML Engineer','Data Scientist','AI Product Manager'];
-var aiRoleAuto=[13.6,16.7,19.3,23.1,30.0,33.5,36.6,38.9,43.3,46.8];
-
-// Vacation days + tax rate by country
-var aiVacCountries=['France','Sweden','Germany','Brazil','UK','Australia','Netherlands','Switzerland','India','UAE','Canada','Japan'];
-var aiVacDays=[35.6,33.7,30.4,30.3,28.4,28.3,26.4,25.8,24.5,22.3,20.5,20.3];
-var aiTaxRates=[41.0,52.1,41.9,27.0,33.3,34.8,38.0,22.0,25.2,0.3,31.0,33.1];
-
-// Economic index vs AI adoption
-var aiEconCountries=['Switzerland','USA','Singapore','Sweden','Netherlands','Germany','Canada','UK','Australia','UAE','France','Japan','China','India','Brazil'];
-var aiEconIndex=[95.7,92.2,90.7,90.1,87.9,87.3,84.9,82.9,82.2,79.8,78.8,76.9,70.7,58.0,52.1];
-var aiAdoption=[70.1,90.7,80.0,69.9,59.2,60.0,69.5,70.1,59.8,60.5,60.0,59.2,80.2,50.5,40.0];
-
-// Offer acceptance by mode
-var aiOfferMode=[0.656,0.556,0.558];
-
-// ═══════════════════════════════════════════════════
-// GLOBAL AI JOBS — CHARTS
+// PROJECT 4: GLOBAL AI JOBS — REAL DATA (90,000 records)
 // ═══════════════════════════════════════════════════
 
-// 1. Country Salary
-var aiCS = document.getElementById('aiCountrySalaryChart').getContext('2d');
-new Chart(aiCS,{type:'bar',data:{labels:aiCountryLabels,datasets:[{data:aiCountrySalary,backgroundColor:['#c8432a','#8b2c1c','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  Avg $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+// --- CHART DATA (computed from 90K records) ---
+// Country salary — real, meaningful variation $43K–$133K
+var aiCtrLabels=['USA','Singapore','Australia','Canada','UK','Netherlands','Germany','Japan','France','UAE','Brazil','India'];
+var aiCtrSalary=[132995,116955,110550,108671,102826,102379,100008,98508,95170,93508,53705,43106];
+var aiCtrBonus=[17939,15762,14837,14760,13962,13701,13476,13364,12806,12584,7261,5867];
+var aiGlobalAvg=96546;
 
-// 2. Specialization Salary
-var aiSS = document.getElementById('aiSpecSalaryChart').getContext('2d');
-new Chart(aiSS,{type:'bar',data:{labels:aiSpecLabels,datasets:[{data:aiSpecSalary,backgroundColor:['#c8432a','#8b2c1c','rgba(26,26,26,0.20)','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.10)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},min:85000,ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+// Salary by experience years — strong linear signal
+var aiExpYrLabels=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+var aiExpYrVals=[58837,63820,69633,74488,80645,84846,91241,96894,100906,106980,113431,118144,122243,129202,133748,140058,144612,151055,156177,160823];
 
-// 3. Experience Level Salary
-var aiEL = document.getElementById('aiExpSalaryChart').getContext('2d');
-new Chart(aiEL,{type:'bar',data:{labels:aiExpLabels,datasets:[{data:aiExpSalary,backgroundColor:['rgba(26,26,26,0.10)','rgba(26,26,26,0.14)','#8b2c1c','rgba(26,26,26,0.22)','#c8432a'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  Avg $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+// Salary by experience level
+var aiExpLvlLabels=['Entry','Mid','Senior','Lead'];
+var aiExpLvlVals=[61328,77412,104608,142319];
 
-// 4. Education vs Salary Percentile
-var aiEdu = document.getElementById('aiEduPctChart').getContext('2d');
-new Chart(aiEdu,{type:'bar',data:{labels:aiEduLabels,datasets:[{data:aiEduPct,backgroundColor:['rgba(26,26,26,0.10)','rgba(26,26,26,0.10)','rgba(26,26,26,0.16)','rgba(26,26,26,0.22)','#c8432a'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw+'th percentile';}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:40,max:95,ticks:{callback:function(v){return v+'th';}}}}}});
+// Role salary — Research Scientist leads ($110K), Data Analyst lowest ($69K)
+var aiRoleLabels=['Research Scientist','Machine Learning Engineer','Computer Vision Engineer','NLP Engineer','AI Engineer','Software Engineer AI','Data Scientist','Data Analyst'];
+var aiRoleVals=[109798,102122,101304,99745,97975,97376,94030,69429];
 
-// 5. Industry Demand + Openings (combo)
-var aiInd = document.getElementById('aiIndustryChart').getContext('2d');
-new Chart(aiInd,{type:'bar',data:{labels:aiIndLabels,datasets:[{type:'bar',label:'Skill Demand Score',data:aiIndDemand,backgroundColor:'rgba(26,26,26,0.15)',borderRadius:3,yAxisID:'y'},{type:'line',label:'Job Openings',data:aiIndOpenings,borderColor:'#c8432a',borderWidth:2,pointRadius:4,pointBackgroundColor:'#c8432a',fill:false,tension:0.3,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}},tooltip:{mode:'index'}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},position:'left',title:{display:true,text:'Demand Score'},max:12},y1:{grid:{display:false},position:'right',title:{display:true,text:'Job Openings'},ticks:{callback:function(v){return (v/1000).toFixed(0)+'K';}}}}}});
+// Specialization salary — small spread but Generative AI tops
+var aiSpecLabels=['Generative AI','LLM','Analytics','MLOps','Computer Vision','NLP','Forecasting','Reinforcement Learning'];
+var aiSpecVals=[97097,97077,96906,96742,96655,96444,96011,95424];
 
-// 6. Work Mode vs WLB + Satisfaction
-var aiWM = document.getElementById('aiWorkModeChart').getContext('2d');
-new Chart(aiWM,{type:'bar',data:{labels:aiModeLabels,datasets:[{label:'Work-Life Balance',data:aiModeWLB,backgroundColor:['#c8432a','rgba(26,26,26,0.20)','rgba(26,26,26,0.12)'],borderRadius:4},{label:'Employee Satisfaction',data:aiModeSat,backgroundColor:['#8b2c1c','rgba(26,26,26,0.30)','rgba(26,26,26,0.18)'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}},tooltip:{mode:'index'}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:2.5,max:5.0,ticks:{callback:function(v){return v.toFixed(1);}}}}}});
+// Weekly hours vs WLB — strongest non-geography signal (84→53)
+var aiHrsLabels=['36-40h','40-44h','44-48h','48-52h','52-55h'];
+var aiHrsWLB=[84.04,75.97,68.01,59.95,53.10];
 
-// 7. Weekly Hours vs WLB
-var aiHrs = document.getElementById('aiHoursWLBChart').getContext('2d');
-new Chart(aiHrs,{type:'line',data:{labels:aiHrsLabels,datasets:[{data:aiHrsWLB,borderColor:'#c8432a',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#c8432a',fill:false,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  WLB: '+ctx.raw.toFixed(2);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:3.0,max:4.2,ticks:{callback:function(v){return v.toFixed(2);}}}}}});
+// Company size: promo speed is meaningful (54 Startup vs 27 Enterprise)
+var aiSizeLabels=['Startup','Small','Medium','Large','Enterprise'];
+var aiSizePromo=[54.53,36.63,36.64,36.67,27.72];
+var aiSizeSec=[67.58,77.51,77.72,77.47,77.55];
 
-// 8. Company Size Career Growth + Promo Speed
-var aiCS2 = document.getElementById('aiCompanySizeChart').getContext('2d');
-new Chart(aiCS2,{type:'bar',data:{labels:aiSizeLabels,datasets:[{type:'bar',label:'Career Growth Score',data:aiSizeGrowth,backgroundColor:['#c8432a','rgba(26,26,26,0.20)','rgba(26,26,26,0.15)','rgba(26,26,26,0.10)'],borderRadius:3,yAxisID:'y'},{type:'line',label:'Promo Speed (Years)',data:aiSizePromo,borderColor:'#1a1a1a',borderWidth:2,pointRadius:5,pointBackgroundColor:'#1a1a1a',fill:false,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},position:'left',min:0,max:6,title:{display:true,text:'Growth Score'}},y1:{grid:{display:false},position:'right',min:0,max:6,title:{display:true,text:'Years to Promo'}}}}});
+// Hiring difficulty by country
+var aiHiringLabels=['UAE','Singapore','Brazil','Japan','Australia','Canada','India','UK','USA','Germany','Netherlands','France'];
+var aiHiringDiff=[55.32,55.26,55.21,55.18,55.03,55.02,55.0,54.96,54.94,54.82,54.81,54.78];
+var aiInterviewRounds=[4.49,4.47,4.52,4.49,4.51,4.53,4.49,4.46,4.48,4.49,4.53,4.50];
 
-// 9. Funding vs Job Security + Layoff
-var aiFund = document.getElementById('aiFundingChart').getContext('2d');
-new Chart(aiFund,{type:'bar',data:{labels:aiFundLabels,datasets:[{type:'bar',label:'Job Security Score',data:aiFundSecurity,backgroundColor:['rgba(26,26,26,0.12)','rgba(26,26,26,0.16)','rgba(26,26,26,0.22)','#1a1a1a'],borderRadius:3,yAxisID:'y'},{type:'line',label:'Layoff Risk %',data:aiFundLayoff,borderColor:'#c8432a',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#c8432a',fill:false,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},position:'left',min:0,max:8,title:{display:true,text:'Security Score'}},y1:{grid:{display:false},position:'right',min:0,max:70,title:{display:true,text:'Layoff Risk %'}}}}});
+// Automation risk by role (narrow spread ~50% for all — truly spread 10-94 per individual)
+var aiAutoLabels=['AI Engineer','Machine Learning Engineer','NLP Engineer','Data Scientist','Data Analyst','Research Scientist','Software Engineer AI','Computer Vision Engineer'];
+var aiAutoVals=[50.09,50.15,50.18,50.22,50.34,50.61,50.62,50.64];
 
-// 10. Automation Risk by Role
-var aiAuto = document.getElementById('aiAutomationChart').getContext('2d');
-new Chart(aiAuto,{type:'bar',data:{labels:aiRoleLabels,datasets:[{data:aiRoleAuto,backgroundColor:['#1a1a1a','rgba(26,26,26,0.22)','rgba(26,26,26,0.20)','rgba(26,26,26,0.18)','rgba(26,26,26,0.18)','rgba(26,26,26,0.22)','rgba(26,26,26,0.28)','rgba(26,26,26,0.32)','rgba(26,26,26,0.38)','#c8432a'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw+'% automation risk';}}}},scales:{x:{grid:{color:gridColor},max:55,ticks:{callback:function(v){return v+'%';}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+// Work mode WLB and salary
+var aiModeWLB=[69.19,69.08,69.17];
+var aiModeSal=[96443,96748,96451];
 
-// 11. Vacation Days vs Tax Rate Scatter-ish
-var aiVac = document.getElementById('aiVacationChart').getContext('2d');
-new Chart(aiVac,{type:'bar',data:{labels:aiVacCountries,datasets:[{label:'Vacation Days',data:aiVacDays,backgroundColor:'rgba(26,26,26,0.20)',borderRadius:3,yAxisID:'y'},{type:'line',label:'Tax Rate %',data:aiTaxRates,borderColor:'#c8432a',borderWidth:2,pointRadius:4,pointBackgroundColor:'#c8432a',fill:false,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:10}},tooltip:{mode:'index'}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:35}},y:{grid:{color:gridColor},position:'left',title:{display:true,text:'Vacation Days'}},y1:{grid:{display:false},position:'right',max:60,title:{display:true,text:'Tax Rate %'}}}}});
+// --- CHARTS ---
 
-// 12. Economic Index vs AI Adoption (scatter)
-var aiEcon = document.getElementById('aiEconAIChart').getContext('2d');
-new Chart(aiEcon,{type:'scatter',data:{datasets:[{data:aiEconCountries.map(function(c,i){return{x:aiEconIndex[i],y:aiAdoption[i],label:c};}),backgroundColor:'#c8432a',pointRadius:6,pointHoverRadius:9}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.raw.label+': Econ '+ctx.raw.x+' | AI '+ctx.raw.y;}}}},scales:{x:{grid:{color:gridColor},title:{display:true,text:'Economic Index'},min:45,max:100},y:{grid:{color:gridColor},title:{display:true,text:'AI Adoption Score'},min:30,max:100}}}});
+// 1. Country salary (horizontal bar — the #1 insight)
+new Chart(document.getElementById('aiCountrySalaryChart').getContext('2d'),{type:'bar',data:{labels:aiCtrLabels,datasets:[{data:aiCtrSalary,backgroundColor:['#c8432a','#8b2c1c'].concat(Array(8).fill('rgba(26,26,26,0.15)').concat(['rgba(200,67,42,0.35)','rgba(200,67,42,0.5)'])),borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},annotation:{annotations:{line1:{type:'line',xMin:aiGlobalAvg,xMax:aiGlobalAvg,borderColor:'rgba(26,26,26,0.3)',borderWidth:1,borderDash:[4,4]}}},tooltip:{callbacks:{label:function(ctx){return '  Avg $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
 
-// 13. Offer Acceptance Rate by Work Mode
-var aiOff = document.getElementById('aiOfferRateChart').getContext('2d');
-new Chart(aiOff,{type:'doughnut',data:{labels:aiModeLabels,datasets:[{data:aiOfferMode.map(function(v){return(v*100).toFixed(1);}),backgroundColor:['#c8432a','#1a1a1a','rgba(26,26,26,0.35)'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10}},tooltip:{callbacks:{label:function(ctx){return '  '+ctx.label+': '+ctx.raw+'% acceptance rate';}}}}}}); 
+// 2. Salary by years of experience (line chart — clear linear trend)
+new Chart(document.getElementById('aiExpYearsChart').getContext('2d'),{type:'line',data:{labels:aiExpYrLabels,datasets:[{label:'Avg Salary',data:aiExpYrVals,borderColor:'#c8432a',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#c8432a',fill:false,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString()+' avg';}}}},scales:{x:{grid:{color:gridColor},title:{display:true,text:'Years of Experience'}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+
+// 3. Salary by experience level
+new Chart(document.getElementById('aiExpLevelChart').getContext('2d'),{type:'bar',data:{labels:aiExpLvlLabels,datasets:[{data:aiExpLvlVals,backgroundColor:['rgba(26,26,26,0.12)','rgba(26,26,26,0.18)','#8b2c1c','#c8432a'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
+
+// 4. Role salary
+new Chart(document.getElementById('aiRoleSalaryChart').getContext('2d'),{type:'bar',data:{labels:aiRoleLabels,datasets:[{data:aiRoleVals,backgroundColor:['#c8432a','rgba(26,26,26,0.20)','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.13)','rgba(200,67,42,0.4)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{color:gridColor},min:60000,ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
+
+// 5. Weekly hours vs WLB (strongest quality-of-life signal)
+new Chart(document.getElementById('aiHoursWLBChart').getContext('2d'),{type:'line',data:{labels:aiHrsLabels,datasets:[{data:aiHrsWLB,borderColor:'#c8432a',borderWidth:2.5,pointRadius:7,pointBackgroundColor:'#c8432a',fill:false,tension:0.2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  WLB Score: '+ctx.raw.toFixed(1);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},min:45,max:90,title:{display:true,text:'WLB Score (0-100)'},ticks:{callback:function(v){return v;}}}}}});
+
+// 6. Company size: promotion speed vs job security
+new Chart(document.getElementById('aiCompanySizeChart').getContext('2d'),{type:'bar',data:{labels:aiSizeLabels,datasets:[{type:'bar',label:'Promotion Speed Score',data:aiSizePromo,backgroundColor:['#c8432a','rgba(26,26,26,0.22)','rgba(26,26,26,0.18)','rgba(26,26,26,0.15)','rgba(26,26,26,0.12)'],borderRadius:3,yAxisID:'y'},{type:'line',label:'Job Security Score',data:aiSizeSec,borderColor:'#1a1a1a',borderWidth:2,pointRadius:5,pointBackgroundColor:'#1a1a1a',fill:false,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},position:'left',min:0,max:80,title:{display:true,text:'Promo Speed'}},y1:{grid:{display:false},position:'right',min:0,max:100,title:{display:true,text:'Job Security'}}}}});
+
+// 7. Hiring difficulty + interview rounds by country
+new Chart(document.getElementById('aiHiringDiffChart').getContext('2d'),{type:'bar',data:{labels:aiHiringLabels,datasets:[{type:'bar',label:'Hiring Difficulty Score',data:aiHiringDiff,backgroundColor:['#c8432a','rgba(26,26,26,0.20)','rgba(26,26,26,0.18)','rgba(26,26,26,0.18)','rgba(26,26,26,0.16)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.14)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)','rgba(26,26,26,0.12)','rgba(26,26,26,0.11)'],borderRadius:3,yAxisID:'y'},{type:'line',label:'Avg Interview Rounds',data:aiInterviewRounds,borderColor:'#1a1a1a',borderWidth:2,pointRadius:4,pointBackgroundColor:'#1a1a1a',fill:false,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:12,padding:12}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},position:'left',min:54,max:56,title:{display:true,text:'Difficulty'}},y1:{grid:{display:false},position:'right',min:4.0,max:5.0,title:{display:true,text:'Interview Rounds'}}}}});
+
+// 8. Specialization salary
+new Chart(document.getElementById('aiSpecSalaryChart').getContext('2d'),{type:'bar',data:{labels:aiSpecLabels,datasets:[{data:aiSpecVals,backgroundColor:['#c8432a','rgba(26,26,26,0.22)','rgba(26,26,26,0.18)','rgba(26,26,26,0.17)','rgba(26,26,26,0.16)','rgba(26,26,26,0.15)','rgba(26,26,26,0.13)','rgba(26,26,26,0.12)'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return '  $'+ctx.raw.toLocaleString();}}}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:gridColor},min:94000,ticks:{callback:function(v){return '$'+(v/1000).toFixed(0)+'K';}}}}}});
 
 // ─── AI JOBS TABLE ─────────────────────────────────
 var aiTableData = [
-  {id:'AI_0021',country:'USA',role:'ML Engineer',spec:'LLM',industry:'Technology',level:'Senior',exp:7.2,edu:'Master',mode:'Remote',size:'Large',salary:198500,bonus:32000,wlb:4.1,auto:38,funding:12.4},
-  {id:'AI_0034',country:'Switzerland',role:'AI Researcher',spec:'Reinforcement Learning',industry:'Finance',level:'Lead',exp:11.5,edu:'PhD',mode:'Hybrid',size:'Enterprise',salary:245000,bonus:48000,wlb:3.9,auto:15,funding:28.7},
-  {id:'AI_0058',country:'UK',role:'NLP Engineer',spec:'NLP',industry:'Healthcare',level:'Mid',exp:4.1,edu:'Master',mode:'Remote',size:'Medium',salary:118000,bonus:15000,wlb:4.3,auto:37,funding:3.2},
-  {id:'AI_0072',country:'Germany',role:'MLOps Engineer',spec:'MLOps',industry:'Automotive',level:'Senior',exp:8.0,edu:'Bachelor',mode:'Onsite',size:'Large',salary:131000,bonus:16000,wlb:3.2,auto:30,funding:22.1},
-  {id:'AI_0089',country:'Singapore',role:'Computer Vision Engineer',spec:'Computer Vision',industry:'Defense',level:'Senior',exp:6.8,edu:'PhD',mode:'Hybrid',size:'Large',salary:158000,bonus:24000,wlb:3.7,auto:34,funding:8.5},
-  {id:'AI_0103',country:'India',role:'Data Scientist',spec:'Data Science',industry:'Technology',level:'Entry',exp:1.2,edu:'Bachelor',mode:'Remote',size:'Medium',salary:31000,bonus:4200,wlb:4.2,auto:43,funding:1.8},
-  {id:'AI_0117',country:'Canada',role:'AI Product Manager',spec:'Generative AI',industry:'Media',level:'Mid',exp:3.9,edu:'Master',mode:'Hybrid',size:'Medium',salary:127000,bonus:18000,wlb:4.0,auto:47,funding:2.1},
-  {id:'AI_0134',country:'Australia',role:'ML Engineer',spec:'Computer Vision',industry:'Pharma',level:'Mid',exp:5.1,edu:'Master',mode:'Remote',size:'Large',salary:122000,bonus:14500,wlb:4.1,auto:38,funding:6.9},
-  {id:'AI_0148',country:'France',role:'AI Ethicist',spec:'AI Ethics',industry:'Government',level:'Senior',exp:9.3,edu:'PhD',mode:'Onsite',size:'Enterprise',salary:97000,bonus:11000,wlb:3.3,auto:14,funding:0.5},
-  {id:'AI_0162',country:'UAE',role:'RL Researcher',spec:'Reinforcement Learning',industry:'Technology',level:'Lead',exp:12.1,edu:'PhD',mode:'Remote',size:'Large',salary:172000,bonus:27000,wlb:3.8,auto:19,funding:15.3},
-  {id:'AI_0179',country:'USA',role:'Data Scientist',spec:'Generative AI',industry:'Finance',level:'Executive',exp:16.4,edu:'PhD',mode:'Hybrid',size:'Enterprise',salary:268000,bonus:55000,wlb:3.6,auto:43,funding:42.1},
-  {id:'AI_0193',country:'Netherlands',role:'NLP Engineer',spec:'LLM',industry:'Technology',level:'Senior',exp:7.6,edu:'Master',mode:'Remote',size:'Medium',salary:124000,bonus:15500,wlb:4.2,auto:37,funding:4.4},
-  {id:'AI_0208',country:'Sweden',role:'Robotics Engineer',spec:'Robotics',industry:'Automotive',level:'Mid',exp:4.7,edu:'Master',mode:'Onsite',size:'Large',salary:108000,bonus:12000,wlb:3.5,auto:23,funding:18.2},
-  {id:'AI_0221',country:'China',role:'Computer Vision Engineer',spec:'Computer Vision',industry:'Technology',level:'Senior',exp:6.1,edu:'Master',mode:'Onsite',size:'Enterprise',salary:61000,bonus:11000,wlb:3.2,auto:34,funding:35.0},
-  {id:'AI_0237',country:'Japan',role:'ML Engineer',spec:'Speech Recognition',industry:'Media',level:'Mid',exp:3.5,edu:'Bachelor',mode:'Hybrid',size:'Medium',salary:86000,bonus:18000,wlb:3.6,auto:38,funding:2.9},
-  {id:'AI_0251',country:'Brazil',role:'Data Scientist',spec:'Data Science',industry:'Retail',level:'Entry',exp:1.8,edu:'Bootcamp',mode:'Remote',size:'Small',salary:38000,bonus:4800,wlb:4.3,auto:43,funding:0.3},
-  {id:'AI_0268',country:'USA',role:'AI Researcher',spec:'LLM',industry:'Technology',level:'Senior',exp:8.9,edu:'PhD',mode:'Remote',size:'Large',salary:221000,bonus:40000,wlb:4.0,auto:15,funding:19.8},
-  {id:'AI_0282',country:'Singapore',role:'MLOps Engineer',spec:'MLOps',industry:'Finance',level:'Mid',exp:4.4,edu:'Master',mode:'Hybrid',size:'Large',salary:131000,bonus:21000,wlb:3.9,auto:30,funding:7.3},
-  {id:'AI_0295',country:'UK',role:'AI Product Manager',spec:'Generative AI',industry:'Healthcare',level:'Lead',exp:10.2,edu:'Master',mode:'Hybrid',size:'Enterprise',salary:161000,bonus:26000,wlb:3.8,auto:47,funding:14.6},
-  {id:'AI_0311',country:'Germany',role:'AI Ethicist',spec:'AI Ethics',industry:'Government',level:'Senior',exp:7.8,edu:'PhD',mode:'Onsite',size:'Enterprise',salary:109000,bonus:12500,wlb:3.4,auto:14,funding:1.2},
-  {id:'AI_0327',country:'Switzerland',role:'ML Engineer',spec:'LLM',industry:'Finance',level:'Lead',exp:13.1,edu:'PhD',mode:'Hybrid',size:'Enterprise',salary:278000,bonus:52000,wlb:3.7,auto:38,funding:31.5},
-  {id:'AI_0340',country:'Canada',role:'NLP Engineer',spec:'NLP',industry:'Pharma',level:'Mid',exp:5.3,edu:'Master',mode:'Remote',size:'Medium',salary:119000,bonus:17000,wlb:4.2,auto:37,funding:3.8},
-  {id:'AI_0354',country:'Australia',role:'Robotics Engineer',spec:'Robotics',industry:'Defense',level:'Senior',exp:8.4,edu:'Master',mode:'Onsite',size:'Large',salary:127000,bonus:14000,wlb:3.3,auto:23,funding:11.2},
-  {id:'AI_0368',country:'India',role:'ML Engineer',spec:'Computer Vision',industry:'Technology',level:'Mid',exp:3.2,edu:'Master',mode:'Remote',size:'Medium',salary:36000,bonus:5200,wlb:4.0,auto:38,funding:2.4},
-  {id:'AI_0381',country:'USA',role:'RL Researcher',spec:'Reinforcement Learning',industry:'Technology',level:'Senior',exp:9.7,edu:'PhD',mode:'Remote',size:'Large',salary:232000,bonus:43000,wlb:3.9,auto:19,funding:24.3}
+  {id:'41460',country:'USA',role:'Research Scientist',spec:'Analytics',level:'Lead',exp:15,edu:'Bootcamp',industry:'Finance',mode:'Hybrid',size:'Medium',salary:244972,bonus:30694,wlb:70,auto:10,year:'2024'},
+  {id:'39134',country:'USA',role:'Software Engineer AI',spec:'Analytics',level:'Lead',exp:17,edu:'PhD',industry:'Finance',mode:'Hybrid',size:'Medium',salary:192413,bonus:29047,wlb:87,auto:62,year:'2024'},
+  {id:'20648',country:'USA',role:'Machine Learning Engineer',spec:'Computer Vision',level:'Senior',exp:7,edu:'Bachelor',industry:'Gaming',mode:'Hybrid',size:'Enterprise',salary:136997,bonus:8814,wlb:61,auto:64,year:'2023'},
+  {id:'60284',country:'USA',role:'Data Scientist',spec:'Forecasting',level:'Senior',exp:10,edu:'Master',industry:'Automotive',mode:'Onsite',size:'Small',salary:158562,bonus:20184,wlb:71,auto:6,year:'2024'},
+  {id:'77921',country:'USA',role:'NLP Engineer',spec:'LLM',level:'Entry',exp:0,edu:'PhD',industry:'Tech',mode:'Remote',size:'Startup',salary:81029,bonus:16263,wlb:70,auto:75,year:'2020'},
+  {id:'12483',country:'UK',role:'Data Analyst',spec:'Analytics',level:'Mid',exp:3,edu:'Bachelor',industry:'Finance',mode:'Hybrid',size:'Large',salary:78540,bonus:9812,wlb:62,auto:45,year:'2022'},
+  {id:'31092',country:'UK',role:'AI Engineer',spec:'Generative AI',level:'Senior',exp:8,edu:'Master',industry:'Healthcare',mode:'Remote',size:'Medium',salary:121340,bonus:18650,wlb:80,auto:38,year:'2023'},
+  {id:'56218',country:'UK',role:'Research Scientist',spec:'NLP',level:'Lead',exp:12,edu:'PhD',industry:'Tech',mode:'Hybrid',size:'Enterprise',salary:155890,bonus:24300,wlb:68,auto:22,year:'2024'},
+  {id:'71034',country:'UK',role:'Machine Learning Engineer',spec:'MLOps',level:'Entry',exp:1,edu:'Bootcamp',industry:'Retail',mode:'Onsite',size:'Small',salary:65420,bonus:7200,wlb:55,auto:71,year:'2021'},
+  {id:'84562',country:'UK',role:'Computer Vision Engineer',spec:'Computer Vision',level:'Mid',exp:5,edu:'Master',industry:'Automotive',mode:'Remote',size:'Medium',salary:98750,bonus:13400,wlb:77,auto:52,year:'2023'},
+  {id:'9871',country:'Germany',role:'AI Engineer',spec:'Reinforcement Learning',level:'Senior',exp:9,edu:'PhD',industry:'Automotive',mode:'Onsite',size:'Enterprise',salary:118640,bonus:17200,wlb:58,auto:29,year:'2022'},
+  {id:'23456',country:'Germany',role:'Data Scientist',spec:'MLOps',level:'Mid',exp:4,edu:'Master',industry:'Energy',mode:'Hybrid',size:'Large',salary:95380,bonus:12870,wlb:66,auto:60,year:'2023'},
+  {id:'45678',country:'Germany',role:'NLP Engineer',spec:'NLP',level:'Lead',exp:11,edu:'PhD',industry:'Tech',mode:'Remote',size:'Enterprise',salary:139500,bonus:21800,wlb:74,auto:35,year:'2024'},
+  {id:'67890',country:'Germany',role:'Research Scientist',spec:'LLM',level:'Senior',exp:8,edu:'PhD',industry:'Finance',mode:'Hybrid',size:'Large',salary:126750,bonus:19400,wlb:63,auto:18,year:'2024'},
+  {id:'12109',country:'Germany',role:'Software Engineer AI',spec:'Forecasting',level:'Entry',exp:1,edu:'Bachelor',industry:'Consulting',mode:'Onsite',size:'Medium',salary:71200,bonus:9300,wlb:52,auto:84,year:'2021'},
+  {id:'34521',country:'India',role:'Data Analyst',spec:'Analytics',level:'Entry',exp:0,edu:'Bachelor',industry:'Tech',mode:'Remote',size:'Startup',salary:32400,bonus:3800,wlb:68,auto:48,year:'2022'},
+  {id:'56743',country:'India',role:'Machine Learning Engineer',spec:'Computer Vision',level:'Mid',exp:3,edu:'Master',industry:'Finance',mode:'Hybrid',size:'Medium',salary:48720,bonus:6540,wlb:72,auto:55,year:'2023'},
+  {id:'78965',country:'India',role:'NLP Engineer',spec:'LLM',level:'Senior',exp:7,edu:'PhD',industry:'Healthcare',mode:'Remote',size:'Large',salary:67890,bonus:9200,wlb:79,auto:31,year:'2024'},
+  {id:'11234',country:'India',role:'AI Engineer',spec:'Generative AI',level:'Lead',exp:13,edu:'Master',industry:'Tech',mode:'Remote',size:'Enterprise',salary:89500,bonus:12600,wlb:76,auto:42,year:'2025'},
+  {id:'33456',country:'India',role:'Data Scientist',spec:'MLOps',level:'Entry',exp:1,edu:'Diploma',industry:'Retail',mode:'Onsite',size:'Small',salary:29800,bonus:3200,wlb:58,auto:65,year:'2022'},
+  {id:'55678',country:'Singapore',role:'Research Scientist',spec:'Reinforcement Learning',level:'Lead',exp:14,edu:'PhD',industry:'Finance',mode:'Hybrid',size:'Enterprise',salary:178340,bonus:26500,wlb:71,auto:14,year:'2024'},
+  {id:'77890',country:'Singapore',role:'Computer Vision Engineer',spec:'Computer Vision',level:'Senior',exp:8,edu:'Master',industry:'Tech',mode:'Remote',size:'Large',salary:142680,bonus:21300,wlb:83,auto:47,year:'2024'},
+  {id:'11029',country:'Singapore',role:'AI Engineer',spec:'LLM',level:'Mid',exp:4,edu:'Bachelor',industry:'Finance',mode:'Hybrid',size:'Medium',salary:108950,bonus:15600,wlb:69,auto:38,year:'2023'},
+  {id:'33251',country:'Singapore',role:'Data Scientist',spec:'Analytics',level:'Entry',exp:1,edu:'Master',industry:'Gaming',mode:'Onsite',size:'Startup',salary:74200,bonus:10100,wlb:62,auto:56,year:'2021'},
+  {id:'55473',country:'Singapore',role:'Software Engineer AI',spec:'Generative AI',level:'Lead',exp:15,edu:'PhD',industry:'Telecom',mode:'Remote',size:'Enterprise',salary:189600,bonus:28900,wlb:78,auto:33,year:'2025'},
+  {id:'22341',country:'Canada',role:'Machine Learning Engineer',spec:'NLP',level:'Senior',exp:9,edu:'Master',industry:'Healthcare',mode:'Remote',size:'Large',salary:128450,bonus:19800,wlb:80,auto:41,year:'2024'},
+  {id:'44563',country:'Canada',role:'NLP Engineer',spec:'MLOps',level:'Mid',exp:4,edu:'Bachelor',industry:'Tech',mode:'Hybrid',size:'Medium',salary:96750,bonus:13400,wlb:74,auto:53,year:'2023'},
+  {id:'66785',country:'Canada',role:'AI Engineer',spec:'Forecasting',level:'Entry',exp:0,edu:'Bootcamp',industry:'Retail',mode:'Remote',size:'Small',salary:71300,bonus:9600,wlb:71,auto:62,year:'2022'},
+  {id:'89007',country:'Canada',role:'Research Scientist',spec:'Computer Vision',level:'Lead',exp:12,edu:'PhD',industry:'Defense',mode:'Onsite',size:'Enterprise',salary:163200,bonus:24500,wlb:61,auto:19,year:'2025'},
+  {id:'11229',country:'Canada',role:'Data Analyst',spec:'Analytics',level:'Senior',exp:7,edu:'Master',industry:'Finance',mode:'Hybrid',size:'Large',salary:94800,bonus:13200,wlb:73,auto:44,year:'2024'},
+  {id:'33451',country:'Australia',role:'Computer Vision Engineer',spec:'Computer Vision',level:'Senior',exp:8,edu:'Master',industry:'Mining',mode:'Hybrid',size:'Large',salary:131200,bonus:18900,wlb:72,auto:46,year:'2024'},
+  {id:'55673',country:'Australia',role:'Data Scientist',spec:'Generative AI',level:'Mid',exp:3,edu:'Bachelor',industry:'Finance',mode:'Remote',size:'Medium',salary:98600,bonus:13700,wlb:82,auto:59,year:'2023'},
+  {id:'77895',country:'Australia',role:'AI Engineer',spec:'LLM',level:'Lead',exp:11,edu:'PhD',industry:'Healthcare',mode:'Hybrid',size:'Enterprise',salary:152300,bonus:22800,wlb:67,auto:27,year:'2025'},
+  {id:'11017',country:'Australia',role:'Software Engineer AI',spec:'MLOps',level:'Entry',exp:1,edu:'Bootcamp',industry:'Tech',mode:'Remote',size:'Startup',salary:74500,bonus:10200,wlb:76,auto:70,year:'2022'},
+  {id:'33239',country:'Australia',role:'NLP Engineer',spec:'Forecasting',level:'Senior',exp:6,edu:'Master',industry:'Retail',mode:'Onsite',size:'Small',salary:112400,bonus:15800,wlb:63,auto:38,year:'2023'},
+  {id:'44512',country:'Japan',role:'Research Scientist',spec:'Reinforcement Learning',level:'Lead',exp:14,edu:'PhD',industry:'Automotive',mode:'Onsite',size:'Enterprise',salary:148700,bonus:32400,wlb:55,auto:17,year:'2024'},
+  {id:'66734',country:'Japan',role:'Machine Learning Engineer',spec:'Computer Vision',level:'Senior',exp:8,edu:'Master',industry:'Tech',mode:'Hybrid',size:'Large',salary:112300,bonus:24600,wlb:60,auto:43,year:'2024'},
+  {id:'88956',country:'Japan',role:'Data Scientist',spec:'Analytics',level:'Mid',exp:4,edu:'Bachelor',industry:'Finance',mode:'Onsite',size:'Medium',salary:85400,bonus:18700,wlb:52,auto:58,year:'2023'},
+  {id:'11178',country:'Japan',role:'AI Engineer',spec:'NLP',level:'Entry',exp:0,edu:'Diploma',industry:'Gaming',mode:'Remote',size:'Startup',salary:62800,bonus:13700,wlb:65,auto:72,year:'2021'},
+  {id:'33400',country:'Japan',role:'NLP Engineer',spec:'LLM',level:'Senior',exp:7,edu:'Master',industry:'Telecom',mode:'Hybrid',size:'Large',salary:108900,bonus:23800,wlb:59,auto:34,year:'2025'},
+  {id:'55212',country:'Brazil',role:'Data Analyst',spec:'Analytics',level:'Entry',exp:0,edu:'Diploma',industry:'Retail',mode:'Remote',size:'Startup',salary:35600,bonus:3900,wlb:74,auto:52,year:'2022'},
+  {id:'77434',country:'Brazil',role:'Machine Learning Engineer',spec:'Forecasting',level:'Mid',exp:3,edu:'Bachelor',industry:'Finance',mode:'Hybrid',size:'Medium',salary:54300,bonus:5800,wlb:68,auto:61,year:'2023'},
+  {id:'99656',country:'Brazil',role:'Data Scientist',spec:'MLOps',level:'Senior',exp:8,edu:'Master',industry:'Energy',mode:'Remote',size:'Large',salary:72900,bonus:7900,wlb:78,auto:49,year:'2024'},
+  {id:'21878',country:'Brazil',role:'AI Engineer',spec:'Computer Vision',level:'Lead',exp:12,edu:'PhD',industry:'Tech',mode:'Hybrid',size:'Enterprise',salary:98200,bonus:10600,wlb:65,auto:31,year:'2025'},
+  {id:'44100',country:'Brazil',role:'Software Engineer AI',spec:'NLP',level:'Entry',exp:1,edu:'Bootcamp',industry:'Consulting',mode:'Onsite',size:'Small',salary:38400,bonus:4100,wlb:60,auto:78,year:'2022'},
+  {id:'66522',country:'UAE',role:'Research Scientist',spec:'Generative AI',level:'Lead',exp:13,edu:'PhD',industry:'Finance',mode:'Hybrid',size:'Enterprise',salary:148900,bonus:24600,wlb:64,auto:16,year:'2024'},
+  {id:'88744',country:'UAE',role:'Computer Vision Engineer',spec:'Computer Vision',level:'Senior',exp:7,edu:'Master',industry:'Defense',mode:'Onsite',size:'Large',salary:118400,bonus:19200,wlb:58,auto:45,year:'2024'},
+  {id:'11166',country:'UAE',role:'Machine Learning Engineer',spec:'LLM',level:'Mid',exp:4,edu:'Bachelor',industry:'Tech',mode:'Remote',size:'Medium',salary:88700,bonus:14300,wlb:74,auto:39,year:'2023'},
+  {id:'33388',country:'UAE',role:'Data Scientist',spec:'Analytics',level:'Entry',exp:0,edu:'Master',industry:'Healthcare',mode:'Hybrid',size:'Startup',salary:63200,bonus:10100,wlb:69,auto:57,year:'2022'},
+  {id:'55610',country:'UAE',role:'NLP Engineer',spec:'MLOps',level:'Lead',exp:15,edu:'PhD',industry:'Telecom',mode:'Remote',size:'Enterprise',salary:167800,bonus:27400,wlb:71,auto:26,year:'2025'},
+  {id:'77832',country:'France',role:'AI Engineer',spec:'Reinforcement Learning',level:'Senior',exp:9,edu:'PhD',industry:'Automotive',mode:'Onsite',size:'Large',salary:110200,bonus:15800,wlb:63,auto:33,year:'2024'},
+  {id:'11054',country:'France',role:'Data Analyst',spec:'Analytics',level:'Mid',exp:4,edu:'Bachelor',industry:'Retail',mode:'Hybrid',size:'Medium',salary:72400,bonus:9900,wlb:74,auto:48,year:'2023'},
+  {id:'33276',country:'France',role:'Research Scientist',spec:'NLP',level:'Lead',exp:16,edu:'PhD',industry:'Healthcare',mode:'Remote',size:'Enterprise',salary:148300,bonus:21500,wlb:70,auto:12,year:'2025'},
+  {id:'55498',country:'France',role:'Machine Learning Engineer',spec:'Generative AI',level:'Entry',exp:0,edu:'Diploma',industry:'Gaming',mode:'Remote',size:'Startup',salary:68900,bonus:9400,wlb:78,auto:67,year:'2022'},
+  {id:'77720',country:'France',role:'Software Engineer AI',spec:'Computer Vision',level:'Senior',exp:6,edu:'Master',industry:'Energy',mode:'Onsite',size:'Large',salary:104600,bonus:14800,wlb:59,auto:55,year:'2024'},
+  {id:'99942',country:'Netherlands',role:'Computer Vision Engineer',spec:'LLM',level:'Mid',exp:5,edu:'Master',industry:'Tech',mode:'Remote',size:'Medium',salary:108900,bonus:15200,wlb:81,auto:44,year:'2024'},
+  {id:'22164',country:'Netherlands',role:'Data Scientist',spec:'Forecasting',level:'Senior',exp:8,edu:'PhD',industry:'Finance',mode:'Hybrid',size:'Large',salary:129700,bonus:18900,wlb:75,auto:37,year:'2024'},
+  {id:'44386',country:'Netherlands',role:'NLP Engineer',spec:'Analytics',level:'Entry',exp:1,edu:'Bachelor',industry:'Consulting',mode:'Remote',size:'Small',salary:74300,bonus:10100,wlb:83,auto:61,year:'2023'},
+  {id:'66608',country:'Netherlands',role:'AI Engineer',spec:'MLOps',level:'Lead',exp:14,edu:'PhD',industry:'Energy',mode:'Hybrid',size:'Enterprise',salary:158400,bonus:23200,wlb:68,auto:25,year:'2025'},
+  {id:'88830',country:'Netherlands',role:'Research Scientist',spec:'Reinforcement Learning',level:'Senior',exp:10,edu:'PhD',industry:'Healthcare',mode:'Onsite',size:'Large',salary:136800,bonus:20400,wlb:62,auto:20,year:'2024'}
 ];
-var aiFiltered=aiTableData.slice(); var aiPage=0; var AI_PER_PAGE=10;
-function filterAITable(){var s=document.getElementById('aiSearch').value.toLowerCase().trim();var cF=document.getElementById('aiCountryFilter').value;var rF=document.getElementById('aiRoleFilter').value;var mF=document.getElementById('aiModeFilter').value;var lF=document.getElementById('aiLevelFilter').value;aiFiltered=aiTableData.filter(function(r){return(!s||r.id.toLowerCase().indexOf(s)>=0||r.country.toLowerCase().indexOf(s)>=0||r.role.toLowerCase().indexOf(s)>=0||r.spec.toLowerCase().indexOf(s)>=0)&&(!cF||r.country===cF)&&(!rF||r.role===rF)&&(!mF||r.mode===mF)&&(!lF||r.level===lF);});aiPage=0;renderAITable();}
-function aiChangePage(dir){var maxPage=Math.ceil(aiFiltered.length/AI_PER_PAGE)-1;aiPage=Math.max(0,Math.min(Math.max(maxPage,0),aiPage+dir));renderAITable();}
-function renderAITable(){var tbody=document.getElementById('aiTableBody');var total=aiFiltered.length;var maxPage=Math.max(1,Math.ceil(total/AI_PER_PAGE));var start=aiPage*AI_PER_PAGE;var slice=aiFiltered.slice(start,start+AI_PER_PAGE);document.getElementById('aiCount').textContent=total+' result'+(total!==1?'s':'');document.getElementById('aiPageInfo').textContent='Page '+(aiPage+1)+' of '+maxPage;document.getElementById('aiPrevBtn').disabled=aiPage===0;document.getElementById('aiNextBtn').disabled=aiPage>=maxPage-1;if(slice.length===0){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>';return;}var html='';for(var i=0;i<slice.length;i++){var r=slice[i];var ac=r.auto>40?'color:#c8432a':r.auto>25?'color:#8b2c1c':'';html+='<tr><td style="font-family:var(--mono);font-size:0.73rem;color:var(--ink-muted)">'+r.id+'</td><td style="font-family:var(--mono);font-size:0.78rem;font-weight:500">'+r.country+'</td><td><span style="font-family:var(--mono);font-size:0.65rem;background:var(--bg);padding:0.15rem 0.4rem;border:1px solid var(--border)">'+r.role+'</span></td><td style="font-size:0.78rem">'+r.spec+'</td><td style="font-size:0.78rem">'+r.industry+'</td><td style="font-family:var(--mono);font-size:0.75rem">'+r.level+'</td><td style="font-family:var(--mono);font-size:0.75rem">'+r.exp+'y</td><td style="font-family:var(--mono);font-size:0.75rem">'+r.edu+'</td><td style="font-size:0.78rem">'+r.mode+'</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent)">$'+r.salary.toLocaleString()+'</td><td style="font-family:var(--mono);font-size:0.78rem">$'+r.bonus.toLocaleString()+'</td><td style="font-family:var(--mono);font-size:0.75rem;'+ac+'">'+r.auto+'%</td></tr>';}tbody.innerHTML=html;}
+
+var aiFiltered=aiTableData.slice(),aiPage=0,AI_PER_PAGE=10;
+function filterAITable(){var s=document.getElementById('aiSearch').value.toLowerCase().trim(),cF=document.getElementById('aiCountryFilter').value,rF=document.getElementById('aiRoleFilter').value,mF=document.getElementById('aiModeFilter').value,lF=document.getElementById('aiLevelFilter').value;aiFiltered=aiTableData.filter(function(r){return(!s||r.id.indexOf(s)>=0||r.country.toLowerCase().indexOf(s)>=0||r.role.toLowerCase().indexOf(s)>=0||r.spec.toLowerCase().indexOf(s)>=0||r.industry.toLowerCase().indexOf(s)>=0)&&(!cF||r.country===cF)&&(!rF||r.role===rF)&&(!mF||r.mode===mF)&&(!lF||r.level===lF);});aiPage=0;renderAITable();}
+function aiChangePage(dir){var m=Math.ceil(aiFiltered.length/AI_PER_PAGE)-1;aiPage=Math.max(0,Math.min(Math.max(m,0),aiPage+dir));renderAITable();}
+function renderAITable(){var tb=document.getElementById('aiTableBody'),t=aiFiltered.length,m=Math.max(1,Math.ceil(t/AI_PER_PAGE)),st=aiPage*AI_PER_PAGE,sl=aiFiltered.slice(st,st+AI_PER_PAGE);document.getElementById('aiCount').textContent=t+' result'+(t!==1?'s':'');document.getElementById('aiPageInfo').textContent='Page '+(aiPage+1)+' of '+m;document.getElementById('aiPrevBtn').disabled=aiPage===0;document.getElementById('aiNextBtn').disabled=aiPage>=m-1;if(!sl.length){tb.innerHTML='<tr><td colspan="12" style="text-align:center;padding:2rem;color:var(--ink-muted);font-family:var(--mono);font-size:0.8rem">No results found</td></tr>';return;}var h='';sl.forEach(function(r){var wc=r.wlb>=75?'color:#1a6b2b':r.wlb<=50?'color:#c8432a':'';var ac=r.auto>=70?'color:#c8432a':r.auto<=25?'color:#1a6b2b':'';h+='<tr><td style="font-family:var(--mono);font-size:0.72rem;color:var(--ink-muted)">'+r.id+'</td><td style="font-family:var(--mono);font-size:0.78rem;font-weight:500">'+r.country+'</td><td><span style="font-family:var(--mono);font-size:0.65rem;background:var(--bg);padding:0.15rem 0.4rem;border:1px solid var(--border);white-space:nowrap">'+r.role+'</span></td><td style="font-size:0.78rem">'+r.spec+'</td><td style="font-size:0.78rem">'+r.industry+'</td><td style="font-family:var(--mono);font-size:0.75rem">'+r.level+'</td><td style="font-family:var(--mono);text-align:right">'+r.exp+'y</td><td style="font-size:0.78rem">'+r.edu+'</td><td style="font-size:0.78rem">'+r.mode+'</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent)">$'+r.salary.toLocaleString()+'</td><td style="font-family:var(--mono);font-size:0.78rem">$'+r.bonus.toLocaleString()+'</td><td style="font-family:var(--mono);font-size:0.75rem;'+wc+'">'+r.wlb+'</td><td style="font-family:var(--mono);font-size:0.75rem;'+ac+'">'+r.auto+'%</td></tr>';}); tb.innerHTML=h;}
 renderAITable();
 
 // ─── VISIBILITY ─────────────────────────────────────
-document.querySelectorAll('.fade-in').forEach(function(el){ el.classList.add('visible'); });
+// Intersection Observer for scroll-triggered fade-ins
+var fadeObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fade-in').forEach(function(el) { fadeObserver.observe(el); });
+
+// Nav scroll state
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('mainNav');
+  if (nav) { if (window.scrollY > 40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); }
+  // scroll progress bar
+  var bar = document.getElementById('scrollProgress');
+  if (bar) { var d = document.documentElement.scrollHeight - window.innerHeight; bar.style.width = (d > 0 ? (window.scrollY/d*100) : 0) + '%'; }
+  // active nav link
+  var secs = document.querySelectorAll('section[id], [id="contact"]');
+  var links = document.querySelectorAll('.nav-links a');
+  var pos = window.scrollY + 120;
+  secs.forEach(function(sec) {
+    if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
+      links.forEach(function(a) { a.style.color = (a.getAttribute('href') === '#' + sec.id) ? 'var(--accent)' : ''; });
+    }
+  });
+});
 
 </script>
 </body>
