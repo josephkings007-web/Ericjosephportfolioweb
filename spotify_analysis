@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spotify Popular Songs — Data Analysis Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style> :root {
+--bg: #0a0a0f;
+--surface: #111118;
+--surface2: #18181f;
+--border: #1e1e2e;
+--green: #1db954;
+--green-dim: rgba(29,185,84,0.15);
+--green-glow: rgba(29,185,84,0.35);
+--teal: #00c9a7;
+--gold: #f5c518;
+--rose: #ff6b9d;
+--blue: #4cc9f0;
+--text: #e8e8f0;
+--muted: #6b6b85;
+--radius: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+background: var(--bg);
+color: var(--text);
+font-family: 'DM Mono', monospace;
+font-size: 14px;
+line-height: 1.6;
+overflow-x: hidden;
+}
+/* HEADER */
+header {
+position: relative;
+padding: 80px 48px 60px;
+overflow: hidden;
+border-bottom: 1px solid var(--border);
+}
+header::before {
+content: '';
+position: absolute;
+top: -120px; left: -120px;
+width: 500px; height: 500px;
+background: radial-gradient(circle, rgba(29,185,84,0.12) 0%, transparent 70%);
+pointer-events: none;
+}
+header::after {
+content: '';
+position: absolute;
+bottom: -80px; right: -80px;
+width: 400px; height: 400px;
+background: radial-gradient(circle, rgba(76,201,240,0.08) 0%, transparent 70%);
+pointer-events: none;
+}
+.header-tag {
+display: inline-block;
+font-size: 11px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(--green);
+border: 1px solid var(--green-dim);
+padding: 4px 12px;
+border-radius: 100px;
+margin-bottom: 20px;
+background: var(--green-dim);
+}
+h1 {
+font-family: 'Syne', sans-serif;
+font-size: clamp(36px, 5vw, 64px);
+font-weight: 800;
+line-height: 1.1;
+letter-spacing: -0.02em;
+color: #fff;
+max-width: 700px;
+margin-bottom: 16px;
+}
+h1 span { color: var(--green); }
+.header-sub {
+color: var(--muted);
+font-size: 14px;
+max-width: 500px;
+line-height: 1.7;
+}
+.header-meta {
+display: flex;
+gap: 32px;
+margin-top: 40px;
+flex-wrap: wrap;
+}
+.meta-item { display: flex; flex-direction: column; gap: 4px; }
+.meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.meta-value { font-size: 22px; font-family: 'Syne', sans-serif; font-weight: 700; color: #fff; }
+.meta-value .unit { font-size: 13px; font-weight: 400; color: var(--muted); }
+/* NAV */
+nav {
+position: sticky;
+top: 0;
+z-index: 100;
+background: rgba(10,10,15,0.9);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid var(--border);
+padding: 0 48px;
+display: flex;
+gap: 0;
+overflow-x: auto;
+}
+nav a {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 16px 20px;
+color: var(--muted);
+text-decoration: none;
+font-size: 12px;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+white-space: nowrap;
+border-bottom: 2px solid transparent;
+transition: all 0.2s;
+}
+nav a:hover { color: var(--text); border-bottom-color: var(--green); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+/* MAIN */
+main { padding: 48px; max-width: 1600px; margin: 0 auto; }
+/* SECTION */
+.section {
+margin-bottom: 72px;
+animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.section-header {
+display: flex;
+align-items: center;
+gap: 16px;
+margin-bottom: 32px;
+padding-bottom: 16px;
+border-bottom: 1px solid var(--border);
+}
+.section-icon {
+width: 36px; height: 36px;
+border-radius: 8px;
+display: flex; align-items: center; justify-content: center;
+font-size: 16px;
+flex-shrink: 0;
+}
+.icon-green { background: var(--green-dim); }
+.icon-teal { background: rgba(0,201,167,0.12); }
+.icon-gold { background: rgba(245,197,24,0.12); }
+.icon-rose { background: rgba(255,107,157,0.12); }
+.icon-blue { background: rgba(76,201,240,0.12); }
+.section-title {
+font-family: 'Syne', sans-serif;
+font-size: 22px;
+font-weight: 700;
+color: #fff;
+}
+.section-desc {
+font-size: 12px;
+color: var(--muted);
+margin-left: auto;
+max-width: 300px;
+text-align: right;
+line-height: 1.5;
+}
+/* KPI CARDS */
+.kpi-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 16px;
+margin-bottom: 32px;
+}
+.kpi-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+position: relative;
+overflow: hidden;
+transition: border-color 0.2s, transform 0.2s;
+}
+.kpi-card:hover { border-color: var(--green); transform: translateY(-2px); }
+.kpi-card::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: var(--accent, var(--green));
+opacity: 0.6;
+}
+.kpi-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.kpi-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: #fff; }
+.kpi-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+/* GRID LAYOUTS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-12 { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; }
+.grid-21 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+@media (max-width: 1000px) {
+.grid-2, .grid-3, .grid-12, .grid-21 { grid-template-columns: 1fr; }
+main { padding: 24px; }
+header { padding: 48px 24px; }
+nav { padding: 0 24px; }
+}
+/* CHART CARDS */
+.chart-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 28px;
+position: relative;
+}
+.chart-title {
+font-family: 'Syne', sans-serif;
+font-size: 16px;
+font-weight: 600;
+color: #fff;
+margin-bottom: 6px;
+}
+.chart-desc {
+font-size: 11px;
+color: var(--muted);
+margin-bottom: 24px;
+line-height: 1.5;
+}
+.chart-wrap {
+position: relative;
+}
+/* TABLES */
+.data-table {
+width: 100%;
+border-collapse: collapse;
+}
+.data-table thead tr { border-bottom: 1px solid var(--border); }
+.data-table th {
+font-size: 10px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted);
+padding: 12px 16px;
+text-align: left;
+font-weight: 500;
+}
+.data-table td {
+padding: 14px 16px;
+border-bottom: 1px solid rgba(255,255,255,0.04);
+font-size: 13px;
+vertical-align: middle;
+}
+.data-table tbody tr:hover { background: rgba(255,255,255,0.025); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.rank-badge {
+width: 26px; height: 26px;
+border-radius: 50%;
+background: var(--green-dim);
+color: var(--green);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 11px;
+font-weight: 600;
+}
+.rank-badge.gold { background: rgba(245,197,24,0.15); color: var(--gold); }
+.rank-badge.silver { background: rgba(180,180,180,0.15); color: #b4b4b4; }
+.rank-badge.bronze { background: rgba(205,127,50,0.15); color: #cd7f32; }
+.stream-bar {
+height: 4px;
+border-radius: 2px;
+background: var(--green);
+margin-top: 4px;
+opacity: 0.6;
+transition: opacity 0.2s;
+}
+.data-table tr:hover .stream-bar { opacity: 1; }
+/* INSIGHT BOXES */
+.insight-box {
+background: var(--green-dim);
+border: 1px solid rgba(29,185,84,0.2);
+border-radius: var(--radius);
+padding: 20px 24px;
+margin-top: 24px;
+}
+.insight-box.blue { background: rgba(76,201,240,0.08); border-color: rgba(76,201,240,0.2); }
+.insight-box.gold { background: rgba(245,197,24,0.08); border-color: rgba(245,197,24,0.2); }
+.insight-box.rose { background: rgba(255,107,157,0.08); border-color: rgba(255,107,157,0.2); }
+.insight-label {
+font-size: 10px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--green);
+margin-bottom: 6px;
+}
+.insight-box.blue .insight-label { color: var(--blue); }
+.insight-box.gold .insight-label { color: var(--gold); }
+.insight-box.rose .insight-label { color: var(--rose); }
+.insight-text {
+font-size: 14px;
+color: var(--text);
+line-height: 1.6;
+}
+/* CORR HEATMAP */
+.corr-grid {
+display: grid;
+grid-template-columns: repeat(8, 1fr);
+gap: 8px;
+margin-top: 8px;
+}
+.corr-cell {
+aspect-ratio: 1;
+border-radius: 8px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-size: 11px;
+text-align: center;
+padding: 8px;
+gap: 4px;
+transition: transform 0.2s;
+}
+.corr-cell:hover { transform: scale(1.05); }
+.corr-feature { color: var(--muted); font-size: 9px; letter-spacing: 0.05em; }
+.corr-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; }
+/* COMPARE BARS */
+.compare-item {
+display: flex;
+align-items: center;
+gap: 16px;
+margin-bottom: 14px;
+}
+.compare-label {
+font-size: 12px;
+color: var(--muted);
+width: 120px;
+flex-shrink: 0;
+text-align: right;
+}
+.compare-track {
+flex: 1;
+height: 32px;
+background: var(--surface2);
+border-radius: 4px;
+overflow: hidden;
+position: relative;
+}
+.compare-fill {
+height: 100%;
+border-radius: 4px;
+display: flex;
+align-items: center;
+padding-left: 12px;
+font-size: 11px;
+font-weight: 600;
+transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+white-space: nowrap;
+}
+.compare-num {
+font-size: 12px;
+color: var(--muted);
+width: 110px;
+flex-shrink: 0;
+text-align: left;
+}
+/* RECOMMENDATIONS */
+.rec-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 16px;
+}
+.rec-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 24px;
+position: relative;
+overflow: hidden;
+}
+.rec-number {
+font-family: 'Syne', sans-serif;
+font-size: 48px;
+font-weight: 800;
+color: var(--green-dim);
+line-height: 1;
+position: absolute;
+top: 12px; right: 16px;
+letter-spacing: -0.04em;
+pointer-events: none;
+}
+.rec-title {
+font-family: 'Syne', sans-serif;
+font-size: 15px;
+font-weight: 700;
+color: #fff;
+margin-bottom: 10px;
+position: relative;
+}
+.rec-body {
+font-size: 13px;
+color: var(--muted);
+line-height: 1.6;
+position: relative;
+}
+/* FOOTER */
+footer {
+border-top: 1px solid var(--border);
+padding: 32px 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: var(--muted);
+font-size: 11px;
+gap: 16px;
+flex-wrap: wrap;
+}
+.footer-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--green); }
+/* LOADING ANIMATION */
+.chart-wrap canvas { animation: fadeUp 0.6s ease both; }
+/* SEPARATOR */
+.sep {
+width: 40px; height: 3px;
+background: var(--green);
+border-radius: 2px;
+margin-bottom: 32px;
+}
+.tag-pill {
+display: inline-block;
+font-size: 10px;
+letter-spacing: 0.08em;
+padding: 3px 10px;
+border-radius: 100px;
+margin-right: 6px;
+margin-bottom: 4px;
+border: 1px solid;
+}
+.tag-green { background: var(--green-dim); color: var(--green); border-color: rgba(29,185,84,0.3); }
+.tag-blue { background: rgba(76,201,240,0.08); color: var(--blue); border-color: rgba(76,201,240,0.3); }
+.tag-gold { background: rgba(245,197,24,0.08); color: var(--gold); border-color: rgba(245,197,24,0.3); }
+.tag-rose { background: rgba(255,107,157,0.08); color: var(--rose); border-color: rgba(255,107,157,0.3); }
+.number-large {
+font-family: 'Syne', sans-serif;
+font-size: 52px;
+font-weight: 800;
+color: var(--green);
+line-height: 1;
+letter-spacing: -0.03em;
+}
+.callout-box {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+padding: 32px;
+display: flex;
+align-items: flex-start;
+gap: 24px;
+}
+.callout-icon {
+font-size: 32px;
+line-height: 1;
+flex-shrink: 0;
+}
+.callout-content h3 {
+font-family: 'Syne', sans-serif;
+font-size: 18px;
+font-weight: 700;
+color: #fff;
+margin-bottom: 8px;
+}
+.callout-content p {
+font-size: 13px;
+color: var(--muted);
+line-height: 1.6;
+}
+</style>
+</head>
+<body> <!-- HEADER -->
+<header id="top"> <div class="header-tag">Data Analysis Report · 2024</div> <h1>Spotify Popular <span>Songs</span><br>Analytics Report</h1> <p class="header-sub">A comprehensive analysis of 952 popular songs — exploring streaming performance, audio feature patterns, artist dominance, and what makes a hit.</p> <div class="header-meta"> <div class="meta-item"> <span class="meta-label">Total Songs</span> <span class="meta-value">952</span> </div> <div class="meta-item"> <span class="meta-label">Total Streams</span> <span class="meta-value">489 <span class="unit">Billion</span></span> </div> <div class="meta-item"> <span class="meta-label">Unique Artists</span> <span class="meta-value">644</span> </div> <div class="meta-item"> <span class="meta-label">Year Range</span> <span class="meta-value">1930–2023</span> </div> <div class="meta-item"> <span class="meta-label">Avg Streams/Song</span> <span class="meta-value">514 <span class="unit">M</span></span> </div> </div>
+</header> <!-- NAV -->
+<nav> <a href="#overview"><span class="nav-dot"></span>Overview</a> <a href="#performance"><span class="nav-dot"></span>Performance</a> <a href="#audio"><span class="nav-dot"></span>Audio Features</a> <a href="#artists"><span class="nav-dot"></span>Artists</a> <a href="#time"><span class="nav-dot"></span>Trends</a> <a href="#insights"><span class="nav-dot"></span>Insights</a> <a href="#recommendations"><span class="nav-dot"></span>Recommendations</a>
+</nav> <main> <!-- ===== SECTION 1: OVERVIEW ===== -->
+<div class="section" id="overview"> <div class="section-header"> <div class="section-icon icon-green">01</div> <div> <div class="section-title">Dataset Overview & Business Problem</div> </div> <div class="section-desc">Foundation of the analysis — understanding the data we're working with.</div> </div> <div class="grid-2" style="margin-bottom:24px;"> <div class="callout-box"> <div class="callout-content"> <h3>Business Problem</h3> <p>What audio and release characteristics drive streaming success on Spotify? This analysis helps labels, artists, and A&R teams understand the anatomy of a hit song — from danceability to release timing — enabling data-informed decisions on production, marketing, and release strategy.</p> </div> </div> <div class="callout-box"> <div class="callout-content"> <h3>Dataset Overview</h3> <p>The dataset contains 953 rows (952 valid after cleaning) and 24 columns including track metadata, release dates, platform presence (Spotify, Apple, Deezer, Shazam), and 7 audio features: danceability, valence, energy, acousticness, instrumentalness, liveness, and speechiness.</p> </div> </div> </div> <div class="kpi-grid"> <div class="kpi-card"> <div class="kpi-label">Data Quality</div> <div class="kpi-value">99.9<span style="font-size:16px;color:var(--muted)">%</span></div> <div class="kpi-sub">1 row dropped (invalid streams)</div> </div> <div class="kpi-card" style="--accent: var(--teal)"> <div class="kpi-label">Columns</div> <div class="kpi-value">24</div> <div class="kpi-sub">Audio features + metadata</div> </div> <div class="kpi-card" style="--accent: var(--gold)"> <div class="kpi-label">Top 20% Streams</div> <div class="kpi-value">57.2<span style="font-size:16px;color:var(--muted)">%</span></div> <div class="kpi-sub">Pareto principle confirmed</div> </div> <div class="kpi-card" style="--accent: var(--rose)"> <div class="kpi-label">Max Single Song</div> <div class="kpi-value">3.7<span style="font-size:16px;color:var(--muted)">B</span></div> <div class="kpi-sub">Blinding Lights — The Weeknd</div> </div> <div class="kpi-card" style="--accent: var(--blue)"> <div class="kpi-label">Year Coverage</div> <div class="kpi-value">93<span style="font-size:16px;color:var(--muted)">yrs</span></div> <div class="kpi-sub">Songs from 1930 to 2023</div> </div> </div> <div class="insight-box"> <div class="insight-label">Data Cleaning Note</div> <div class="insight-text">Streams column was stored as string — converted to numeric. 1 row dropped with non-numeric value. <code>deezer_playlists</code> and <code>shazam_charts</code> were also string columns, treated as supplementary info. No duplicates found. All audio features are integer percentages (0–100).</div> </div>
+</div> <!-- ===== SECTION 2: PERFORMANCE ===== -->
+<div class="section" id="performance"> <div class="section-header"> <div class="section-icon icon-green">02</div> <div class="section-title">General Performance Analysis</div> <div class="section-desc">Top songs, artists, and stream distribution across the dataset.</div> </div> <div class="grid-21" style="margin-bottom:24px;"> <!-- Top 10 Songs Table --> <div class="chart-card"> <div class="chart-title">Top 10 Most-Streamed Songs</div> <div class="chart-desc">Ranked by total Spotify streams. The Weeknd leads with Blinding Lights at 3.7B streams.</div> <table class="data-table"> <thead><tr> <th>#</th><th>Track</th><th>Artist</th><th>Year</th><th>Streams</th> </tr></thead> <tbody id="top10-songs-tbody"></tbody> </table> </div> <!-- Pareto card --> <div style="display:flex; flex-direction:column; gap:24px;"> <div class="chart-card" style="flex:1;"> <div class="chart-title">Pareto Distribution</div> <div class="chart-desc">What fraction of total streams comes from the top 20% of songs?</div> <div style="text-align:center; padding: 24px 0;"> <div class="number-large">57.2%</div> <div style="font-size:13px; color:var(--muted); margin-top:12px; line-height:1.5;">of all streams generated<br>by the top 20% of songs</div> <div style="margin-top:20px; height:12px; background:var(--surface2); border-radius:6px; overflow:hidden;"> <div style="width:57.2%; height:100%; background: linear-gradient(90deg, var(--green), var(--teal)); border-radius:6px;"></div> </div> <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:6px;"> <span>0%</span><span style="color:var(--green);">57.2% → top 20%</span><span>100%</span> </div> </div> <div class="insight-box" style="margin-top:0;"> <div class="insight-label">Key Finding</div> <div class="insight-text">The streaming economy is highly concentrated. A hit-driven market where 190 songs account for majority of plays.</div> </div> </div> </div> </div> <!-- Top 10 Artists Bar Chart --> <div class="chart-card" style="margin-bottom:24px;"> <div class="chart-title">Top 10 Most-Streamed Artists</div> <div class="chart-desc">Total streams aggregated per primary artist. The Weeknd, Taylor Swift, and Ed Sheeran lead with 14B+ streams each.</div> <div class="chart-wrap"> <canvas id="artistChart" height="80"></canvas> </div> </div> <!-- Streams by Year --> <div class="chart-card"> <div class="chart-title">Streams by Release Year (2010–2023)</div> <div class="chart-desc">2022 dominates in total streams volume, but older songs from 2017–2019 show the highest average streams per song — indicating sustained catalogue performance.</div> <div class="chart-wrap"> <canvas id="yearChart" height="70"></canvas> </div> <div class="insight-box blue" style="margin-top:24px;"> <div class="insight-label">Insight — Newer vs Older Songs</div> <div class="insight-text">Pre-2020 songs average <strong style="color:#fff;">1.09B streams</strong> vs post-2020 songs averaging <strong style="color:#fff;">342M streams</strong>. Older songs accumulate more streams over time — recency bias is offset by longevity. The most streamed songs were released 2015–2019.</div> </div> </div>
+</div> <!-- ===== SECTION 3: AUDIO FEATURES ===== -->
+<div class="section" id="audio"> <div class="section-header"> <div class="section-icon icon-teal">03</div> <div class="section-title">Audio Feature Analysis</div> <div class="section-desc">How audio characteristics correlate with streaming success.</div> </div> <!-- Correlation Heatmap --> <div class="chart-card" style="margin-bottom:24px;"> <div class="chart-title">Feature Correlation with Total Streams</div> <div class="chart-desc">Pearson correlation coefficients between each audio feature and streams. Negative values indicate slight inverse relationships.</div> <div class="corr-grid" id="corr-grid"></div> <div class="insight-box" style="margin-top:24px;"> <div class="insight-label">Statistical Finding</div> <div class="insight-text">No audio feature has a strong linear correlation with streams. The strongest signals are <strong style="color:#fff;">speechiness (−0.112)</strong> and <strong style="color:#fff;">danceability (−0.105)</strong> — both weakly negative. This confirms that virality depends more on timing, artist brand, and marketing than on audio signature alone.</div> </div> </div> <!-- Energy scatter + BPM dist --> <div class="grid-2" style="margin-bottom:24px;"> <div class="chart-card"> <div class="chart-title">Energy vs. Streams</div> <div class="chart-desc">Scatter plot of energy% against stream count. High energy songs don't consistently outperform lower-energy tracks.</div> <div class="chart-wrap"> <canvas id="energyScatter" height="200"></canvas> </div> </div> <div class="chart-card"> <div class="chart-title">BPM Distribution — Top 25% Songs</div> <div class="chart-desc">Tempo range breakdown among the highest-streaming tracks. The sweet spot is 100–120 BPM.</div> <div class="chart-wrap"> <canvas id="bpmChart" height="200"></canvas> </div> </div> </div> <!-- Valence + Mode comparison --> <div class="grid-2"> <div class="chart-card"> <div class="chart-title">Happy vs. Sad Songs</div> <div class="chart-desc">Comparing average streams by valence (emotional tone). Contrary to expectation, sad songs perform slightly better.</div> <div style="padding: 20px 0;"> <div class="compare-item"> <div class="compare-label">Sad (valence &lt;40)</div> <div class="compare-track"> <div class="compare-fill" style="width:100%; background:linear-gradient(90deg, var(--blue), #3a86ff); color:#fff;">506M avg</div> </div> <div class="compare-num"></div> </div> <div class="compare-item"> <div class="compare-label">Happy (valence ≥60)</div> <div class="compare-track"> <div class="compare-fill" style="width:91.6%; background:linear-gradient(90deg, var(--gold), #f77f00); color:#000;">464M avg</div> </div> <div class="compare-num"></div> </div> <div class="compare-item"> <div class="compare-label">Major key</div> <div class="compare-track"> <div class="compare-fill" style="width:100%; background:linear-gradient(90deg, var(--green), #00b89c); color:#000;">535M avg</div> </div> <div class="compare-num"></div> </div> <div class="compare-item"> <div class="compare-label">Minor key</div> <div class="compare-track"> <div class="compare-fill" style="width:90.9%; background:linear-gradient(90deg, #9b5de5, #7209b7); color:#fff;">486M avg</div> </div> <div class="compare-num"></div> </div> </div> <div class="insight-box rose" style="margin-top:0;"> <div class="insight-label">Finding</div> <div class="insight-text">Sad/melancholic songs edge out happier ones by ~9%, and Major key songs perform 10% better than Minor. Emotional depth resonates with listeners.</div> </div> </div> <div class="chart-card"> <div class="chart-title">Average BPM by Year (2010–2023)</div> <div class="chart-desc">Tempo trend over time. Modern music shows fairly stable tempo clustering around 118–126 BPM.</div> <div class="chart-wrap"> <canvas id="tempoChart" height="200"></canvas> </div> </div> </div>
+</div> <!-- ===== SECTION 4: ARTISTS ===== -->
+<div class="section" id="artists"> <div class="section-header"> <div class="section-icon icon-gold">04</div> <div class="section-title">Artist & Collaboration Insights</div> <div class="section-desc">Who dominates the charts, and does collaboration pay off?</div> </div> <div class="grid-2" style="margin-bottom:24px;"> <!-- Solo vs Collab --> <div class="chart-card"> <div class="chart-title">Solo vs. Collaboration Performance</div> <div class="chart-desc">Average streams by artist count per track. Contrary to popular belief, solo songs outperform collaborations significantly.</div> <div style="padding: 24px 0; text-align:center;"> <div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap;"> <div style="text-align:center;"> <div class="number-large" style="color:var(--green);">568M</div> <div style="font-size:12px; color:var(--muted); margin-top:8px;">Solo Songs<br>(1 artist)</div> <div class="tag-pill tag-green" style="margin-top:8px;">+33% more streams</div> </div> <div style="display:flex; align-items:center; color:var(--muted); font-size:20px;">vs</div> <div style="text-align:center;"> <div class="number-large" style="color:var(--rose);">428M</div> <div style="font-size:12px; color:var(--muted); margin-top:8px;">Collaborations<br>(2+ artists)</div> </div> </div> </div> <div class="insight-box rose"> <div class="insight-label">Insight</div> <div class="insight-text">Solo tracks average <strong style="color:#fff;">33% more streams</strong> than collaborations. This may reflect that already-popular solo artists drive the top charts, while collaborations are more common among mid-tier performers.</div> </div> </div> <!-- Musical Key Streams --> <div class="chart-card"> <div class="chart-title">Average Streams by Musical Key</div> <div class="chart-desc">C# leads with the highest average streams per song among all keys, followed by E and D#.</div> <div class="chart-wrap"> <canvas id="keyChart" height="200"></canvas> </div> </div> </div> <!-- Top artists table --> <div class="chart-card"> <div class="chart-title">Top 10 Artists by Total Streams</div> <div class="chart-desc">Aggregated streaming count across all songs in the dataset per primary artist.</div> <table class="data-table"> <thead><tr> <th>#</th><th>Artist</th><th>Total Streams</th><th>Visual Scale</th> </tr></thead> <tbody id="top10-artists-tbody"></tbody> </table> </div>
+</div> <!-- ===== SECTION 5: TIME TRENDS ===== -->
+<div class="section" id="time"> <div class="section-header"> <div class="section-icon icon-blue">05</div> <div class="section-title">Time-Based Trends</div> <div class="section-desc">How the music industry has evolved across release years.</div> </div> <div class="grid-2"> <div class="chart-card"> <div class="chart-title">Songs Released Per Year (2015–2023)</div> <div class="chart-desc">2022 had the most songs in the dataset (402), reflecting increased catalog volume and playlist placement competition.</div> <div class="chart-wrap"> <canvas id="songCountChart" height="200"></canvas> </div> </div> <div class="chart-card"> <div class="chart-title">Avg Streams Per Song by Release Year</div> <div class="chart-desc">Songs from 2016–2019 have the highest average per-song streams — they've had time to accumulate vs 2022–2023 songs which are still early in lifecycle.</div> <div class="chart-wrap"> <canvas id="avgStreamsChart" height="200"></canvas> </div> </div> </div> <div class="insight-box blue" style="margin-top:24px;"> <div class="insight-label">Trend Finding — Streaming Surge Post-2020</div> <div class="insight-text">Total streams volume grew dramatically from 2020 onwards. 2021 saw <strong style="color:#fff;">73.8B total streams</strong>, and 2022 reached <strong style="color:#fff;">116.4B</strong> — driven by the explosion of short-form content (TikTok virality) and playlist-driven discovery. Post-2020 represents the "streaming maturity era."</div> </div>
+</div> <!-- ===== SECTION 6: ADVANCED INSIGHTS ===== -->
+<div class="section" id="insights"> <div class="section-header"> <div class="section-icon icon-rose">06</div> <div class="section-title">Advanced Business Insights</div> <div class="section-desc">Predictive signals and the anatomy of a hit song.</div> </div> <div class="grid-2" style="margin-bottom:24px;"> <div class="chart-card"> <div class="chart-title">What Defines a "Hit Song"?</div> <div class="chart-desc">Comparing audio feature averages: all songs vs. top 10% of streams.</div> <div class="chart-wrap"> <canvas id="radarChart" height="220"></canvas> </div> </div> <div class="chart-card"> <div class="chart-title">Predictive Model Summary</div> <div class="chart-desc">Can we predict popularity from audio features alone?</div> <div style="padding: 12px 0;"> <div class="insight-box" style="margin-bottom:16px;"> <div class="insight-label">Model · Linear Regression (Audio → Streams)</div> <div class="insight-text">R² ≈ 0.03 — Audio features alone explain only ~3% of stream variance. Popularity is not predictable from sound alone.</div> </div> <div class="insight-box blue" style="margin-bottom:16px;"> <div class="insight-label">Model · Playlist Inclusion → Streams</div> <div class="insight-text">Spotify playlist count has the strongest positive correlation with streams. Being in 3,000+ playlists is the #1 predictor of high streams.</div> </div> <div class="insight-box gold"> <div class="insight-label">Combined Signals Model</div> <div class="insight-text">Best hit formula: Release 2016–2019 · Major key · 100–130 BPM · Low speechiness · High playlist inclusion · Solo or power-duo artist.</div> </div> </div> </div> </div> <!-- Key findings summary --> <div class="chart-card"> <div class="chart-title">Key Findings Summary</div> <div class="chart-desc">Distilled analytical conclusions from this report.</div> <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; margin-top:8px;"> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--green);"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Pareto Principle Holds</div> <div style="font-size:12px; color:var(--muted);">Top 20% of songs (190 tracks) generate 57.2% of all streams. Streaming is a winner-takes-most market.</div> </div> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--teal);"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Audio Features ≠ Success</div> <div style="font-size:12px; color:var(--muted);">No audio feature has a correlation >|0.15| with streams. Sound design is not the primary driver of virality.</div> </div> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--gold);"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Catalogue Ages Like Wine</div> <div style="font-size:12px; color:var(--muted);">Songs from 2016–2019 average 3–4x the per-song streams of 2022 releases. Longevity multiplies performance.</div> </div> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--rose);"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Sad > Happy (Barely)</div> <div style="font-size:12px; color:var(--muted);">Low-valence songs average 506M streams vs 464M for high-valence tracks. Emotional weight resonates with listeners.</div> </div> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--blue);"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Solo Dominance</div> <div style="font-size:12px; color:var(--muted);">Single-artist tracks average 568M streams (+33% vs collabs). Top solo artists dominate the entire catalogue.</div> </div> <div style="padding:20px; background:var(--surface2); border-radius:8px; border-left:3px solid #9b5de5;"> <div style="font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:#fff; margin-bottom:6px;">Sweet Spot: 100–120 BPM</div> <div style="font-size:12px; color:var(--muted);">The most common BPM range among top performers. Danceable but not frantic — optimized for playlist and club use.</div> </div> </div> </div>
+</div> <!-- ===== SECTION 7: RECOMMENDATIONS ===== -->
+<div class="section" id="recommendations"> <div class="section-header"> <div class="section-icon icon-green">07</div> <div class="section-title">Recommendations & Conclusion</div> <div class="section-desc">Actionable insights for artists, labels, and A&R teams.</div> </div> <div class="rec-grid" style="margin-bottom:32px;"> <div class="rec-card"> <div class="rec-number">01</div> <div class="rec-title">Prioritize Playlist Pitching</div> <div class="rec-body">Playlist inclusion is the strongest predictor of high stream counts. Allocate marketing budget toward Spotify editorial pitching, playlist placement agencies, and independent playlist networks.</div> </div> <div class="rec-card"> <div class="rec-number">02</div> <div class="rec-title">Invest in Back Catalogue</div> <div class="rec-body">Pre-2020 songs massively outperform recent releases in per-song streams. Labels should run re-marketing campaigns on established catalogue — sync licensing, remastered versions, anniversary campaigns.</div> </div> <div class="rec-card"> <div class="rec-number">03</div> <div class="rec-title">Target 100–130 BPM Range</div> <div class="rec-body">Productions in the 100–130 BPM range appear most commonly among top performers. This tempo range suits both streaming and live performance — ideal for pop, hip-hop crossovers.</div> </div> <div class="rec-card"> <div class="rec-number">04</div> <div class="rec-title">Emotional Depth Over Positivity</div> <div class="rec-body">Low-valence songs slightly outperform. Lean into emotional storytelling, minor-to-major progressions, and authentic vulnerability in lyrics — not forced positivity.</div> </div> <div class="rec-card"> <div class="rec-number">05</div> <div class="rec-title">Don't Over-Index on Audio Features</div> <div class="rec-body">No single audio signature guarantees a hit. R² of ~0.03 means sound is 3% of the story. Focus on artist brand building, release timing, and cross-platform marketing — the other 97%.</div> </div> <div class="rec-card"> <div class="rec-number">06</div> <div class="rec-title">Major Key + C# / E Tonality</div> <div class="rec-body">Major key songs average 10% more streams than minor. C#, E, and D# average the highest per-song stream counts — worth considering during composition if targeting playlists.</div> </div> </div> <!-- Conclusion --> <div class="callout-box"> <div class="callout-content"> <h3>Conclusion</h3> <p>This analysis reveals that the streaming economy is a hit-driven, catalogue-compounding market. Audio features alone are weak predictors of success — the real drivers are platform visibility (playlists), artist brand equity, and time on platform. A hit song in 2016 still outperforms a 2023 release in per-song streams. For stakeholders, the data-backed strategy is clear: build for longevity, optimize for playlist discovery, and don't chase audio trends — build emotional resonance. The Weeknd's dominance at 3.7B streams with Blinding Lights exemplifies all of this: a universally emotional song, released at peak Spotify adoption, in heavy playlist rotation for years.</p> </div> </div>
+</div> </main> <!-- FOOTER -->
+<footer> <div> <span class="footer-logo">Spotify Analytics</span> <span style="margin-left:16px;">Data Analysis Report · 952 Songs · 644 Artists</span> </div> <div>Built with Chart.js · Dataset: Popular Spotify Songs</div>
+</footer> <script>
+// ============================
+// DATA
+// ============================
+const top10Songs = [
+{track:"Blinding Lights",artist:"The Weeknd",streams:3703895074,year:2019},
+{track:"Shape of You",artist:"Ed Sheeran",streams:3562543890,year:2017},
+{track:"Someone You Loved",artist:"Lewis Capaldi",streams:2887241814,year:2018},
+{track:"Dance Monkey",artist:"Tones and I",streams:2864791672,year:2019},
+{track:"Sunflower",artist:"Post Malone, Swae Lee",streams:2808096550,year:2018},
+{track:"One Dance",artist:"Drake, WizKid, Kyla",streams:2713922350,year:2016},
+{track:"STAY",artist:"Justin Bieber, The Kid Laroi",streams:2665343922,year:2021},
+{track:"Believer",artist:"Imagine Dragons",streams:2594040133,year:2017},
+{track:"Closer",artist:"The Chainsmokers, Halsey",streams:2591224264,year:2016},
+{track:"Starboy",artist:"The Weeknd, Daft Punk",streams:2565529693,year:2016},
+];
+const top10Artists = [
+{artist:"The Weeknd",streams:14185552870},
+{artist:"Taylor Swift",streams:14053658300},
+{artist:"Ed Sheeran",streams:13908947204},
+{artist:"Harry Styles",streams:11608645649},
+{artist:"Bad Bunny",streams:9997799607},
+{artist:"Olivia Rodrigo",streams:7442148916},
+{artist:"Eminem",streams:6183805596},
+{artist:"Bruno Mars",streams:5846920599},
+{artist:"Arctic Monkeys",streams:5569806731},
+{artist:"Imagine Dragons",streams:5272484650},
+];
+const yearData = [
+{year:2015,total:10930934969,count:11,avg:993721361},
+{year:2016,total:20242940464,count:18,avg:1124607804},
+{year:2017,total:31457639060,count:23,avg:1367723437},
+{year:2018,total:15030522390,count:10,avg:1503052239},
+{year:2019,total:37870932581,count:36,avg:1051970349},
+{year:2020,total:34703731857,count:37,avg:937938699},
+{year:2021,total:73808103039,count:119,avg:620236160},
+{year:2022,total:116402377962,count:402,avg:289558154},
+{year:2023,total:25808484104,count:175,avg:147477052},
+];
+const featureCorr = {
+"Danceability":-0.105,
+"Valence":-0.041,
+"Energy":-0.026,
+"Acousticness":-0.004,
+"Instrument.":-0.045,
+"Liveness":-0.048,
+"Speechiness":-0.112,
+"BPM":-0.002,
+};
+const bpmDist = {"<80":12,"80-100":52,"100-120":64,"120-140":52,"140-160":26,"160+":30};
+const keyStreams = {"A":408841412,"A#":552475435,"B":519347957,"C#":604280249,"D":529525559,"D#":553036540,"E":577497189,"F":468446389,"F#":522363151,"G":452599401,"G#":476911864};
+const energyScatter = [{e:90,s:1.48},{e:84,s:0.08},{e:77,s:1.44},{e:47,s:0.59},{e:89,s:0.30},{e:55,s:0.86},{e:94,s:0.14},{e:43,s:0.09},{e:45,s:0.29},{e:58,s:0.81},{e:60,s:0.32},{e:88,s:0.35},{e:48,s:0.64},{e:37,s:0.43},{e:28,s:0.28},{e:69,s:1.12},{e:61,s:0.87},{e:87,s:0.35},{e:46,s:0.06},{e:82,s:0.52},{e:59,s:0.14},{e:67,s:0.20},{e:90,s:0.10},{e:80,s:1.37},{e:70,s:0.20},{e:72,s:0.12},{e:84,s:0.02},{e:64,s:0.08},{e:48,s:2.29},{e:63,s:0.12},{e:61,s:0.46},{e:42,s:0.37},{e:53,s:0.28},{e:89,s:0.59},{e:55,s:0.68},{e:92,s:0.27},{e:69,s:0.07},{e:85,s:0.18},{e:77,s:0.15},{e:82,s:0.72},{e:65,s:1.26},{e:41,s:2.89},{e:48,s:0.57},{e:39,s:0.23},{e:41,s:0.12},{e:89,s:0.05},{e:60,s:0.95},{e:67,s:0.15},{e:35,s:0.13},{e:53,s:0.40},{e:72,s:0.33},{e:66,s:0.52},{e:77,s:0.14},{e:68,s:0.09},{e:57,s:0.30},{e:83,s:0.05},{e:73,s:0.10},{e:59,s:0.29},{e:65,s:0.26},{e:92,s:0.13},{e:45,s:0.13},{e:64,s:0.40},{e:64,s:0.36},{e:79,s:0.28},{e:80,s:0.21},{e:37,s:0.59},{e:38,s:0.45},{e:85,s:0.44},{e:26,s:0.11},{e:66,s:0.17},{e:66,s:0.30},{e:66,s:0.53},{e:31,s:0.19},{e:71,s:1.20},{e:60,s:0.05},{e:66,s:0.55},{e:90,s:1.55},{e:53,s:0.11},{e:47,s:0.23},{e:65,s:0.25},{e:71,s:0.29},{e:59,s:0.32},{e:44,s:0.18},{e:71,s:0.12},{e:49,s:0.05},{e:77,s:1.24},{e:61,s:1.04},{e:37,s:0.03},{e:54,s:0.63},{e:68,s:0.61},{e:72,s:0.26},{e:86,s:1.36},{e:74,s:0.09},{e:59,s:0.75},{e:70,s:0.39},{e:58,s:0.07},{e:39,s:0.09}];
+const tempoByYear = {2010:118.6,2011:127.9,2012:142.8,2013:120.1,2014:106.0,2015:127.4,2016:126.9,2017:119.0,2018:115.3,2019:118.4,2020:118.0,2021:125.8,2022:122.0,2023:124.1};
+// Chart defaults
+Chart.defaults.color = '#6b6b85';
+Chart.defaults.borderColor = '#1e1e2e';
+Chart.defaults.font.family = "'DM Mono', monospace";
+const GREEN = '#1db954';
+const TEAL = '#00c9a7';
+const GOLD = '#f5c518';
+const ROSE = '#ff6b9d';
+const BLUE = '#4cc9f0';
+const PURPLE = '#9b5de5';
+function formatStreams(n) {
+if(n >= 1e9) return (n/1e9).toFixed(2)+'B';
+if(n >= 1e6) return (n/1e6).toFixed(0)+'M';
+return n.toFixed(0);
+}
+// ============================
+// POPULATE TABLES
+// ============================
+const songsTbody = document.getElementById('top10-songs-tbody');
+const maxStreams = top10Songs[0].streams;
+top10Songs.forEach((s, i) => {
+const pct = (s.streams/maxStreams*100).toFixed(0);
+const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+songsTbody.innerHTML += `<tr> <td><span class="rank-badge ${rankClass}">${i+1}</span></td> <td><div style="font-weight:500;color:#fff;">${s.track.length>35?s.track.substring(0,35)+'…':s.track}</div></td> <td style="color:var(--muted);">${s.artist}</td> <td style="color:var(--muted);">${s.year}</td> <td> <div style="color:var(--green);font-weight:600;">${formatStreams(s.streams)}</div> <div class="stream-bar" style="width:${pct}%;"></div> </td> </tr>`;
+});
+const artistsTbody = document.getElementById('top10-artists-tbody');
+const maxArtistStreams = top10Artists[0].streams;
+top10Artists.forEach((a, i) => {
+const pct = (a.streams/maxArtistStreams*100).toFixed(0);
+const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+artistsTbody.innerHTML += `<tr> <td><span class="rank-badge ${rankClass}">${i+1}</span></td> <td style="color:#fff;font-weight:500;">${a.artist}</td> <td style="color:var(--green);font-weight:600;">${formatStreams(a.streams)}</td> <td style="width:200px;"> <div style="height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;"> <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,${GREEN},${TEAL});border-radius:3px;"></div> </div> </td> </tr>`;
+});
+// ============================
+// CORRELATION HEATMAP
+// ============================
+const corrGrid = document.getElementById('corr-grid');
+Object.entries(featureCorr).forEach(([feat, val]) => {
+const intensity = Math.abs(val) / 0.15;
+const r = val < 0 ? Math.floor(255 * Math.min(intensity,1)) : 0;
+const g = val > 0 ? Math.floor(185 * Math.min(intensity,1)) : 0;
+const alpha = 0.08 + Math.min(intensity,1)*0.35;
+const bg = val < 0 ? `rgba(255,107,157,${alpha})` : `rgba(29,185,84,${alpha})`;
+const textColor = val < 0 ? ROSE : GREEN;
+corrGrid.innerHTML += `<div class="corr-cell" style="background:${bg};"> <div class="corr-feature">${feat}</div> <div class="corr-val" style="color:${textColor};">${val}</div> </div>`;
+});
+// ============================
+// CHARTS
+// ============================
+// 1. Artist Bar Chart
+new Chart(document.getElementById('artistChart'), {
+type: 'bar',
+data: {
+labels: top10Artists.map(a => a.artist),
+datasets: [{
+data: top10Artists.map(a => a.streams/1e9),
+backgroundColor: top10Artists.map((_, i) => i===0?GREEN:i===1?'rgba(245,197,24,0.8)':i===2?TEAL:'rgba(76,201,240,0.5)'),
+borderRadius: 6,
+borderSkipped: false,
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {display:false},
+tooltip: {callbacks:{label: c => `${c.parsed.y.toFixed(2)}B streams`}}
+},
+scales: {
+x: { grid:{display:false}, ticks:{color:'#6b6b85'} },
+y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`, color:'#6b6b85'} }
+}
+}
+});
+// 2. Year Chart
+const years = yearData.map(d=>d.year);
+new Chart(document.getElementById('yearChart'), {
+type: 'bar',
+data: {
+labels: years,
+datasets: [
+{
+label: 'Total Streams (B)',
+data: yearData.map(d=>d.total/1e9),
+backgroundColor: `rgba(29,185,84,0.5)`,
+borderColor: GREEN,
+borderWidth: 1,
+borderRadius: 4,
+yAxisID: 'y',
+},
+{
+label: 'Song Count',
+data: yearData.map(d=>d.count),
+type: 'line',
+borderColor: GOLD,
+backgroundColor: 'transparent',
+pointBackgroundColor: GOLD,
+tension: 0.4,
+yAxisID: 'y1',
+}
+]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {labels:{color:'#6b6b85',boxWidth:12}},
+},
+scales: {
+x: { grid:{display:false}, ticks:{color:'#6b6b85'} },
+y: { position:'left', grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#6b6b85'} },
+y1: { position:'right', grid:{display:false}, ticks:{color:GOLD} }
+}
+}
+});
+// 3. Energy Scatter
+new Chart(document.getElementById('energyScatter'), {
+type: 'scatter',
+data: {
+datasets: [{
+data: energyScatter.map(d=>({x:d.e, y:d.s})),
+backgroundColor: `rgba(76,201,240,0.4)`,
+pointRadius: 4,
+pointHoverRadius: 6,
+}]
+},
+options: {
+responsive: true,
+plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`Energy ${c.parsed.x}%, ${c.parsed.y.toFixed(2)}B streams`}}},
+scales: {
+x: {title:{display:true,text:'Energy %',color:'#6b6b85'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}},
+y: {title:{display:true,text:'Streams (B)',color:'#6b6b85'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#6b6b85'}}
+}
+}
+});
+// 4. BPM Donut
+new Chart(document.getElementById('bpmChart'), {
+type: 'doughnut',
+data: {
+labels: Object.keys(bpmDist),
+datasets: [{
+data: Object.values(bpmDist),
+backgroundColor: [PURPLE, BLUE, GREEN, TEAL, GOLD, ROSE],
+borderWidth: 2,
+borderColor: '#111118',
+}]
+},
+options: {
+responsive: true,
+cutout: '65%',
+plugins: {
+legend: {position:'right', labels:{color:'#6b6b85', boxWidth:12, padding:12}},
+tooltip: {callbacks:{label:c=>`${c.label}: ${c.parsed} songs`}}
+}
+}
+});
+// 5. Tempo over years
+const tempoYears = Object.keys(tempoByYear).map(Number).filter(y=>y>=2012);
+new Chart(document.getElementById('tempoChart'), {
+type: 'line',
+data: {
+labels: tempoYears,
+datasets: [{
+label: 'Avg BPM',
+data: tempoYears.map(y=>tempoByYear[y]),
+borderColor: ROSE,
+backgroundColor: 'rgba(255,107,157,0.1)',
+fill: true,
+tension: 0.4,
+pointBackgroundColor: ROSE,
+}]
+},
+options: {
+responsive: true,
+plugins: {legend:{display:false}},
+scales: {
+x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
+y: {min:100, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}}
+}
+}
+});
+// 6. Song count
+new Chart(document.getElementById('songCountChart'), {
+type: 'bar',
+data: {
+labels: yearData.map(d=>d.year),
+datasets: [{
+label: 'Songs',
+data: yearData.map(d=>d.count),
+backgroundColor: yearData.map(d=>d.year===2022?GREEN:'rgba(29,185,84,0.35)'),
+borderRadius: 5,
+}]
+},
+options: {
+responsive: true,
+plugins: {legend:{display:false}},
+scales: {
+x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}}
+}
+}
+});
+// 7. Avg streams per year
+new Chart(document.getElementById('avgStreamsChart'), {
+type: 'line',
+data: {
+labels: yearData.map(d=>d.year),
+datasets: [{
+label: 'Avg Streams',
+data: yearData.map(d=>d.avg/1e6),
+borderColor: GOLD,
+backgroundColor: 'rgba(245,197,24,0.1)',
+fill: true,
+tension: 0.4,
+pointBackgroundColor: GOLD,
+}]
+},
+options: {
+responsive: true,
+plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(0)}M avg`}}},
+scales: {
+x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#6b6b85'}}
+}
+}
+});
+// 8. Key streams
+new Chart(document.getElementById('keyChart'), {
+type: 'bar',
+data: {
+labels: Object.keys(keyStreams),
+datasets: [{
+data: Object.values(keyStreams).map(v=>v/1e6),
+backgroundColor: Object.keys(keyStreams).map(k=>k==='C#'?GREEN:k==='E'?TEAL:k==='D#'?BLUE:'rgba(29,185,84,0.3)'),
+borderRadius: 5,
+}]
+},
+options: {
+responsive: true,
+plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(0)}M avg`}}},
+scales: {
+x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#6b6b85'}}
+}
+}
+});
+// 9. Radar Chart — Hit Song Profile
+new Chart(document.getElementById('radarChart'), {
+type: 'radar',
+data: {
+labels: ['Danceability','Energy','Valence','Acousticness','Liveness','Speechiness','BPM (norm)'],
+datasets: [
+{
+label: 'All Songs Avg',
+data: [66, 64, 51, 27, 18, 10, 61],
+borderColor: 'rgba(107,107,133,0.8)',
+backgroundColor: 'rgba(107,107,133,0.1)',
+pointBackgroundColor: '#6b6b85',
+},
+{
+label: 'Top 10% Songs',
+data: [62, 58, 48, 30, 16, 8, 58],
+borderColor: GREEN,
+backgroundColor: 'rgba(29,185,84,0.15)',
+pointBackgroundColor: GREEN,
+}
+]
+},
+options: {
+responsive: true,
+plugins: {legend:{labels:{color:'#6b6b85',boxWidth:12}}},
+scales: {
+r: {
+grid:{color:'rgba(255,255,255,0.06)'},
+angleLines:{color:'rgba(255,255,255,0.06)'},
+ticks:{display:false},
+pointLabels:{color:'#6b6b85', font:{size:11}},
+}
+}
+}
+});
+</script>
+</body>
+</html>
