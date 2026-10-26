@@ -1,0 +1,34 @@
+/* Data becomes a pattern; the headline resolves into clarity. */
+.clarity-story{position:relative;isolation:isolate;padding-bottom:142px;margin-bottom:10px}
+.clarity-headline{position:relative;z-index:2;margin:0!important;font-size:clamp(46px,6.3vw,88px);line-height:1.08;letter-spacing:-.05em;font-weight:500;pointer-events:none}
+.clarity-line{display:block;white-space:nowrap}.clarity-words{display:inline-block;animation:clarityResolve 1.5s cubic-bezier(.16,1,.3,1) var(--reveal) both}.clarity-headline .clarity-sense{color:var(--lime);font-style:italic;animation-name:claritySense}
+.clarity-dataset{position:absolute;bottom:8px;left:0;right:0;height:190px;z-index:1;pointer-events:none}.clarity-dataset svg{display:block;width:100%;height:100%;overflow:visible}
+.sorting-point{animation:claritySort 2.1s cubic-bezier(.22,.7,.3,1) var(--sort-delay) both}
+.clarity-grid{animation:clarityGrid 1.5s ease-out 2.5s both}.clarity-chart{stroke-dasharray:390;stroke-dashoffset:0;animation:clarityConnect 1.6s ease-in-out 2.8s both}
+.clarity-fill{animation:clarityGrid 1.5s ease-out 3.5s both}.clarity-connector{animation:claritySignal 1.5s linear 2s infinite}
+.clarity-traveler{offset-path:path('M268 135L320 116L365 128L416 86L467 93L525 46');animation:clarityTravel 6s ease-in-out 4.4s infinite both}
+.clarity-fragment{fill:#b5c99b;opacity:.4;font:12px 'DM Mono',monospace;animation:clarityFragments 2.8s ease-out .5s both}
+.analyst-track{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}.clarity-avatar{position:absolute;bottom:7px;left:calc(25% - 90px);width:clamp(130px,12vw,160px);padding:0;border:0;background:none;color:inherit;cursor:pointer;pointer-events:auto;line-height:0;animation:analystWalkIn 2.1s cubic-bezier(.25,.6,.3,1) both;filter:drop-shadow(0 7px 12px #0003)}
+.clarity-avatar svg{display:block;width:100%;height:auto;overflow:visible}.clarity-avatar:hover{filter:drop-shadow(0 0 12px #d7fc7035)}.clarity-avatar:focus-visible{outline:2px solid var(--lime);outline-offset:-5px;border-radius:22px}
+.analyst-body{animation:analystIdle 3.5s ease-in-out 2.1s infinite}.analyst-leg{transform-box:view-box;transform-origin:94px 107px;animation:analystStep .35s ease-in-out 0s 6}.leg-back{animation-direction:reverse;transform-origin:85px 107px}
+.sorting-arm{transform-box:view-box;transform-origin:103px 70px;animation:analystSortGesture 6s ease-in-out 2.1s infinite both}.sort-cursor{animation:clarityCursor 2s ease-in-out 2.1s infinite}
+.clarity-ground{position:absolute;bottom:17px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#91b27644 20%,#91b27644 80%,transparent)}
+.clarity-again .sorting-point{animation:claritySort 2.1s cubic-bezier(.22,.7,.3,1) both}
+.clarity-again .clarity-chart{animation:clarityConnect 1.6s ease-in-out .9s both}.clarity-again .clarity-grid,.clarity-again .clarity-fill{animation:clarityGrid 1.5s ease-out both}
+.clarity-resting .analyst-body,.clarity-resting .sorting-arm,.clarity-resting .sort-cursor,.clarity-resting .clarity-traveler,.clarity-resting .clarity-connector{animation-play-state:paused}
+@keyframes clarityResolve{from{opacity:0;transform:translateY(18px);filter:blur(9px)}to{opacity:1;transform:none;filter:none}}
+@keyframes claritySense{0%{opacity:0;transform:translateY(15px);filter:blur(10px)}70%{opacity:1;filter:blur(0);text-shadow:0 0 25px #d7fc7055}100%{opacity:1;transform:none;filter:none;text-shadow:none}}
+@keyframes claritySort{0%{opacity:.3;transform:translate(var(--dx),var(--dy))}65%{opacity:.9}100%{opacity:1;transform:none}}
+@keyframes clarityConnect{from{stroke-dashoffset:390;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
+@keyframes clarityGrid{from{opacity:0}to{opacity:1}}
+@keyframes claritySignal{to{stroke-dashoffset:-24}}
+@keyframes clarityTravel{0%{offset-distance:0%;opacity:0}8%{opacity:1}85%{offset-distance:100%;opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes clarityFragments{0%,35%{opacity:.4;transform:translateY(0)}100%{opacity:0;transform:translateY(12px)}}
+@keyframes analystWalkIn{from{left:-170px}to{left:calc(25% - 90px)}}
+@keyframes analystStep{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(11deg)}}
+@keyframes analystIdle{50%{translate:0 -1.5px}}
+@keyframes analystSortGesture{0%,100%{rotate:0deg}25%{rotate:-12deg}45%{rotate:6deg}65%{rotate:-4deg}}
+@keyframes clarityCursor{50%{opacity:.35}}
+@media(max-width:900px){.clarity-headline{font-size:clamp(44px,6.1vw,70px)}.clarity-avatar{width:140px}.clarity-story{padding-bottom:132px}}
+@media(max-width:650px){.clarity-headline{font-size:clamp(38px,10.2vw,58px);line-height:1.12;letter-spacing:-.055em}.clarity-story{padding-bottom:118px}.clarity-dataset{height:150px;left:-15px;right:-15px;bottom:2px}.clarity-avatar{width:125px;left:calc(25% - 65px);animation-name:analystMobileWalkIn}.analyst-track{overflow:hidden}@keyframes analystMobileWalkIn{from{left:-140px}to{left:calc(25% - 65px)}}}
+@media(prefers-reduced-motion:reduce){.clarity-story *{animation:none!important;transition:none!important;filter:none!important}.clarity-words,.sorting-point{opacity:1;transform:none}.clarity-chart{stroke-dashoffset:0}.clarity-fragment,.clarity-traveler{display:none}}
