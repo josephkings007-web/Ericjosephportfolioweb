@@ -10,16 +10,16 @@
 <style>
 :root {
   --bg: #07080f;
-  --surface: #0d0f1a;
-  --surface2: #131525;
-  --border: #1e2035;
+  --surface: #191e1a;
+  --surface2: #222a21;
+  --border: #343c32;
   --text: #e8eaf6;
-  --muted: #5c6080;
+  --muted: #a2ac9f;
   --dim: #383d5c;
 
-  --violet: #7c6af0;
+  --violet: #b9b2e2;
   --violet-glow: rgba(124,106,240,0.15);
-  --cyan: #00d4e8;
+  --cyan: #9bcfaf;
   --cyan-glow: rgba(0,212,232,0.12);
   --amber: #f5a623;
   --amber-glow: rgba(245,166,35,0.12);
@@ -46,7 +46,7 @@ body {
 
 /* ── HEADER ── */
 .header {
-  background: linear-gradient(135deg, #0d0f1a 0%, #10122a 60%, #0d0f1a 100%);
+  background: linear-gradient(135deg, #191e1a 0%, #10122a 60%, #191e1a 100%);
   padding: 56px 48px 40px;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -264,8 +264,8 @@ body {
 }
 .card { animation: fadeUp 0.5s ease both; }
 </style>
-</head>
-<body>
+<link rel="stylesheet" href="chrome.css"><link rel="stylesheet" href="dashboard.css"></head>
+<body><a class="site-skip" href="#project-content">Skip to project</a><div class="site-progress" aria-hidden="true"></div><div class="sitebar"><div class="sitebar-inner"><a class="sitebrand" href="index.html" aria-label="Eric Joseph home">ej<span>.</span></a><button class="site-toggle" aria-controls="site-links" aria-expanded="false">Menu</button><div class="sitebar-links" id="site-links"><a href="index.html#work">Selected work</a><a href="caresync.html">CareSync</a><a href="index.html#skills">Capabilities</a><a href="index.html#about">About me</a><a class="sitecontact" href="index.html#contact">Let's talk ↗</a></div></div></div><div id="project-content" tabindex="-1"></div>
 
 <!-- HEADER -->
 <div class="header">
@@ -556,24 +556,24 @@ body {
 
 <script>
 // ── CHART GLOBAL DEFAULTS ─────────────────────────────────────────────────────
-Chart.defaults.color = '#5c6080';
-Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.color = '#a2ac9f';
+Chart.defaults.font.family = 'DM Sans, Arial, sans-serif';
 Chart.defaults.font.size = 10;
 
-const GRID_COLOR = '#1e2035';
+const GRID_COLOR = '#343c32';
 const TOOLTIP = {
-  backgroundColor: '#131525',
+  backgroundColor: '#222a21',
   titleColor: '#e8eaf6',
   bodyColor: '#8890b8',
-  borderColor: '#1e2035',
+  borderColor: '#343c32',
   borderWidth: 1,
   padding: 10,
   cornerRadius: 6
 };
 
 const COLORS = {
-  violet: '#7c6af0',
-  cyan: '#00d4e8',
+  violet: '#b9b2e2',
+  cyan: '#9bcfaf',
   amber: '#f5a623',
   rose: '#f0456a',
   green: '#30d48a',
@@ -585,8 +585,8 @@ const COLORS = {
 };
 
 const scales_xy = {
-  x: { grid: { color: GRID_COLOR }, ticks: { color: '#5c6080' }, border: { color: '#1e2035' } },
-  y: { grid: { color: GRID_COLOR }, ticks: { color: '#5c6080' }, border: { color: '#1e2035' } }
+  x: { grid: { color: GRID_COLOR }, ticks: { color: '#a2ac9f' }, border: { color: '#343c32' } },
+  y: { grid: { color: GRID_COLOR }, ticks: { color: '#a2ac9f' }, border: { color: '#343c32' } }
 };
 
 // ── Q1: DISORDER TYPE ──────────────────────────────────────────────────────────
@@ -596,7 +596,7 @@ new Chart(document.getElementById('disorderTypeChart'), {
     labels: ['Disease','Category','Malformation Syn.','Clinical Subtype','Morphological Anomaly','Clinical Group','Etiological Subtype','Other'],
     datasets: [{
       data: [4713,2147,2068,1053,519,486,265,205],
-      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c'],
+      backgroundColor: ['#b9b2e2','#9bcfaf','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c'],
       borderRadius: 4,
       borderSkipped: false
     }]
@@ -619,9 +619,9 @@ new Chart(document.getElementById('disorderGroupChart'), {
     labels: ['Disorder','Group of disorders','Subtype of disorder'],
     datasets: [{
       data: [7441,2633,1382],
-      backgroundColor: ['#7c6af0','#00d4e8','#f5a623'],
+      backgroundColor: ['#b9b2e2','#9bcfaf','#f5a623'],
       borderWidth: 2,
-      borderColor: '#0d0f1a',
+      borderColor: '#191e1a',
       hoverOffset: 8
     }]
   },
@@ -643,7 +643,7 @@ new Chart(document.getElementById('onsetChart'), {
     datasets: [{
       data: [3091,2566,1619,1486,933,872,825,347,52],
       backgroundColor: [
-        '#f0456a','#f5a623','#7c6af0','#00d4e8','#30d48a','#a78bfa','#38bdf8','#fb923c','#3d3f5c'
+        '#f0456a','#f5a623','#b9b2e2','#9bcfaf','#30d48a','#a78bfa','#38bdf8','#fb923c','#3d3f5c'
       ],
       borderRadius: 5,
       borderSkipped: false
@@ -666,9 +666,9 @@ new Chart(document.getElementById('lifecycleChart'), {
     labels: ['Antenatal/Neonatal','Infancy','Childhood','Adolescent','Adult','Elderly','All Ages'],
     datasets: [{
       data: [4024,2566,1619,825,1486,347,872],
-      backgroundColor: ['#f0456a','#f5a623','#7c6af0','#38bdf8','#00d4e8','#a78bfa','#30d48a'],
+      backgroundColor: ['#f0456a','#f5a623','#b9b2e2','#38bdf8','#9bcfaf','#a78bfa','#30d48a'],
       borderWidth: 2,
-      borderColor: '#0d0f1a',
+      borderColor: '#191e1a',
       hoverOffset: 8
     }]
   },
@@ -683,8 +683,8 @@ new Chart(document.getElementById('lifecycleChart'), {
 
 // ── Q5: INHERITANCE LIST ──────────────────────────────────────────────────────
 const inhData = [
-  { name: 'Autosomal recessive', val: 2599, color: '#7c6af0' },
-  { name: 'Autosomal dominant', val: 1943, color: '#00d4e8' },
+  { name: 'Autosomal recessive', val: 2599, color: '#b9b2e2' },
+  { name: 'Autosomal dominant', val: 1943, color: '#9bcfaf' },
   { name: 'Not applicable', val: 1616, color: '#3d3f5c' },
   { name: 'X-linked recessive', val: 388, color: '#f0456a' },
   { name: 'Unknown', val: 384, color: '#4a4c68' },
@@ -711,9 +711,9 @@ new Chart(document.getElementById('domRecChart'), {
     labels: ['Autosomal Recessive','Autosomal Dominant','X-linked Recessive','X-linked Dominant','Mitochondrial','Multigenic','Not applicable/Unknown'],
     datasets: [{
       data: [2599,1943,388,105,39,200,2182],
-      backgroundColor: ['#7c6af0','#00d4e8','#f0456a','#a78bfa','#30d48a','#f5a623','#2a2c42'],
+      backgroundColor: ['#b9b2e2','#9bcfaf','#f0456a','#a78bfa','#30d48a','#f5a623','#2a2c42'],
       borderWidth: 2,
-      borderColor: '#0d0f1a',
+      borderColor: '#191e1a',
       hoverOffset: 8
     }]
   },
@@ -734,7 +734,7 @@ new Chart(document.getElementById('icd10Chart'), {
     labels: ['Congenital Anomalies','Nervous System','Endocrine/Metabolic','Blood/Hematopoietic','Neoplasms','Eye/Ear','Infectious','Skin','Musculoskeletal','Digestive','Circulatory','Other'],
     datasets: [{
       data: [2916,1029,1026,700,452,237,198,188,175,149,135,336],
-      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c','#e879f9','#a3e635','#f0456a','#3d3f5c'],
+      backgroundColor: ['#b9b2e2','#9bcfaf','#f5a623','#f0456a','#30d48a','#a78bfa','#38bdf8','#fb923c','#e879f9','#a3e635','#f0456a','#3d3f5c'],
       borderRadius: 4,
       borderSkipped: false
     }]
@@ -752,8 +752,8 @@ new Chart(document.getElementById('icd10Chart'), {
 
 // ── Q8: BODY SYSTEM LIST ──────────────────────────────────────────────────────
 const sysData = [
-  { name: 'Congenital Anomalies', val: 2916, color: '#7c6af0' },
-  { name: 'Nervous System', val: 1029, color: '#00d4e8' },
+  { name: 'Congenital Anomalies', val: 2916, color: '#b9b2e2' },
+  { name: 'Nervous System', val: 1029, color: '#9bcfaf' },
   { name: 'Endocrine/Metabolic', val: 1026, color: '#f5a623' },
   { name: 'Blood/Hematopoietic', val: 700, color: '#f0456a' },
   { name: 'Neoplasms', val: 452, color: '#30d48a' },
@@ -776,7 +776,7 @@ new Chart(document.getElementById('coverageChart'), {
     datasets: [{
       label: 'Records with Link',
       data: [9634,7541,6143,4978,3216,3833,846],
-      backgroundColor: ['#30d48a','#00d4e8','#7c6af0','#f5a623','#a78bfa','#f0456a','#38bdf8'],
+      backgroundColor: ['#30d48a','#9bcfaf','#b9b2e2','#f5a623','#a78bfa','#f0456a','#38bdf8'],
       borderRadius: 5,
       borderSkipped: false
     }]
@@ -794,9 +794,9 @@ new Chart(document.getElementById('coverageChart'), {
 // ── Q11: MISSING TABLE ────────────────────────────────────────────────────────
 const missingData = [
   { field: 'UMLS Identifier', present: 9634, total: 11456, color: '#30d48a' },
-  { field: 'ICD-10 Code', present: 7541, total: 11456, color: '#00d4e8' },
+  { field: 'ICD-10 Code', present: 7541, total: 11456, color: '#9bcfaf' },
   { field: 'Age of Onset', present: 6729, total: 11456, color: '#f5a623' },
-  { field: 'ICD-11 Code', present: 6143, total: 11456, color: '#7c6af0' },
+  { field: 'ICD-11 Code', present: 6143, total: 11456, color: '#b9b2e2' },
   { field: 'Inheritance Type', present: 5965, total: 11456, color: '#a78bfa' },
   { field: 'OMIM Link', present: 4978, total: 11456, color: '#f5a623' },
   { field: 'GARD Link', present: 3833, total: 11456, color: '#f0456a' },
@@ -822,8 +822,8 @@ new Chart(document.getElementById('onsetByTypeChart'), {
     datasets: [
       { label: 'Neonatal', data: [1116,1356,256,53,31], backgroundColor: '#f0456a' },
       { label: 'Infancy', data: [1311,739,236,48,25], backgroundColor: '#f5a623' },
-      { label: 'Childhood', data: [1154,218,104,43,12], backgroundColor: '#7c6af0' },
-      { label: 'Adult', data: [1178,18,114,36,21], backgroundColor: '#00d4e8' },
+      { label: 'Childhood', data: [1154,218,104,43,12], backgroundColor: '#b9b2e2' },
+      { label: 'Adult', data: [1178,18,114,36,21], backgroundColor: '#9bcfaf' },
       { label: 'Antenatal', data: [218,589,77,19,10], backgroundColor: '#30d48a' },
     ]
   },
@@ -843,8 +843,8 @@ new Chart(document.getElementById('inhByTypeChart'), {
   data: {
     labels: ['Disease','Malformation Syn.','Clinical Subtype'],
     datasets: [
-      { label: 'AR', data: [1468,581,230], backgroundColor: '#7c6af0' },
-      { label: 'AD', data: [1034,484,157], backgroundColor: '#00d4e8' },
+      { label: 'AR', data: [1468,581,230], backgroundColor: '#b9b2e2' },
+      { label: 'AD', data: [1034,484,157], backgroundColor: '#9bcfaf' },
       { label: 'XLR', data: [173,112,45], backgroundColor: '#f0456a' },
       { label: 'XLD', data: [43,37,10], backgroundColor: '#a78bfa' },
       { label: 'Multigenic', data: [105,15,20], backgroundColor: '#f5a623' },
@@ -867,7 +867,7 @@ new Chart(document.getElementById('earlyLateInhChart'), {
     labels: ['AR','AD','X-linked R','Multigenic','X-linked D','Mitochondrial'],
     datasets: [
       { label: 'Early Onset', data: [1687,947,249,64,65,22], backgroundColor: '#f0456a', borderRadius: 3 },
-      { label: 'Late Onset', data: [328,469,50,77,20,8], backgroundColor: '#00d4e8', borderRadius: 3 }
+      { label: 'Late Onset', data: [328,469,50,77,20,8], backgroundColor: '#9bcfaf', borderRadius: 3 }
     ]
   },
   options: {
@@ -887,7 +887,7 @@ new Chart(document.getElementById('nameKeyChart'), {
     labels: ['Syndrome','Disease','Deficiency','Dysplasia','Dystrophy','Other'],
     datasets: [{
       data: [3284,882,702,395,245,5948],
-      backgroundColor: ['#7c6af0','#00d4e8','#f5a623','#f0456a','#30d48a','#2a2c42'],
+      backgroundColor: ['#b9b2e2','#9bcfaf','#f5a623','#f0456a','#30d48a','#2a2c42'],
       borderRadius: 5,
       borderSkipped: false
     }]
@@ -909,9 +909,9 @@ new Chart(document.getElementById('multiInhChart'), {
     labels: ['Single inheritance pattern','Multiple inheritance patterns'],
     datasets: [{
       data: [5093,872],
-      backgroundColor: ['#7c6af0','#f0456a'],
+      backgroundColor: ['#b9b2e2','#f0456a'],
       borderWidth: 2,
-      borderColor: '#0d0f1a',
+      borderColor: '#191e1a',
       hoverOffset: 8
     }]
   },
@@ -926,8 +926,8 @@ new Chart(document.getElementById('multiInhChart'), {
 });
 
 const comboData = [
-  { name: 'AD + AR', val: 251, color: '#7c6af0' },
-  { name: 'AD + Not applicable', val: 151, color: '#00d4e8' },
+  { name: 'AD + AR', val: 251, color: '#b9b2e2' },
+  { name: 'AD + Not applicable', val: 151, color: '#9bcfaf' },
   { name: 'Multigenic + Not applicable', val: 88, color: '#f5a623' },
   { name: 'Not applicable + Unknown', val: 86, color: '#f0456a' },
   { name: 'AR + XLR', val: 54, color: '#30d48a' },
@@ -945,8 +945,8 @@ comboData.forEach(d => {
 // ── Q17: ONSET COMBO LIST ─────────────────────────────────────────────────────
 const onsetComboData = [
   { name: 'Infancy + Neonatal', val: 1466, color: '#f0456a' },
-  { name: 'All ages', val: 867, color: '#00d4e8' },
-  { name: 'Adult only', val: 654, color: '#7c6af0' },
+  { name: 'All ages', val: 867, color: '#9bcfaf' },
+  { name: 'Adult only', val: 654, color: '#b9b2e2' },
   { name: 'Childhood only', val: 611, color: '#f5a623' },
   { name: 'Neonatal only', val: 596, color: '#30d48a' },
   { name: 'Antenatal + Neonatal', val: 551, color: '#a78bfa' },
@@ -972,7 +972,7 @@ new Chart(document.getElementById('orphaRangeChart'), {
     labels: ['Codes < 1,000\n(Earliest)', 'Codes 1K–50K\n(Mid era)', 'Codes ≥ 50K\n(Recent)'],
     datasets: [{
       data: [872, 1901, 8683],
-      backgroundColor: ['#f5a623','#7c6af0','#00d4e8'],
+      backgroundColor: ['#f5a623','#b9b2e2','#9bcfaf'],
       borderRadius: 6,
       borderSkipped: false
     }]
@@ -1036,5 +1036,5 @@ new Chart(document.getElementById('topSystemsChart'), {
   }
 });
 </script>
-</body>
+<div class="sitefooter"><div>Eric Joseph Benedict<br>Data & digital experiences · Lagos, Nigeria</div><a href="index.html#work">← All projects</a><a href="caresync.html">Explore CareSync ↗</a><a href="#project-content">Back to top ↑</a></div><script src="site.js"></script></body>
 </html>

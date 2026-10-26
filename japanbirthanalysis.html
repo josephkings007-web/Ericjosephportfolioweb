@@ -11,7 +11,7 @@
   :root {
     --ink: #0a0a0f;
     --paper: #f5f0e8;
-    --red: #c1121f;
+    --red: #d7fc70;
     --gold: #c9a84c;
     --muted: #6b6560;
     --line: #d8d0c0;
@@ -311,8 +311,8 @@
     }
   }
 </style>
-</head>
-<body>
+<link rel="stylesheet" href="chrome.css"><link rel="stylesheet" href="dashboard.css"></head>
+<body><a class="site-skip" href="#project-content">Skip to project</a><div class="site-progress" aria-hidden="true"></div><div class="sitebar"><div class="sitebar-inner"><a class="sitebrand" href="index.html" aria-label="Eric Joseph home">ej<span>.</span></a><button class="site-toggle" aria-controls="site-links" aria-expanded="false">Menu</button><div class="sitebar-links" id="site-links"><a href="index.html#work">Selected work</a><a href="caresync.html">CareSync</a><a href="index.html#skills">Capabilities</a><a href="index.html#about">About me</a><a class="sitecontact" href="index.html#contact">Let's talk ↗</a></div></div></div><div id="project-content" tabindex="-1"></div>
 
 <div class="hero">
   <div class="hero-label">Eric Joseph Demographic Analysis Dashboard</div>
@@ -705,7 +705,7 @@ new Chart(document.getElementById('eraChart'), {
   type: 'bar',
   data: {
     labels: eras.map(e => e.label),
-    datasets: [{ data: eraAvgs, backgroundColor: ['#457b9d','#457b9d','#c9a84c','#c9a84c','#c1121f','#c1121f'], borderRadius: 2, borderSkipped: false }]
+    datasets: [{ data: eraAvgs, backgroundColor: ['#457b9d','#457b9d','#c9a84c','#c9a84c','#d7fc70','#d7fc70'], borderRadius: 2, borderSkipped: false }]
   },
   options: {
     ...CHART_DEFAULTS,
@@ -724,7 +724,7 @@ new Chart(document.getElementById('tfrChart'), {
   data: {
     labels: tfrData.map(d=>d[0]),
     datasets: [
-      { data: tfrData.map(d=>d[6]), borderColor: '#c1121f', backgroundColor: 'rgba(193,18,31,0.07)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.3 },
+      { data: tfrData.map(d=>d[6]), borderColor: '#d7fc70', backgroundColor: 'rgba(193,18,31,0.07)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.3 },
       { data: tfrData.map(()=>2.07), borderColor: '#457b9d', borderDash: [4,4], borderWidth: 1, pointRadius: 0, label: 'Replacement (2.07)' },
       { data: tfrData.map(()=>1.5), borderColor: '#666', borderDash: [2,4], borderWidth: 1, pointRadius: 0, label: 'Very Low (1.5)' }
     ]
@@ -769,7 +769,7 @@ new Chart(document.getElementById('sexRatioChart'), {
   data: {
     labels: years,
     datasets: [
-      { data: sexR, borderColor: '#c9a84c', borderWidth: 1.2, pointRadius: 2, pointBackgroundColor: years.map(y => y===1906 ? '#c1121f' : 'rgba(201,168,76,0.5)'), tension: 0.2, fill: false }
+      { data: sexR, borderColor: '#c9a84c', borderWidth: 1.2, pointRadius: 2, pointBackgroundColor: years.map(y => y===1906 ? '#d7fc70' : 'rgba(201,168,76,0.5)'), tension: 0.2, fill: false }
     ]
   },
   options: {
@@ -829,7 +829,7 @@ new Chart(document.getElementById('hinoeuma'), {
     labels: hinoRange.map(d=>d[0]),
     datasets: [{
       data: hinoRange.map(d=>d[1]),
-      backgroundColor: hinoRange.map(d => d[0]===1966 ? '#c1121f' : 'rgba(201,168,76,0.6)'),
+      backgroundColor: hinoRange.map(d => d[0]===1966 ? '#d7fc70' : 'rgba(201,168,76,0.6)'),
       borderRadius: 3
     }]
   },
@@ -900,9 +900,9 @@ topContainer.innerHTML = '<div style="font-size:9px;letter-spacing:0.2em;color:#
 top5.forEach((d,i) => {
   topContainer.innerHTML += `<div class="rank-item"><div class="rank-num">${i+1}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/2696638*100).toFixed(0)}%;background:#c9a84c"></div></div><div class="rank-text">${d[0]}</div><div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div></div>`;
 });
-botContainer.innerHTML = '<div style="font-size:9px;letter-spacing:0.2em;color:#c1121f;margin-bottom:8px">BOTTOM 5 YEARS</div>';
+botContainer.innerHTML = '<div style="font-size:9px;letter-spacing:0.2em;color:#d7fc70;margin-bottom:8px">BOTTOM 5 YEARS</div>';
 bot5.forEach((d,i) => {
-  botContainer.innerHTML += `<div class="rank-item"><div class="rank-num">${i+1}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/2696638*100).toFixed(0)}%;background:#c1121f"></div></div><div class="rank-text">${d[0]}</div><div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div></div>`;
+  botContainer.innerHTML += `<div class="rank-item"><div class="rank-num">${i+1}</div><div class="rank-bar-wrap"><div class="rank-bar" style="width:${(d[1]/2696638*100).toFixed(0)}%;background:#d7fc70"></div></div><div class="rank-text">${d[0]}</div><div class="rank-val">${(d[1]/1e6).toFixed(2)}M</div></div>`;
 });
 
 // ── Q12: PHASES ──────────────────────────────────────────────────────────────
@@ -1010,7 +1010,7 @@ new Chart(document.getElementById('projectionChart'), {
     labels: projYears,
     datasets: [
       { label: 'Actual', data: actualForProj, borderColor: '#c9a84c', borderWidth: 2, pointRadius: 2, tension: 0.3 },
-      { label: 'Projection', data: projYears.map(y => y>=2023 ? projLine[projYears.indexOf(y)] : null), borderColor: '#c1121f', borderDash: [6,4], borderWidth: 2, pointRadius: 0 },
+      { label: 'Projection', data: projYears.map(y => y>=2023 ? projLine[projYears.indexOf(y)] : null), borderColor: '#d7fc70', borderDash: [6,4], borderWidth: 2, pointRadius: 0 },
       { label: '500K threshold', data: projYears.map(()=>500000), borderColor: '#333', borderDash: [2,4], borderWidth: 1, pointRadius: 0 },
       { label: '600K threshold', data: projYears.map(()=>600000), borderColor: '#444', borderDash: [2,4], borderWidth: 1, pointRadius: 0 }
     ]
@@ -1031,7 +1031,7 @@ new Chart(document.getElementById('tfrThreshChart'), {
   data: {
     labels: tfrFull.map(d=>d[0]),
     datasets: [
-      { label: 'TFR', data: tfrFull.map(d=>d[6]), borderColor: '#c1121f', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3 },
+      { label: 'TFR', data: tfrFull.map(d=>d[6]), borderColor: '#d7fc70', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3 },
       { label: 'Replacement 2.07', data: tfrFull.map(()=>2.07), borderColor: '#457b9d', borderDash: [5,3], borderWidth: 1, pointRadius: 0 },
       { label: 'Very Low 1.5', data: tfrFull.map(()=>1.5), borderColor: '#c9a84c', borderDash: [3,3], borderWidth: 1, pointRadius: 0 },
       { label: 'Critical 1.3', data: tfrFull.map(()=>1.3), borderColor: '#666', borderDash: [2,4], borderWidth: 1, pointRadius: 0 }
@@ -1046,5 +1046,5 @@ new Chart(document.getElementById('tfrThreshChart'), {
   }
 });
 </script>
-</body>
+<div class="sitefooter"><div>Eric Joseph Benedict<br>Data & digital experiences · Lagos, Nigeria</div><a href="index.html#work">← All projects</a><a href="caresync.html">Explore CareSync ↗</a><a href="#project-content">Back to top ↑</a></div><script src="site.js"></script></body>
 </html>
