@@ -1,0 +1,35 @@
+/* A small companion follows the work without covering controls. */
+.project-guide-home-slot{position:sticky;top:88px;z-index:7;margin:14px 0 20px}
+.project-guide{display:flex;align-items:center;gap:12px;padding:8px 18px 8px 6px;min-height:86px;border:1px solid #394831;border-radius:12px;background:#141c11f5;backdrop-filter:blur(12px);color:#dfe9d6;font:12px/1.5 'DM Sans',Arial,sans-serif}
+.project-guide-avatar{width:84px;flex:0 0 84px;pointer-events:none}.project-guide-avatar svg{display:block;width:100%;height:68px;overflow:visible}
+.project-guide-copy{min-width:0;flex:1}.project-guide-label{display:block;color:#a9c58c;text-transform:uppercase;letter-spacing:1.4px;font-size:8px;margin-bottom:4px}
+.project-guide-message{font-size:12px;margin:0!important;color:#dfe9d6!important;line-height:1.5!important}
+.project-guide-hint{display:block;font-size:10px;color:#a2b096;margin-top:3px}
+.project-guide-link{font-size:11px;color:#d7fc70;border-bottom:1px solid #5b7344;text-decoration:none;white-space:nowrap;padding:8px 0}
+.project-guide-link[hidden]{display:none}.project-guide-link:focus-visible{outline:2px solid #d7fc70;outline-offset:5px}
+.project-guide .analyst-body{transform-box:view-box;transform-origin:95px 146px;animation:guideBreathe 4.8s ease-in-out infinite}
+.project-guide .analyst-leg,.project-guide .analyst-shin,.project-guide .analyst-foot{animation:none!important;transform:none}
+.project-guide .analyst-head{transform-box:view-box;transform-origin:94px 58px;animation:guideLook 6.5s ease-in-out infinite}
+.project-guide .analyst-free-arm{transform-box:view-box;transform-origin:84px 69px;animation:none;transform:rotate(-2deg)}
+.project-guide .sorting-arm{transform-box:view-box;transform-origin:103px 70px;animation:guidePoint 6s ease-in-out infinite;--point-angle:15deg}
+.project-guide .sort-cursor{animation:guideCursor 2.8s ease-in-out infinite}
+.project-guide.is-pointing .sorting-arm{--point-angle:30deg}
+.project-guide.is-reading .sorting-arm{--point-angle:-20deg}
+.project-guide.is-celebrating .analyst-free-arm{animation:guideWave 2.2s cubic-bezier(.4,0,.6,1) 2 both}
+.project-guide.is-celebrating .analyst-head{animation:guideNod 2s ease-in-out 2}
+.project-guide.is-celebrating{border-color:#758e57}
+.project-guide.is-resting *{animation-play-state:paused!important}
+dialog .project-guide{position:static;margin-top:24px;padding-top:12px;border-color:#3d4b32;background:#161f12}
+.project-guide-end{max-width:1080px;margin:10px auto 35px;padding:0 6%}
+.project-guide-end .project-guide{min-height:110px}
+.project-guide-end .project-guide-avatar{width:100px;flex-basis:100px}
+.project-guide-end .project-guide-avatar svg{height:90px}
+.project-guide-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@keyframes guideBreathe{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-1.2px,0)}}
+@keyframes guideLook{0%,100%{transform:rotate(0)}35%{transform:rotate(1.3deg)}70%{transform:rotate(-.6deg)}}
+@keyframes guidePoint{0%,100%{transform:rotate(var(--point-angle))}45%{transform:rotate(calc(var(--point-angle) - 3deg))}70%{transform:rotate(calc(var(--point-angle) + 1deg))}}
+@keyframes guideCursor{50%{opacity:.45}}
+@keyframes guideWave{0%,100%{transform:rotate(-2deg)}20%{transform:rotate(130deg)}35%{transform:rotate(112deg)}50%{transform:rotate(138deg)}65%{transform:rotate(112deg)}80%{transform:rotate(130deg)}}
+@keyframes guideNod{0%,100%{transform:rotate(0)}35%{transform:rotate(4deg)}65%{transform:rotate(-1deg)}}
+@media(max-width:650px){.project-guide-home-slot{top:72px;margin:10px 0 15px}.project-guide{min-height:72px;padding:5px 12px 5px 2px;gap:7px}.project-guide-avatar{width:66px;flex-basis:66px}.project-guide-avatar svg{height:58px}.project-guide-message{font-size:11px}.project-guide-hint{font-size:9px}.project-guide-label{font-size:7px}.project-guide-end .project-guide{flex-wrap:wrap}.project-guide-end .project-guide-copy{flex-basis:calc(100% - 110px)}.project-guide-end .project-guide-link{margin-left:107px}.project-guide-end{padding:0 6%;margin-bottom:25px}}
+@media(prefers-reduced-motion:reduce){.project-guide *{animation:none!important;transition:none!important}.project-guide.is-celebrating .analyst-free-arm{transform:rotate(100deg)}}
