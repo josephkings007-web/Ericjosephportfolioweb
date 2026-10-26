@@ -9,17 +9,15 @@
  let statusTimer;
  function announce(message){status.textContent=message;clearTimeout(statusTimer);statusTimer=setTimeout(()=>{status.textContent=''},3500)}
  function animate(el,frames,options){if(motion.enabled&&typeof el.animate==='function')el.animate(frames,options)}
- function replay(chart){if(!chart)return;chart.stop();if(motion.enabled){chart.options.animation={duration:1000,easing:'easeOutQuart'};chart.reset();chart.update()}else chart.update('none')}
+ function replay(chart){if(!chart)return;chart.stop();if(motion.enabled){chart.options.animation={duration:1400,easing:'easeOutQuart'};chart.reset();chart.update()}else chart.update('none')}
  function button(label,fn){const b=document.createElement('button');b.type='button';b.className='motion-button';b.textContent=label;b.addEventListener('click',fn);return b}
  const bar=document.createElement('div');bar.className='motion-bar';bar.setAttribute('aria-label','Page interaction controls');
- const copy=document.createElement('div');copy.className='motion-bar-copy';copy.innerHTML='<span class="motion-pulse" aria-hidden="true"></span><div>'+(isHome?'A portfolio made to explore.':charts().length?'Go beyond the chart.':'Take a closer look.')+'<small>'+(charts().length?'Hover for details. Replay, enlarge, or inspect the data below.':isHome?'Filter projects, open a case study, and follow your curiosity.':'Switch workflows or play the guided product tour.')+'</small></div>';
+ const copy=document.createElement('div');copy.className='motion-bar-copy';copy.innerHTML='<span class="motion-pulse" aria-hidden="true"></span><div>'+(isHome?'A portfolio made to explore.':charts().length?'Go beyond the chart.':'Take a closer look.')+'<small>'+(charts().length?'Charts animate automatically. Hover for details, enlarge, or inspect the data.':isHome?'Filter projects, open a case study, and follow your curiosity.':'The product walkthrough cycles automatically. Choose any workflow to explore.')+'</small></div>';
  const actions=document.createElement('div');actions.className='motion-actions';
- const motionButton=button('',()=>{motion.set(!motion.enabled)});
- function refreshMotionButton(){motionButton.textContent=motion.reduced?'Reduced motion':'Motion: '+(motion.enabled?'on':'off');motionButton.setAttribute('aria-pressed',String(motion.enabled));motionButton.disabled=motion.reduced}
- refreshMotionButton();actions.append(motionButton);bar.append(copy,actions);
+ bar.append(copy,actions);
  const anchor=isHome?$('.toolstrip'):$('.sitebar');if(anchor)anchor.insertAdjacentElement('afterend',bar);else document.body.prepend(bar);
- window.addEventListener('portfolio:motion',()=>{refreshMotionButton();charts().forEach(c=>{c.stop();c.options.animation=motion.enabled?{duration:1000,easing:'easeOutQuart'}:false;c.update('none')})});
- if(charts().length)actions.append(button('↻ Replay visible charts',()=>{let count=0;charts().forEach(c=>{if(c.canvas.getClientRects().length){const r=c.canvas.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){replay(c);count++}}});announce(count?'Replaying '+count+' visible chart'+(count===1?'':'s')+'.':'Scroll to a chart and press its Replay button.')}));
+ window.addEventListener('portfolio:motion',()=>{charts().forEach(c=>{c.stop();c.options.animation=motion.enabled?{duration:1400,easing:'easeOutQuart'}:false;c.update('none')})});
+
 
  /* The focus modal renders an independent chart, preserving the original canvas and data. */
  const focusDialog=document.createElement('dialog');focusDialog.className='motion-focus';focusDialog.setAttribute('aria-labelledby','motion-focus-heading');
@@ -46,11 +44,10 @@
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label',title+'. Interactive chart; data table available below.');
   if(!card.id)card.id='explore-chart-'+(index+1);catalog.push({chart,card,title});
   const controls=document.createElement('div');controls.className='motion-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Explore '+title);
-  const replayButton=button('↻ Replay',()=>replay(chart));
   const focusButton=button('⤢ Focus',()=>focusChart(chart,title,focusButton));
   const panel=document.createElement('div');panel.className='motion-tablepanel';panel.id='chart-data-'+index;panel.hidden=true;let built=false;
   const dataButton=button('≡ Explore data',()=>{const opening=panel.hidden;if(opening&&!built){buildTable();built=true}panel.hidden=!opening;dataButton.setAttribute('aria-expanded',String(opening));if(opening)animate(panel,[{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'translateY(0)'}],{duration:300,easing:'ease-out'})});dataButton.setAttribute('aria-expanded','false');dataButton.setAttribute('aria-controls',panel.id);
-  controls.append(replayButton,focusButton,dataButton);
+  controls.append(focusButton,dataButton);
   const wrapper=canvas.parentElement;if(wrapper===card)canvas.insertAdjacentElement('afterend',controls);else wrapper.insertAdjacentElement('afterend',controls);
   controls.insertAdjacentElement('afterend',panel);
   function buildTable(){
@@ -75,16 +72,18 @@
  const projectGrid=$('#projects');if(projectGrid&&'MutationObserver' in window)new MutationObserver(records=>{records.forEach(r=>{if(r.attributeName==='hidden'&&!r.target.hidden)animate(r.target,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'ease-out'})})}).observe(projectGrid,{subtree:true,attributes:true,attributeFilter:['hidden']});
  const visual=$('.visual');if(visual&&matchMedia('(pointer:fine)').matches){visual.addEventListener('pointermove',e=>{if(!motion.enabled)return;const r=visual.getBoundingClientRect();visual.style.rotate=((e.clientX-r.left)/r.width-.5)*4+'deg'});visual.addEventListener('pointerleave',()=>{visual.style.rotate=''})}
 
- /* CareSync's explicit-play tour uses only the fictional portfolio walkthrough. */
+ /* Loops start automatically, run only while visible, and never change source data. */
+ function inView(el){if(document.hidden||!el.getClientRects().length)return false;const r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight}
+ const hovered=new Set();
+ document.addEventListener('pointerover',e=>{const card=e.target.closest?.('.card,.chart-card,.motion-focus');if(card)hovered.add(card)});
+ document.addEventListener('pointerout',e=>{const card=e.target.closest?.('.card,.chart-card,.motion-focus');if(card&&!card.contains(e.relatedTarget))hovered.delete(card)});
+ function loopCharts(){if(!motion.enabled||document.hidden)return;charts().forEach(c=>{if(focused&&c!==focused.chart)return;const card=c.canvas.closest('.card,.chart-card,.motion-focus');if(!inView(c.canvas)||hovered.has(card)||card?.contains(document.activeElement))return;replay(c)})}
+ setInterval(loopCharts,6500);
  const workflow=$('#workflow'),tabs=$$('[data-view]');
- if(workflow&&tabs.length){const tour=document.createElement('div');tour.className='motion-tour';let timer=null,index=0;
- const note=document.createElement('span');note.setAttribute('role','status');note.textContent='Explore each workflow at your own pace.';
- function stop(){if(timer){clearInterval(timer);timer=null}play.textContent='▶ Play guided tour';play.setAttribute('aria-pressed','false')}
- function next(){index=(tabs.findIndex(b=>b.getAttribute('aria-pressed')==='true')+1)%tabs.length;tabs[index].click()}
- const play=button('▶ Play guided tour',()=>{if(timer){stop();return}if(!motion.enabled){announce('Motion is off. Use Next workflow to explore at your own pace.');return}timer=setInterval(()=>{next();play.textContent='Ⅱ Pause tour';play.setAttribute('aria-pressed','true')},3500);play.textContent='Ⅱ Pause tour';play.setAttribute('aria-pressed','true');note.textContent='Tour changes workflow every 3.5 seconds.'});
- const nextButton=button('Next workflow →',()=>{stop();next()});tour.append(play,nextButton,note);$('.productstage').insertAdjacentElement('beforebegin',tour);
- tabs.forEach((b,i)=>b.addEventListener('click',e=>{if(e.isTrusted)stop();index=i;note.textContent=(i+1)+' / '+tabs.length+' · '+b.textContent.trim();animate(workflow,[{opacity:.2,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'ease-out'})}));
- document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});window.addEventListener('portfolio:motion',()=>{if(!motion.enabled)stop()});
+ if(workflow&&tabs.length){
+  const stage=$('.productstage');let lastManual=0;
+  tabs.forEach((b,i)=>b.addEventListener('click',e=>{if(e.isTrusted)lastManual=Date.now();animate(workflow,[{opacity:.2,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,easing:'ease-out'})}));
+  setInterval(()=>{if(!motion.enabled||!inView(stage)||Date.now()-lastManual<9000||stage.contains(document.activeElement)||stage.matches(':hover'))return;const next=(tabs.findIndex(b=>b.getAttribute('aria-pressed')==='true')+1)%tabs.length;tabs[next].click()},4000);
  }
  window.PortfolioExplore={rowsFor,csvText,replay};
 })();
