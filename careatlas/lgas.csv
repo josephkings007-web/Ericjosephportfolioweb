@@ -1,0 +1,775 @@
+state,lga,records,located,source_flagged,known_status,functional
+Abia,Aba North,183,116,118,152,152
+Abia,Aba South,215,112,156,170,170
+Abia,Arochukwu,84,76,37,38,38
+Abia,Bende,101,82,44,48,48
+Abia,Ikwuano,74,67,24,30,30
+Abia,Isiala-Ngwa North,112,80,51,59,59
+Abia,Isiala-Ngwa South,115,99,50,61,60
+Abia,Isuikwuato,99,66,53,60,60
+Abia,Obi Nwga,170,126,78,103,103
+Abia,Ohafia,90,86,22,37,37
+Abia,Osisioma Ngwa,213,148,137,153,153
+Abia,Ugwunagbo,98,75,44,62,61
+Abia,Ukwa East,58,51,24,19,19
+Abia,Ukwa West,98,64,54,59,59
+Abia,Umu-Nneochi,84,74,37,35,35
+Abia,Umuahia North,197,139,125,147,147
+Abia,Umuahia South,70,57,24,33,33
+Adamawa,Demsa,99,93,17,23,23
+Adamawa,Fufore,104,104,14,54,54
+Adamawa,Ganye,83,83,8,25,25
+Adamawa,Girei,47,47,7,9,9
+Adamawa,Gombi,73,73,16,35,34
+Adamawa,Guyuk,71,71,12,24,22
+Adamawa,Hong,105,105,10,42,38
+Adamawa,Jada,91,91,13,18,18
+Adamawa,Lamurde,47,46,5,12,12
+Adamawa,Madagali,65,63,15,13,13
+Adamawa,Maiha,57,57,5,5,5
+Adamawa,Mayo-Belwa,97,97,12,29,28
+Adamawa,Michika,92,91,11,19,19
+Adamawa,Mubi North,79,79,11,12,12
+Adamawa,Mubi South,71,68,20,18,18
+Adamawa,Numan,61,61,8,20,20
+Adamawa,Shelleng,58,58,1,15,15
+Adamawa,Song,85,85,6,18,18
+Adamawa,Toungo,52,52,10,14,14
+Adamawa,Yola North,81,79,10,38,38
+Adamawa,Yola South,83,82,15,28,28
+Akwa Ibom,Abak,36,32,9,16,16
+Akwa Ibom,Eastern Obolo,22,15,11,11,11
+Akwa Ibom,Eket,67,59,28,48,48
+Akwa Ibom,Esit Eket,30,26,18,16,16
+Akwa Ibom,Essien Udim,62,45,40,36,36
+Akwa Ibom,Etim Ekpo,34,25,22,20,20
+Akwa Ibom,Etinan,27,26,10,10,10
+Akwa Ibom,Ibeno,42,31,21,26,26
+Akwa Ibom,Ibesikpo Asutan,64,44,32,44,44
+Akwa Ibom,Ibiono Ibom,64,45,37,40,40
+Akwa Ibom,Ika,33,30,16,20,20
+Akwa Ibom,Ikono,40,35,22,20,20
+Akwa Ibom,Ikot Abasi,47,39,19,31,31
+Akwa Ibom,Ikot Ekpene,90,54,68,68,68
+Akwa Ibom,Ini,36,34,20,17,17
+Akwa Ibom,Itu,36,28,17,18,18
+Akwa Ibom,Mbo,30,25,9,11,11
+Akwa Ibom,Mkpat Enin,45,42,20,23,23
+Akwa Ibom,Nsit Atai,16,16,4,4,4
+Akwa Ibom,Nsit Ibom,34,31,13,10,10
+Akwa Ibom,Nsit Ubium,40,36,16,17,17
+Akwa Ibom,Obot Akara,47,46,22,20,20
+Akwa Ibom,Okobo,33,29,11,17,17
+Akwa Ibom,Onna,41,39,18,18,18
+Akwa Ibom,Oron,41,36,23,29,29
+Akwa Ibom,Oruk Anam,43,38,16,19,19
+Akwa Ibom,Udung Uko,21,18,9,10,10
+Akwa Ibom,Ukanafun,45,40,13,22,22
+Akwa Ibom,Uruan,33,26,18,17,17
+Akwa Ibom,Urue Offong/Oruko,29,25,17,15,15
+Akwa Ibom,Uyo,146,94,85,119,119
+Anambra,Aguata,175,154,66,100,100
+Anambra,Anambra East,62,51,22,32,32
+Anambra,Anambra West,51,43,28,23,23
+Anambra,Anaocha,116,100,71,72,72
+Anambra,Awka North,86,63,31,56,56
+Anambra,Awka South,193,144,112,147,147
+Anambra,Ayamelum,58,50,34,34,34
+Anambra,Dunukofia,91,77,48,52,52
+Anambra,Ekwusigo,123,102,85,76,76
+Anambra,Idemili North,228,175,136,161,161
+Anambra,Idemili South,112,100,52,74,74
+Anambra,Ihiala,197,163,76,142,142
+Anambra,Njikoka,79,65,55,42,42
+Anambra,Nnewi North,214,188,126,162,162
+Anambra,Nnewi South,134,111,69,83,83
+Anambra,Ogbaru,159,129,79,111,111
+Anambra,Onitsha North,153,136,90,102,102
+Anambra,Onitsha South,107,86,68,65,65
+Anambra,Orumba North,98,86,51,45,45
+Anambra,Orumba South,106,94,40,54,54
+Anambra,Oyi,108,84,48,67,67
+Bauchi,Alkaleri,92,87,31,24,24
+Bauchi,Bauchi,226,188,77,95,95
+Bauchi,Bogoro,87,79,60,42,42
+Bauchi,Damban,60,55,30,15,15
+Bauchi,Darazo,78,75,7,8,8
+Bauchi,Dass,63,51,23,18,18
+Bauchi,Gamawa,65,60,14,9,9
+Bauchi,Ganjuwa,106,102,18,14,14
+Bauchi,Giade,52,48,14,11,11
+Bauchi,Itas/Gadau,63,60,20,13,13
+Bauchi,Jama'are,56,49,11,16,16
+Bauchi,Katagum,71,67,21,21,21
+Bauchi,Kirfi,59,49,26,13,13
+Bauchi,Misau,65,60,10,10,10
+Bauchi,Ningi,120,105,47,36,36
+Bauchi,Shira,74,70,17,13,13
+Bauchi,Tafawa-Balewa,124,113,37,27,27
+Bauchi,Toro,194,185,53,47,47
+Bauchi,Warji,58,53,19,14,14
+Bauchi,Zaki,73,66,28,12,12
+Bayelsa,Brass,39,35,19,21,16
+Bayelsa,Ekeremor,57,48,15,21,19
+Bayelsa,Kolokuma/Opokuma,30,26,10,14,14
+Bayelsa,Nembe,39,36,11,7,7
+Bayelsa,Ogbia,56,48,17,26,24
+Bayelsa,Sagbama,58,55,13,22,22
+Bayelsa,Southern Ijaw,95,82,28,51,45
+Bayelsa,Yenegoa,193,129,90,146,139
+Benue,Ado,67,66,18,32,32
+Benue,Agatu,90,84,30,36,36
+Benue,Apa,117,98,47,57,57
+Benue,Buruku,192,145,93,116,116
+Benue,Gboko,224,174,94,150,150
+Benue,Guma,155,127,68,77,77
+Benue,Gwer East,159,132,80,78,78
+Benue,Gwer West,89,71,59,48,48
+Benue,Katsina-Ala,241,162,138,183,183
+Benue,Konshisha,191,151,98,126,126
+Benue,Kwande,200,162,99,129,129
+Benue,Logo,105,81,59,65,65
+Benue,Makurdi,231,178,108,174,174
+Benue,Obi,117,79,69,64,64
+Benue,Ogbadibo,104,95,51,47,47
+Benue,Ohimini,88,72,53,37,37
+Benue,Oju,149,134,54,94,94
+Benue,Okpokwu,110,99,56,55,55
+Benue,Oturkpo,170,130,79,108,108
+Benue,Tarka,103,80,71,65,65
+Benue,Ukum,186,133,98,126,126
+Benue,Ushongo,200,157,102,137,137
+Benue,Vandeikya,133,108,69,87,87
+Borno,Abadam,13,13,3,9,7
+Borno,Askira/Uba,68,61,15,22,21
+Borno,Bama,60,59,16,21,18
+Borno,Bayo,41,36,12,3,3
+Borno,Biu,62,52,18,23,23
+Borno,Chibok,38,34,8,8,6
+Borno,Damboa,32,32,2,16,12
+Borno,Dikwa,21,20,1,10,8
+Borno,Gubio,12,10,5,4,4
+Borno,Guzamala,13,13,0,12,8
+Borno,Gwoza,54,52,11,26,25
+Borno,Hawul,56,45,19,15,13
+Borno,Jere,71,63,16,31,31
+Borno,Kaga,24,23,4,13,13
+Borno,Kala/Balge,18,18,1,14,14
+Borno,Konduga,43,39,10,12,11
+Borno,Kukawa,16,15,1,2,1
+Borno,Kwaya Kusar,47,41,15,11,11
+Borno,Mafa,35,34,6,17,16
+Borno,Magumeri,23,22,6,7,6
+Borno,Maiduguri,94,84,25,54,54
+Borno,Marte,16,16,0,9,8
+Borno,Mobbar,14,13,3,6,5
+Borno,Monguno,50,34,7,29,29
+Borno,Ngala,25,23,6,12,12
+Borno,Nganzai,13,12,2,5,4
+Borno,Shani,50,46,4,5,5
+Cross River,Abi,69,68,35,16,16
+Cross River,Akamkpa,78,71,26,24,24
+Cross River,Akpabuyo,76,70,31,26,26
+Cross River,Bakassi,77,73,26,43,43
+Cross River,Bekwarra,86,83,24,22,22
+Cross River,Biase,76,76,17,17,17
+Cross River,Boki,177,169,64,69,69
+Cross River,Calabar Municipal,164,130,115,108,108
+Cross River,Calabar South,97,92,56,56,56
+Cross River,Etung,55,54,16,20,20
+Cross River,Ikom,146,137,57,71,71
+Cross River,Obanliku,115,102,48,46,46
+Cross River,Obubra,107,99,34,45,45
+Cross River,Obudu,117,115,46,44,44
+Cross River,Odukpani,98,95,31,44,44
+Cross River,Ogoja,115,99,48,57,57
+Cross River,Yakurr,83,75,36,35,35
+Cross River,Yala,179,171,77,63,63
+Delta,Aniocha North,36,35,3,8,8
+Delta,Aniocha South,53,38,22,25,25
+Delta,Bomadi,27,24,13,9,9
+Delta,Burutu,45,38,27,15,15
+Delta,Ethiope East,52,44,26,31,31
+Delta,Ethiope West,46,41,15,12,12
+Delta,Ika North East,55,47,25,29,29
+Delta,Ika South,73,51,42,32,32
+Delta,Isoko North,39,37,9,7,7
+Delta,Isoko South,44,39,14,18,18
+Delta,Ndokwa East,49,44,9,14,14
+Delta,Ndokwa West,44,40,22,15,15
+Delta,Okpe,44,30,21,17,17
+Delta,Oshimili North,43,33,15,24,24
+Delta,Oshimili South,75,53,35,47,47
+Delta,Patani,22,20,5,7,7
+Delta,Sapele,73,45,54,46,46
+Delta,Udu,67,56,26,35,35
+Delta,Ughelli North,93,77,43,50,50
+Delta,Ughelli South,56,52,14,15,15
+Delta,Ukwuani,47,40,18,24,24
+Delta,Uvwie,121,101,48,62,62
+Delta,Warri North,42,35,33,13,13
+Delta,Warri South,126,96,64,68,68
+Delta,Warri South-West,33,24,15,18,18
+Ebonyi,Abakaliki,171,150,94,126,126
+Ebonyi,Afikpo North,108,94,62,55,55
+Ebonyi,Afikpo South,57,55,18,18,18
+Ebonyi,Ebonyi,165,140,99,108,108
+Ebonyi,Ezza North,120,97,82,74,74
+Ebonyi,Ezza South,139,127,66,79,79
+Ebonyi,Ikwo,186,168,101,99,99
+Ebonyi,Ishielu,122,101,67,60,60
+Ebonyi,Ivo,79,61,49,44,44
+Ebonyi,Izzi,157,140,81,107,107
+Ebonyi,Ohaozara,96,79,58,53,53
+Ebonyi,Ohaukwu,168,145,78,97,97
+Ebonyi,Onicha,134,112,71,75,75
+Edo,Akoko-Edo,83,68,44,37,37
+Edo,Egor,187,97,111,150,150
+Edo,Esan Central,59,53,22,34,34
+Edo,Esan North-East,65,46,31,43,43
+Edo,Esan South-East,88,61,43,51,51
+Edo,Esan West,78,69,32,55,55
+Edo,Etsako Central,66,55,23,40,40
+Edo,Etsako East,74,65,38,46,46
+Edo,Etsako West,125,82,76,86,86
+Edo,Iguegben,37,31,11,16,16
+Edo,Ikpoba-Okha,232,133,149,185,185
+Edo,Oredo,274,140,179,223,223
+Edo,Orhionmwon,68,61,26,32,32
+Edo,Ovia North-East,67,55,20,25,25
+Edo,Ovia South-West,70,58,22,37,37
+Edo,Owan East,93,67,54,59,59
+Edo,Owan West,68,56,32,41,41
+Edo,Uhunmwonde,77,69,20,31,31
+Ekiti,Ado-Ekiti,215,172,114,156,156
+Ekiti,Efon,57,53,35,29,29
+Ekiti,Ekiti East,62,52,41,44,44
+Ekiti,Ekiti South-West,52,50,38,25,25
+Ekiti,Ekiti West,58,53,30,31,31
+Ekiti,Emure,33,32,21,16,16
+Ekiti,Gbonyin,68,59,33,42,42
+Ekiti,Ido-Osi,70,67,47,43,43
+Ekiti,Ijero,74,63,43,42,42
+Ekiti,Ikere,77,59,49,41,41
+Ekiti,Ikole,60,51,35,37,37
+Ekiti,Ilejemeje,37,31,31,22,22
+Ekiti,Irepodun/Ifelodun,65,58,32,33,33
+Ekiti,Ise/Orun,58,53,17,30,30
+Ekiti,Moba,46,41,22,27,27
+Ekiti,Oye,57,49,35,37,37
+Enugu,Aninri,53,45,19,30,30
+Enugu,Awgu,92,73,34,54,54
+Enugu,Enugu East,256,144,179,221,221
+Enugu,Enugu North,184,153,87,141,141
+Enugu,Enugu South,147,103,79,99,99
+Enugu,Ezeagu,102,93,44,57,57
+Enugu,Igbo-Etiti,101,92,34,39,39
+Enugu,Igbo-Eze-North,113,92,48,55,55
+Enugu,Igbo-Eze-South,78,69,30,34,34
+Enugu,Isi-Uzo,69,65,16,26,26
+Enugu,Nkanu East,96,82,45,51,51
+Enugu,Nkanu West,81,69,38,46,46
+Enugu,Nsukka,187,121,103,120,120
+Enugu,Oji-River,165,148,78,103,103
+Enugu,Udenu,111,91,32,54,54
+Enugu,Udi,130,108,51,79,79
+Enugu,Uzo-Uwani,56,55,13,18,18
+"FCT, Abuja",Abaji,69,62,21,28,28
+"FCT, Abuja",Bwari,147,122,40,78,78
+"FCT, Abuja",Gwagwalada,119,89,52,76,76
+"FCT, Abuja",Kuje,109,85,41,57,57
+"FCT, Abuja",Kwali,84,73,17,30,30
+"FCT, Abuja",Municipal Area Council,519,254,298,429,429
+Gombe,Akko,154,151,58,27,26
+Gombe,Balanga,120,113,59,19,19
+Gombe,Billiri,122,111,50,29,29
+Gombe,Dukku,112,108,52,9,9
+Gombe,Funakaye,92,84,24,12,11
+Gombe,Gombe,97,69,58,52,52
+Gombe,Kaltungo,139,127,63,31,31
+Gombe,Kwami,95,93,35,10,10
+Gombe,Nafada,62,61,37,5,5
+Gombe,Shomgom,106,98,46,22,22
+Gombe,Yamaltu/Deba,130,121,58,14,14
+Imo,Aboh-Mbaise,148,107,86,111,111
+Imo,Ahiazu-Mbaise,104,87,49,64,64
+Imo,Ehime-Mbano,110,95,53,63,63
+Imo,Ezinihitte,133,92,65,96,96
+Imo,Ideato North,94,86,43,43,43
+Imo,Ideato South,50,42,37,27,27
+Imo,Ihitte/Uboma,53,39,25,27,27
+Imo,Ikeduru,117,96,68,72,72
+Imo,Isiala Mbano,99,85,53,48,48
+Imo,Isu,69,56,38,44,44
+Imo,Mbatoli,138,109,64,99,99
+Imo,Ngor-Okpala,103,87,55,54,54
+Imo,Njaba,87,57,53,63,63
+Imo,Nkwerre,42,37,19,26,26
+Imo,Nwangele,61,42,35,35,35
+Imo,Obowo,81,74,37,42,42
+Imo,Oguta,132,81,84,102,102
+Imo,Ohaji/Egbema,96,66,47,57,57
+Imo,Okigwe,95,89,51,51,51
+Imo,Onuimo,58,41,47,38,38
+Imo,Orlu,157,140,73,106,106
+Imo,Orsu,96,77,54,59,59
+Imo,Oru East,129,75,88,94,94
+Imo,Oru West,112,93,39,79,79
+Imo,Owerri Municipal,266,164,175,212,212
+Imo,Owerri North,169,107,106,129,129
+Imo,Owerri West,146,94,91,113,113
+Jigawa,Auyo,41,38,14,4,4
+Jigawa,Babura,39,36,12,5,5
+Jigawa,Birnin Kudu,56,53,8,3,3
+Jigawa,Birniwa,33,33,1,0,0
+Jigawa,Buji,31,30,2,1,1
+Jigawa,Dutse,71,67,10,10,10
+Jigawa,Gagarawa,24,22,6,2,2
+Jigawa,Garki,33,33,2,2,2
+Jigawa,Gumel,28,24,6,5,5
+Jigawa,Guri,44,43,26,1,1
+Jigawa,Gwaram,85,83,20,3,3
+Jigawa,Gwiwa,33,32,7,1,1
+Jigawa,Hadejia,22,21,14,2,2
+Jigawa,Jahun,51,50,10,3,3
+Jigawa,Kafin Hausa,47,46,4,2,2
+Jigawa,Kaugama,28,26,5,2,2
+Jigawa,Kazaure,38,38,10,2,2
+Jigawa,Kiri Kasamma,28,28,0,0,0
+Jigawa,Kiyawa,53,50,11,3,3
+Jigawa,Maigatari,23,23,0,0,0
+Jigawa,Malam Madori,58,56,21,4,4
+Jigawa,Miga,29,29,3,2,2
+Jigawa,Ringim,55,51,16,4,4
+Jigawa,Roni,27,27,4,0,0
+Jigawa,Sule Tankarkar,32,31,5,1,1
+Jigawa,Taura,41,36,14,5,5
+Jigawa,Yankwashi,23,23,2,0,0
+Kaduna,Birnin Gwari,77,68,32,42,42
+Kaduna,Chikun,153,112,64,107,107
+Kaduna,Giwa,89,84,22,36,36
+Kaduna,Igabi,114,68,75,58,58
+Kaduna,Ikara,62,57,5,14,14
+Kaduna,Jaba,58,54,5,7,7
+Kaduna,Jema'a,100,89,28,52,52
+Kaduna,Kachia,110,92,35,69,69
+Kaduna,Kaduna North,130,79,65,114,114
+Kaduna,Kaduna South,118,80,50,94,94
+Kaduna,Kagarko,88,85,19,23,23
+Kaduna,Kajuru,69,62,24,29,29
+Kaduna,Kaura,54,48,8,20,20
+Kaduna,Kauru,64,59,16,20,20
+Kaduna,Kubau,80,72,13,24,24
+Kaduna,Kudan,53,51,13,13,13
+Kaduna,Lere,107,105,25,24,24
+Kaduna,Makarfi,78,60,25,35,35
+Kaduna,Sabon Gari,102,68,48,53,53
+Kaduna,Sanga,110,103,40,39,39
+Kaduna,Soba,89,79,25,23,23
+Kaduna,Zangon Kataf,101,90,29,40,40
+Kaduna,Zaria,102,84,34,41,41
+Kano,Ajingi,30,30,4,1,1
+Kano,Albasu,37,36,6,11,11
+Kano,Bagwai,59,58,6,26,26
+Kano,Bebeji,42,37,10,41,41
+Kano,Bichi,68,66,11,18,18
+Kano,Bunkure,40,35,10,15,15
+Kano,Dala,51,37,27,28,28
+Kano,Dambatta,52,48,7,50,50
+Kano,Dawakin Kudu,39,37,6,35,35
+Kano,Dawakin Tofa,96,93,23,90,87
+Kano,Doguwa,37,34,4,13,13
+Kano,Fagge,89,71,41,75,75
+Kano,Gabasawa,37,36,2,36,36
+Kano,Garko,33,28,11,8,8
+Kano,Garum Mallam,38,35,5,9,9
+Kano,Gaya,40,38,3,36,35
+Kano,Gezawa,40,37,5,37,33
+Kano,Gwale,74,53,30,41,41
+Kano,Gwarzo,43,35,11,16,16
+Kano,Kabo,44,42,4,10,10
+Kano,Kano Municipal,49,39,15,36,36
+Kano,Karaye,38,30,8,12,12
+Kano,Kibiya,31,31,3,8,8
+Kano,Kiru,48,44,8,44,44
+Kano,Kumbotso,75,55,29,64,64
+Kano,Kunchi,38,37,2,5,5
+Kano,Kura,40,38,10,11,11
+Kano,Madobi,29,28,1,6,6
+Kano,Makoda,35,34,4,3,3
+Kano,Minjibir,35,34,1,4,4
+Kano,Nassarawa,120,84,63,43,43
+Kano,Rano,31,26,9,12,12
+Kano,Rimin Gado,32,29,4,9,9
+Kano,Rogo,45,39,6,13,13
+Kano,Shanono,33,32,2,9,9
+Kano,Sumaila,64,57,14,62,62
+Kano,Takai,43,42,2,39,39
+Kano,Tarauni,81,55,35,75,72
+Kano,Tofa,43,39,13,21,21
+Kano,Tsanyawa,34,34,0,4,4
+Kano,Tudun Wada,46,40,9,39,39
+Kano,Ungogo,81,71,24,75,75
+Kano,Warawa,25,22,4,4,4
+Kano,Wudil,37,32,11,14,14
+Katsina,Bakori,119,115,26,29,29
+Katsina,Batagarawa,105,92,25,28,28
+Katsina,Batsari,120,118,38,40,40
+Katsina,Baure,71,69,7,14,14
+Katsina,Bindawa,87,87,18,17,17
+Katsina,Charanchi,88,85,9,17,17
+Katsina,Dan Musa,80,80,27,23,23
+Katsina,Dandume,74,73,24,11,11
+Katsina,Danja,69,69,9,10,10
+Katsina,Daura,42,42,15,9,9
+Katsina,Dutsi,54,54,11,7,7
+Katsina,Dutsin Ma,73,73,11,16,16
+Katsina,Faskari,95,94,24,34,34
+Katsina,Funtua,79,78,16,22,22
+Katsina,Ingawa,72,72,10,12,12
+Katsina,Jibia,75,73,12,34,34
+Katsina,Kafur,88,88,15,3,3
+Katsina,Kaita,63,63,7,12,12
+Katsina,Kankara,124,119,28,36,36
+Katsina,Kankia,73,72,16,20,20
+Katsina,Katsina,98,90,32,51,51
+Katsina,Kurfi,77,77,25,22,22
+Katsina,Kusada,62,61,17,18,18
+Katsina,Mai'adua,80,77,9,15,15
+Katsina,Malumfashi,87,86,6,25,25
+Katsina,Mani,80,79,18,22,22
+Katsina,Mashi,72,72,20,16,16
+Katsina,Matazu,58,58,8,5,5
+Katsina,Musawa,101,101,35,29,29
+Katsina,Rimi,78,78,15,10,10
+Katsina,Sabuwa,62,62,8,18,18
+Katsina,Safana,88,87,32,31,31
+Katsina,Sandamu,50,50,15,8,8
+Katsina,Zango,47,44,6,6,6
+Kebbi,Aleiro,32,32,6,7,7
+Kebbi,Arewa Dandi,107,103,17,16,16
+Kebbi,Argungu,60,59,9,6,6
+Kebbi,Augie,53,52,10,6,6
+Kebbi,Bagudo,80,76,17,22,22
+Kebbi,Birnin Kebbi,112,92,35,52,52
+Kebbi,Bunza,53,53,13,7,7
+Kebbi,Dandi,41,41,5,8,8
+Kebbi,Fakai,70,70,14,14,14
+Kebbi,Gwandu,63,63,8,14,14
+Kebbi,Jega,70,64,20,17,17
+Kebbi,Kalgo,54,53,11,16,16
+Kebbi,Koko/Besse,51,51,18,14,14
+Kebbi,Maiyama,55,54,4,7,7
+Kebbi,Ngaski,61,61,9,9,9
+Kebbi,Sakaba,68,68,11,12,12
+Kebbi,Shanga,49,48,4,6,6
+Kebbi,Suru,73,67,33,26,26
+Kebbi,Wasagu/Danko,106,105,17,15,15
+Kebbi,Yauri,30,30,2,7,7
+Kebbi,Zuru,58,57,14,17,17
+Kogi,Adavi,83,75,24,45,45
+Kogi,Ajaokuta,91,74,28,59,59
+Kogi,Ankpa,118,103,28,35,35
+Kogi,Bassa,145,138,26,58,58
+Kogi,Dekina,215,188,47,109,109
+Kogi,Ibaji,132,126,30,46,46
+Kogi,Idah,86,75,26,40,40
+Kogi,Igalamela-Odolu,130,116,31,60,60
+Kogi,Ijumu,64,54,13,35,35
+Kogi,Kabba/Bunu,83,70,27,37,37
+Kogi,Kogi,107,97,25,41,41
+Kogi,Lokoja,179,129,81,110,110
+Kogi,Mopa-Muro,50,47,14,21,21
+Kogi,Ofu,107,96,21,52,52
+Kogi,Ogori/Magongo,26,21,9,11,11
+Kogi,Okehi,58,52,19,31,31
+Kogi,Okene,86,77,28,35,35
+Kogi,Olamaboro,157,137,46,76,76
+Kogi,Omala,76,73,19,23,23
+Kogi,Yagba East,90,67,51,51,51
+Kogi,Yagba West,70,60,33,37,37
+Kwara,Asa,100,90,36,46,46
+Kwara,Baruten,150,119,52,75,75
+Kwara,Edu,100,83,34,40,40
+Kwara,Ekiti,35,34,8,13,13
+Kwara,Ifelodun,156,122,53,71,71
+Kwara,Ilorin East,124,90,46,80,80
+Kwara,Ilorin South,136,95,52,83,83
+Kwara,Ilorin West,130,83,62,82,82
+Kwara,Irepodun,95,84,25,55,55
+Kwara,Isin,50,36,24,30,30
+Kwara,Kaiama,84,69,20,48,47
+Kwara,Moro,106,85,48,60,60
+Kwara,Offa,81,71,25,45,45
+Kwara,Oke Ero,39,32,20,18,18
+Kwara,Oyun,51,44,9,29,29
+Kwara,Pategi,66,59,13,18,18
+Lagos,Agege,104,97,50,89,89
+Lagos,Ajeromi/Ifelodun,134,113,73,112,112
+Lagos,Alimosho,507,349,296,468,468
+Lagos,Amuwo Odofin,171,134,96,148,148
+Lagos,Apapa,90,67,60,75,75
+Lagos,Badagry,142,127,72,111,111
+Lagos,Epe,67,58,27,37,37
+Lagos,Eti Osa,303,150,227,279,279
+Lagos,Ibeju Lekki,91,79,48,68,68
+Lagos,Ifako/Ijaye,193,154,122,175,175
+Lagos,Ikeja,259,205,162,224,224
+Lagos,Ikorodu,386,322,203,347,347
+Lagos,Kosofe,221,188,93,184,184
+Lagos,Lagos Island,96,82,61,63,63
+Lagos,Lagos Mainland,123,110,68,82,82
+Lagos,Mushin,176,147,88,149,149
+Lagos,Ojo,248,183,118,211,211
+Lagos,Oshodi/Isolo,284,236,141,244,244
+Lagos,Shomolu,122,111,65,106,106
+Lagos,Surulere,249,172,181,209,209
+Nasarawa,Akwanga,120,108,54,52,52
+Nasarawa,Awe,73,64,30,28,28
+Nasarawa,Doma,92,84,40,40,40
+Nasarawa,Karu,293,187,158,172,172
+Nasarawa,Keana,53,40,23,22,22
+Nasarawa,Keffi,72,59,37,49,49
+Nasarawa,Kokona,98,74,47,48,48
+Nasarawa,Lafia,221,190,80,97,97
+Nasarawa,Nasarawa,215,161,105,118,118
+Nasarawa,Nasarawa Egon,129,119,59,30,30
+Nasarawa,Obi,105,89,56,36,36
+Nasarawa,Toto,98,88,47,33,33
+Nasarawa,Wamba,95,81,41,32,32
+Niger,Agaie,98,92,47,27,27
+Niger,Agwara,53,49,19,12,12
+Niger,Bida,105,86,78,61,60
+Niger,Borgu,123,98,59,55,55
+Niger,Bosso,171,121,85,77,77
+Niger,Chanchaga,134,107,74,70,70
+Niger,Edati,93,89,24,27,25
+Niger,Gbako,150,133,78,52,49
+Niger,Gurara,140,108,77,82,82
+Niger,Katcha,114,106,40,47,46
+Niger,Kontagora,94,79,46,40,38
+Niger,Lapai,132,94,49,54,52
+Niger,Lavun,160,135,77,64,64
+Niger,Magama,130,116,95,62,58
+Niger,Mariga,111,89,47,45,45
+Niger,Mashegu,166,118,84,89,84
+Niger,Mokwa,155,136,80,75,75
+Niger,Munya,115,89,72,68,66
+Niger,Paikoro,218,147,112,123,120
+Niger,Rafi,146,130,64,48,47
+Niger,Rijau,100,90,47,34,33
+Niger,Shiroro,292,225,162,141,141
+Niger,Suleja,139,92,86,97,97
+Niger,Tafa,98,81,59,62,62
+Niger,Wushishi,78,68,26,27,26
+Ogun,Abeokuta North,162,136,67,103,103
+Ogun,Abeokuta South,174,143,103,119,119
+Ogun,Ado Odo/Ota,365,286,118,226,226
+Ogun,Ewekoro,74,53,21,38,37
+Ogun,Ifo,333,282,129,211,211
+Ogun,Ijebu East,60,58,18,17,17
+Ogun,Ijebu North,97,91,22,49,49
+Ogun,Ijebu North East,53,43,21,21,21
+Ogun,Ijebu Ode,125,108,58,78,78
+Ogun,Ikenne,53,44,35,30,30
+Ogun,Imeko Afon,50,46,12,25,25
+Ogun,Ipokia,108,98,21,56,53
+Ogun,Obafemi Owode,217,173,75,128,122
+Ogun,Odeda,81,70,35,36,35
+Ogun,Odogbolu,74,65,35,40,40
+Ogun,Ogun Waterside,53,49,23,21,20
+Ogun,Remo North,35,31,12,18,18
+Ogun,Shagamu,180,139,113,127,127
+Ogun,Yewa North,102,96,36,42,42
+Ogun,Yewa South,81,72,25,41,38
+Ondo,Akoko North East,91,70,53,59,59
+Ondo,Akoko North West,62,51,30,33,33
+Ondo,Akoko South East,60,50,38,34,34
+Ondo,Akoko South West,103,84,47,61,61
+Ondo,Akure North,87,66,41,46,46
+Ondo,Akure South,184,106,113,134,134
+Ondo,Ese Odo,62,52,30,23,23
+Ondo,Idanre,119,93,51,65,65
+Ondo,Ifedore,81,72,24,47,47
+Ondo,Ilaje,104,83,41,40,40
+Ondo,Ile Oluji/Okeigbo,112,102,36,56,56
+Ondo,Irele,69,55,37,37,37
+Ondo,Odigbo,126,93,46,71,71
+Ondo,Okitipupa,109,79,58,72,72
+Ondo,Ondo East,47,31,32,26,26
+Ondo,Ondo West,106,73,57,60,60
+Ondo,Ose,62,50,27,26,26
+Ondo,Owo,110,76,71,66,66
+Osun,Atakunmosa East,84,75,34,30,27
+Osun,Atakunmosa West,53,50,14,15,15
+Osun,Ayedade,93,79,45,52,52
+Osun,Ayedire,52,42,25,19,18
+Osun,Boluwaduro,38,28,19,19,19
+Osun,Boripe,96,66,58,61,50
+Osun,Ede North,52,47,22,28,28
+Osun,Ede South,81,56,44,47,44
+Osun,Egbedore,99,75,48,53,53
+Osun,Ejigbo,90,83,29,37,37
+Osun,Ife Central,73,54,39,47,47
+Osun,Ife East,105,69,61,61,61
+Osun,Ife North,62,53,30,20,18
+Osun,Ife South,101,91,38,45,37
+Osun,Ifedayo,48,39,20,15,15
+Osun,Ifelodun,86,66,51,49,49
+Osun,Ila,91,55,58,58,57
+Osun,Ilesha East,95,52,71,67,67
+Osun,Ilesha West,109,71,73,73,72
+Osun,Irepodun,78,38,63,52,52
+Osun,Irewole,93,78,45,32,32
+Osun,Isokan,76,64,41,37,37
+Osun,Iwo,123,92,59,80,72
+Osun,Obokun,71,62,24,22,22
+Osun,Odo Otin,89,58,54,58,55
+Osun,Ola Oluwa,56,55,12,20,20
+Osun,Olorunda,127,81,100,92,92
+Osun,Oriade,109,77,56,54,54
+Osun,Orolu,43,31,31,22,22
+Osun,Osogbo,170,107,120,138,138
+Oyo,Afijio,85,76,36,59,54
+Oyo,Akinyele,145,115,61,108,99
+Oyo,Atiba,77,68,43,50,47
+Oyo,Atisbo,48,42,22,25,24
+Oyo,Egbeda,148,121,67,115,109
+Oyo,Ibadan North,148,102,69,123,110
+Oyo,Ibadan North East,114,96,59,70,65
+Oyo,Ibadan North West,66,56,26,52,48
+Oyo,Ibadan South East,79,66,31,58,55
+Oyo,Ibadan South West,119,108,52,84,74
+Oyo,Ibarapa Central,45,39,21,30,26
+Oyo,Ibarapa East,52,48,30,30,27
+Oyo,Ibarapa North,45,32,22,31,31
+Oyo,Ido,124,103,70,97,96
+Oyo,Irepo,44,42,17,20,20
+Oyo,Iseyin,97,97,42,58,54
+Oyo,Itesiwaju,27,27,4,7,7
+Oyo,Iwajowa,51,49,33,24,23
+Oyo,Kajola,51,48,16,28,25
+Oyo,Lagelu,133,116,69,91,85
+Oyo,Ogbomosho North,94,85,30,73,61
+Oyo,Ogbomosho South,55,49,19,40,39
+Oyo,Ogo Oluwa,55,52,24,31,25
+Oyo,Olorunsogo,60,53,32,34,31
+Oyo,Oluyole,122,106,57,88,81
+Oyo,Ona Ara,161,126,82,128,114
+Oyo,Orelope,33,31,10,18,17
+Oyo,Ori Ire,67,63,12,40,28
+Oyo,Oyo East,68,63,39,37,36
+Oyo,Oyo West,59,53,31,32,31
+Oyo,Saki East,53,48,22,34,31
+Oyo,Saki West,147,138,76,100,98
+Oyo,Surulere,87,80,51,50,47
+Plateau,Barkin Ladi,168,139,88,68,68
+Plateau,Bassa,128,99,66,47,47
+Plateau,Bokkos,190,166,94,65,65
+Plateau,Jos East,81,69,44,20,20
+Plateau,Jos North,210,148,108,123,123
+Plateau,Jos South,195,143,95,98,98
+Plateau,Kanam,95,82,42,21,21
+Plateau,Kanke,97,91,43,17,17
+Plateau,Langtang North,123,104,39,28,28
+Plateau,Langtang South,80,69,36,18,18
+Plateau,Mangu,234,184,115,114,114
+Plateau,Mikang,61,53,27,16,16
+Plateau,Pankshin,148,123,61,44,44
+Plateau,Qua'an Pan,179,165,52,71,71
+Plateau,Riyom,84,74,33,26,26
+Plateau,Shendam,151,109,79,64,64
+Plateau,Wase,110,94,57,36,36
+Rivers,Abua/Odual,62,61,27,25,25
+Rivers,Ahoada East,61,59,23,12,12
+Rivers,Ahoada West,64,43,37,26,26
+Rivers,Akuku Toru,17,14,9,10,10
+Rivers,Andoni,60,42,46,31,31
+Rivers,Asari-Toru,33,28,15,15,15
+Rivers,Bonny,39,31,31,17,17
+Rivers,Degema,31,21,20,18,18
+Rivers,Eleme,46,23,36,29,29
+Rivers,Emuoha,58,40,34,37,37
+Rivers,Etche,104,78,56,66,66
+Rivers,Gokana,58,48,33,36,36
+Rivers,Ikwerre,73,49,53,43,43
+Rivers,Khana,100,66,66,65,65
+Rivers,Obio/Akpor,351,137,253,255,255
+Rivers,Ogba/Egbema/Ndoni,76,67,38,44,44
+Rivers,Ogu Bolo,16,14,6,5,5
+Rivers,Okrika,45,39,24,19,19
+Rivers,Omumma,36,30,12,19,19
+Rivers,Opobo/Nkoro,17,13,11,6,6
+Rivers,Oyigbo,76,57,29,28,28
+Rivers,Port-Harcourt,223,74,186,191,191
+Rivers,Tai,32,27,9,8,8
+Sokoto,Binji,41,37,11,7,7
+Sokoto,Bodinga,45,41,14,6,6
+Sokoto,Dange-Shuni,44,38,8,8,8
+Sokoto,Gada,69,62,24,20,20
+Sokoto,Goronyo,52,49,8,12,12
+Sokoto,Gudu,38,32,13,16,16
+Sokoto,Gwadabawa,71,69,27,18,18
+Sokoto,Illela,75,73,24,26,26
+Sokoto,Isa,70,69,26,28,28
+Sokoto,Kebbe,37,35,13,12,12
+Sokoto,Kware,75,71,38,25,25
+Sokoto,Rabah,48,45,20,14,14
+Sokoto,Sabon Birni,93,86,44,30,30
+Sokoto,Shagari,46,45,19,9,9
+Sokoto,Silame,56,51,23,10,10
+Sokoto,Sokoto North,36,27,13,16,16
+Sokoto,Sokoto South,56,46,20,29,29
+Sokoto,Tambuwal,63,59,10,12,12
+Sokoto,Tangaza,63,59,23,22,22
+Sokoto,Tureta,30,28,10,8,8
+Sokoto,Wamakko,94,85,24,32,32
+Sokoto,Wurno,41,39,10,12,12
+Sokoto,Yabo,34,27,10,9,9
+Taraba,Ardo-Kola,103,85,54,46,46
+Taraba,Bali,138,120,57,65,65
+Taraba,Donga,117,98,59,63,63
+Taraba,Gashaka,92,77,30,29,29
+Taraba,Gassol,121,115,30,41,41
+Taraba,Ibi,74,66,40,28,28
+Taraba,Jalingo,102,86,45,54,54
+Taraba,Karim Lamido,205,188,92,73,73
+Taraba,Kurmi,77,70,28,34,34
+Taraba,Lau,80,76,37,25,25
+Taraba,Sardauna,213,199,78,82,82
+Taraba,Takum,129,120,37,69,69
+Taraba,Ussa,114,102,35,47,47
+Taraba,Wukari,161,143,58,86,86
+Taraba,Yorro,96,85,62,31,31
+Taraba,Zing,86,80,35,31,31
+Yobe,Bade,37,32,9,12,12
+Yobe,Bursari,48,47,4,6,6
+Yobe,Damaturu,48,37,19,18,18
+Yobe,Fika,75,70,19,8,8
+Yobe,Fune,69,68,15,7,7
+Yobe,Geidam,51,45,18,19,19
+Yobe,Gujba,29,29,5,6,6
+Yobe,Gulani,47,42,6,9,9
+Yobe,Jakusko,58,56,12,4,4
+Yobe,Karasuwa,38,34,20,8,8
+Yobe,Machina,29,27,6,4,4
+Yobe,Nangere,61,60,7,7,7
+Yobe,Nguru,43,42,15,9,9
+Yobe,Potiskum,60,49,20,24,24
+Yobe,Tarmuwa,27,27,5,5,5
+Yobe,Yunusari,53,48,16,11,11
+Yobe,Yusufari,37,36,6,3,3
+Zamfara,Anka,93,91,34,23,23
+Zamfara,Bakura,41,41,7,16,16
+Zamfara,Birnin Magaji/Kiyaw,60,59,10,9,9
+Zamfara,Bukkuyum,51,50,10,5,5
+Zamfara,Bungudu,118,117,22,16,16
+Zamfara,Gummi,69,66,22,8,8
+Zamfara,Gusau,125,118,30,44,44
+Zamfara,Kaura Namoda,97,96,22,18,18
+Zamfara,Maradun,67,64,16,18,18
+Zamfara,Maru,119,115,24,29,29
+Zamfara,Shinkafi,64,62,12,19,19
+Zamfara,Talata Mafara,77,77,12,20,20
+Zamfara,Tsafe,103,99,28,34,34
+Zamfara,Zurmi,97,97,27,23,23
