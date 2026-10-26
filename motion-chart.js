@@ -1,16 +1,10 @@
-/* Shared motion preference; load after Chart.js and before dashboard constructors. */
+/* Automatic looping motion. The operating-system reduced-motion preference is respected. */
 (function(){
  'use strict';
  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
- let saved;try{saved=localStorage.getItem('portfolio-motion')}catch(_){}
- let enabled=!media.matches&&saved!=='off';
- function apply(){document.documentElement.dataset.motion=enabled?'on':'off';window.dispatchEvent(new CustomEvent('portfolio:motion',{detail:{enabled}}))}
- const api={get enabled(){return enabled},get reduced(){return media.matches},set(value){enabled=Boolean(value)&&!media.matches;try{localStorage.setItem('portfolio-motion',enabled?'on':'off')}catch(_){}apply()}};
+ const api={get enabled(){return !media.matches},get reduced(){return media.matches}};
  window.PortfolioMotion=api;
- media.addEventListener?.('change',()=>{let choice;try{choice=localStorage.getItem('portfolio-motion')}catch(_){}enabled=!media.matches&&choice!=='off';apply()});
- apply();
- if(window.Chart){
-  Chart.defaults.animation={duration:1000,easing:'easeOutQuart'};
-  Chart.register({id:'portfolioMotionPreference',beforeInit(chart){if(!api.enabled)chart.options.animation=false},beforeUpdate(chart){if(!api.enabled)chart.options.animation=false}});
- }
+ function apply(){document.documentElement.dataset.motion=api.enabled?'on':'off';window.dispatchEvent(new CustomEvent('portfolio:motion',{detail:{enabled:api.enabled}}))}
+ media.addEventListener?.('change',apply);apply();
+ if(window.Chart){Chart.defaults.animation={duration:1400,easing:'easeOutQuart'};Chart.register({id:'portfolioMotionPreference',beforeInit(chart){if(!api.enabled)chart.options.animation=false},beforeUpdate(chart){if(!api.enabled)chart.options.animation=false}})}
 })();
