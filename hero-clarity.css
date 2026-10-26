@@ -8,10 +8,18 @@
 .clarity-fill{animation:clarityGrid 1.5s ease-out 3.5s both}.clarity-connector{animation:claritySignal 1.5s linear 2s infinite}
 .clarity-traveler{offset-path:path('M268 135L320 116L365 128L416 86L467 93L525 46');animation:clarityTravel 6s ease-in-out 4.4s infinite both}
 .clarity-fragment{fill:#b5c99b;opacity:.4;font:12px 'DM Mono',monospace;animation:clarityFragments 2.8s ease-out .5s both}
-.analyst-track{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}.clarity-avatar{position:absolute;bottom:7px;left:calc(25% - 90px);width:clamp(130px,12vw,160px);padding:0;border:0;background:none;color:inherit;cursor:pointer;pointer-events:auto;line-height:0;animation:analystWalkIn 2.1s cubic-bezier(.25,.6,.3,1) both;filter:drop-shadow(0 7px 12px #0003)}
+.analyst-track{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}.clarity-avatar{position:absolute;bottom:7px;left:calc(25% - 90px);width:clamp(130px,12vw,160px);padding:0;border:0;background:none;color:inherit;cursor:pointer;pointer-events:auto;line-height:0;animation:analystFluidEntrance 2.6s cubic-bezier(.22,.65,.3,1) both;will-change:transform;filter:drop-shadow(0 7px 12px #0003)}
 .clarity-avatar svg{display:block;width:100%;height:auto;overflow:visible}.clarity-avatar:hover{filter:drop-shadow(0 0 12px #d7fc7035)}.clarity-avatar:focus-visible{outline:2px solid var(--lime);outline-offset:-5px;border-radius:22px}
-.analyst-body{animation:analystIdle 3.5s ease-in-out 2.1s infinite}.analyst-leg{transform-box:view-box;transform-origin:94px 107px;animation:analystStep .35s ease-in-out 0s 6}.leg-back{animation-direction:reverse;transform-origin:85px 107px}
-.sorting-arm{transform-box:view-box;transform-origin:103px 70px;animation:analystSortGesture 6s ease-in-out 2.1s infinite both}.sort-cursor{animation:clarityCursor 2s ease-in-out 2.1s infinite}
+.analyst-body{transform-box:view-box;transform-origin:95px 146px;animation:analystWalkBob .65s linear 0s 4,analystFluidIdle 4.8s ease-in-out 2.6s infinite}
+.analyst-leg{transform-box:view-box;transform-origin:102px 104px;animation:analystFluidStride .65s ease-in-out 0s 4}
+.leg-back{animation-direction:reverse;transform-origin:85px 104px}
+.analyst-shin{transform-box:view-box;transform-origin:102px 126px;animation:analystKnee .65s ease-in-out 0s 4}
+.shin-back{transform-origin:85px 126px;animation-direction:reverse}
+.analyst-foot{transform-box:view-box;transform-origin:103px 147px;animation:analystAnkle .65s ease-in-out 0s 4}
+.foot-back{transform-origin:82px 147px;animation-direction:reverse}
+.analyst-free-arm{transform-box:view-box;transform-origin:84px 69px;animation:analystArmSwing .65s ease-in-out 0s 4,analystArmRest 5.2s ease-in-out 2.6s infinite}
+.analyst-head{transform-box:view-box;transform-origin:94px 58px;animation:analystHeadBalance .65s ease-in-out 0s 4,analystHeadIdle 6.4s ease-in-out 2.6s infinite}
+.sorting-arm{transform-box:view-box;transform-origin:103px 70px;animation:analystFluidGesture 7.2s cubic-bezier(.45,0,.55,1) 2.6s infinite both}.sort-cursor{animation:clarityCursor 2s ease-in-out 2.1s infinite}
 .clarity-ground{position:absolute;bottom:17px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#91b27644 20%,#91b27644 80%,transparent)}
 .clarity-again .sorting-point{animation:claritySort 2.1s cubic-bezier(.22,.7,.3,1) both}
 .clarity-again .clarity-chart{animation:clarityConnect 1.6s ease-in-out .9s both}.clarity-again .clarity-grid,.clarity-again .clarity-fill{animation:clarityGrid 1.5s ease-out both}
@@ -24,11 +32,25 @@
 @keyframes claritySignal{to{stroke-dashoffset:-24}}
 @keyframes clarityTravel{0%{offset-distance:0%;opacity:0}8%{opacity:1}85%{offset-distance:100%;opacity:1}100%{offset-distance:100%;opacity:0}}
 @keyframes clarityFragments{0%,35%{opacity:.4;transform:translateY(0)}100%{opacity:0;transform:translateY(12px)}}
-@keyframes analystWalkIn{from{left:-170px}to{left:calc(25% - 90px)}}
-@keyframes analystStep{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(11deg)}}
-@keyframes analystIdle{50%{translate:0 -1.5px}}
-@keyframes analystSortGesture{0%,100%{rotate:0deg}25%{rotate:-12deg}45%{rotate:6deg}65%{rotate:-4deg}}
+
+
+
+
 @keyframes clarityCursor{50%{opacity:.35}}
 @media(max-width:900px){.clarity-headline{font-size:clamp(44px,6.1vw,70px)}.clarity-avatar{width:140px}.clarity-story{padding-bottom:132px}}
-@media(max-width:650px){.clarity-headline{font-size:clamp(38px,10.2vw,58px);line-height:1.12;letter-spacing:-.055em}.clarity-story{padding-bottom:118px}.clarity-dataset{height:150px;left:-15px;right:-15px;bottom:2px}.clarity-avatar{width:125px;left:calc(25% - 65px);animation-name:analystMobileWalkIn}.analyst-track{overflow:hidden}@keyframes analystMobileWalkIn{from{left:-140px}to{left:calc(25% - 65px)}}}
+@media(max-width:650px){.clarity-headline{font-size:clamp(38px,10.2vw,58px);line-height:1.12;letter-spacing:-.055em}.clarity-story{padding-bottom:118px}.clarity-dataset{height:150px;left:-15px;right:-15px;bottom:2px}.clarity-avatar{width:125px;left:calc(25% - 65px);animation-name:analystFluidEntrance}.analyst-track{overflow:hidden}}
 @media(prefers-reduced-motion:reduce){.clarity-story *{animation:none!important;transition:none!important;filter:none!important}.clarity-words,.sorting-point{opacity:1;transform:none}.clarity-chart{stroke-dashoffset:0}.clarity-fragment,.clarity-traveler{display:none}}
+
+/* Articulated joints and matched walk/settle timing avoid snapping between poses. */
+@keyframes analystFluidEntrance{0%{transform:translate3d(calc(-100% - 160px),0,0)}80%{transform:translate3d(-5px,0,0)}100%{transform:translate3d(0,0,0)}}
+@keyframes analystFluidStride{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}50%{transform:rotate(-2deg)}75%{transform:rotate(12deg)}}
+@keyframes analystKnee{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}50%{transform:rotate(29deg)}75%{transform:rotate(5deg)}}
+@keyframes analystAnkle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(7deg)}}
+@keyframes analystWalkBob{0%,50%,100%{transform:translate3d(0,0,0) rotate(0)}25%{transform:translate3d(0,-1.8px,0) rotate(.45deg)}75%{transform:translate3d(0,-1.8px,0) rotate(-.45deg)}}
+@keyframes analystFluidIdle{0%,100%{transform:translate3d(0,0,0) rotate(0)}40%{transform:translate3d(.4px,-1.2px,0) rotate(-.35deg)}70%{transform:translate3d(-.2px,-.4px,0) rotate(.2deg)}}
+@keyframes analystArmSwing{0%,50%,100%{transform:rotate(0)}25%{transform:rotate(9deg)}75%{transform:rotate(-9deg)}}
+@keyframes analystArmRest{0%,100%{transform:rotate(0)}50%{transform:rotate(-1.6deg)}}
+@keyframes analystHeadBalance{0%,50%,100%{transform:rotate(0)}25%{transform:rotate(-.8deg)}75%{transform:rotate(.8deg)}}
+@keyframes analystHeadIdle{0%,100%{transform:rotate(0)}35%{transform:rotate(1.3deg)}70%{transform:rotate(-.7deg)}}
+@keyframes analystFluidGesture{0%,100%{transform:translate3d(0,0,0) rotate(0)}18%{transform:translate3d(.5px,-.5px,0) rotate(-5deg)}35%{transform:translate3d(1px,-.8px,0) rotate(-9deg)}52%{transform:translate3d(.3px,.2px,0) rotate(3deg)}70%{transform:translate3d(0,0,0) rotate(0)}86%{transform:translate3d(.2px,-.2px,0) rotate(-2deg)}}
+.clarity-resting .clarity-avatar,.clarity-resting .analyst-leg,.clarity-resting .analyst-shin,.clarity-resting .analyst-foot,.clarity-resting .analyst-free-arm,.clarity-resting .analyst-head{animation-play-state:paused}
