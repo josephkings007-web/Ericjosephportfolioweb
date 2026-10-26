@@ -1,0 +1,13 @@
+{
+  "title": "GRID3 NGA - Health Facilities v4.0",
+  "publisher": "CIESIN, Columbia University",
+  "year": 2026,
+  "accessed": "2026-10-26",
+  "doi": "https://doi.org/10.7916/pjpv-9q55",
+  "item": "https://www.arcgis.com/home/item.html?id=9df52e12d0b5422f8f73c44d0dc91f8b",
+  "api": "https://services3.arcgis.com/BU6Aadhn6tbBEdyk/arcgis/rest/services/GRID3_NGA_Health_Facilities_v4_0/FeatureServer/0",
+  "license": "CC BY 4.0",
+  "raw_sha256": "8d5b0e83375cad5f03c6b0c226e6af768276fdf1f3685589752962e140e8f28b",
+  "snapshot_records": 70235,
+  "scope": "Non-exhaustive, non-validated national registry snapshot; records are not proof of service availability, capacity, affordability, or travel access."
+}
