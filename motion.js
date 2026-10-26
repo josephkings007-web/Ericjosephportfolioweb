@@ -21,7 +21,7 @@
  window.addEventListener('portfolio:motion',()=>{refreshMotionButton();charts().forEach(c=>{c.stop();c.options.animation=motion.enabled?{duration:1000,easing:'easeOutQuart'}:false;c.update('none')})});
  if(charts().length)actions.append(button('↻ Replay visible charts',()=>{let count=0;charts().forEach(c=>{if(c.canvas.getClientRects().length){const r=c.canvas.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight){replay(c);count++}}});announce(count?'Replaying '+count+' visible chart'+(count===1?'':'s')+'.':'Scroll to a chart and press its Replay button.')}));
 
- /* A reading-focused modal moves the original chart, then restores its exact position. */
+ /* The focus modal renders an independent chart, preserving the original canvas and data. */
  const focusDialog=document.createElement('dialog');focusDialog.className='motion-focus';focusDialog.setAttribute('aria-labelledby','motion-focus-heading');
  const focusTop=document.createElement('div');focusTop.className='motion-focus-top';
  const focusTitle=document.createElement('h2');focusTitle.id='motion-focus-heading';
@@ -29,8 +29,9 @@
  const stage=document.createElement('div');stage.className='motion-focus-stage';const focusNote=document.createElement('p');focusNote.className='motion-focus-note';focusNote.textContent='Hover or tap the chart to inspect values. Use its legend to compare series. Press Escape to return.';
  focusDialog.append(focusTop,stage,focusNote);document.body.append(focusDialog);
  let focused=null;
- function focusChart(chart,title,opener){if(focused)return;const canvas=chart.canvas;const moving=canvas;const marker=document.createComment('chart position');moving.before(marker);focused={chart,moving,marker,opener,ratio:chart.options.maintainAspectRatio,overflow:document.body.style.overflow};focusTitle.textContent=title;stage.append(moving);chart.options.maintainAspectRatio=false;focusDialog.showModal();document.body.style.overflow='hidden';requestAnimationFrame(()=>{chart.resize();replay(chart)})}
- focusDialog.addEventListener('close',()=>{if(!focused)return;const f=focused;focused=null;f.marker.replaceWith(f.moving);f.chart.options.maintainAspectRatio=f.ratio;document.body.style.overflow=f.overflow;requestAnimationFrame(()=>f.chart.resize());f.opener.focus()});
+ function copyConfig(value,seen=new WeakMap()){if(value===null||typeof value!=='object')return value;if(seen.has(value))return seen.get(value);const out=Array.isArray(value)?[]:{};seen.set(value,out);Object.keys(value).forEach(k=>{if(k!=='__proto__')out[k]=copyConfig(value[k],seen)});return out}
+ function focusChart(chart,title,opener){if(focused)return;const canvas=document.createElement('canvas');canvas.setAttribute('role','img');canvas.setAttribute('aria-label',title+' enlarged chart');stage.replaceChildren(canvas);focusTitle.textContent=title;const overflow=document.body.style.overflow;focusDialog.showModal();document.body.style.overflow='hidden';const options=copyConfig(chart.config.options);options.responsive=true;options.maintainAspectRatio=false;try{const enlarged=new Chart(canvas,{type:chart.config.type,data:copyConfig(chart.data),options,plugins:chart.config.plugins});focused={chart:enlarged,opener,overflow};requestAnimationFrame(()=>{enlarged.resize();replay(enlarged)})}catch(error){document.body.style.overflow=overflow;focusDialog.close();stage.replaceChildren();announce('Focus view is unavailable for this chart. The original chart is unchanged.')}}
+ focusDialog.addEventListener('close',()=>{if(!focused)return;const f=focused;focused=null;f.chart.destroy();stage.replaceChildren();document.body.style.overflow=f.overflow;f.opener.focus()});
  focusDialog.addEventListener('click',e=>{if(e.target===focusDialog){const r=focusDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)focusDialog.close()}});
 
  /* Data inspection never rewrites chart values, labels, or tooltip indexes. */
