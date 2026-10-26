@@ -10,8 +10,8 @@
 --bg: #0a0a0f;
 --surface: #111118;
 --surface2: #18181f;
---border: #1e1e2e;
---green: #1db954;
+--border: #343c32;
+--green: #d7fc70;
 --green-dim: rgba(29,185,84,0.15);
 --green-glow: rgba(29,185,84,0.35);
 --teal: #00c9a7;
@@ -19,7 +19,7 @@
 --rose: #ff6b9d;
 --blue: #4cc9f0;
 --text: #e8e8f0;
---muted: #6b6b85;
+--muted: #a2ac9f;
 --radius: 12px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -475,8 +475,8 @@ color: var(--muted);
 line-height: 1.6;
 }
 </style>
-</head>
-<body> <!-- HEADER -->
+<link rel="stylesheet" href="chrome.css"><link rel="stylesheet" href="dashboard.css"></head>
+<body><a class="site-skip" href="#project-content">Skip to project</a><div class="site-progress" aria-hidden="true"></div><div class="sitebar"><div class="sitebar-inner"><a class="sitebrand" href="index.html" aria-label="Eric Joseph home">ej<span>.</span></a><button class="site-toggle" aria-controls="site-links" aria-expanded="false">Menu</button><div class="sitebar-links" id="site-links"><a href="index.html#work">Selected work</a><a href="caresync.html">CareSync</a><a href="index.html#skills">Capabilities</a><a href="index.html#about">About me</a><a class="sitecontact" href="index.html#contact">Let's talk ↗</a></div></div></div><div id="project-content" tabindex="-1"></div> <!-- HEADER -->
 <header id="top"> <div class="header-tag">Data Analysis Report · 2024</div> <h1>Spotify Popular <span>Songs</span><br>Analytics Report</h1> <p class="header-sub">A comprehensive analysis of 952 popular songs — exploring streaming performance, audio feature patterns, artist dominance, and what makes a hit.</p> <div class="header-meta"> <div class="meta-item"> <span class="meta-label">Total Songs</span> <span class="meta-value">952</span> </div> <div class="meta-item"> <span class="meta-label">Total Streams</span> <span class="meta-value">489 <span class="unit">Billion</span></span> </div> <div class="meta-item"> <span class="meta-label">Unique Artists</span> <span class="meta-value">644</span> </div> <div class="meta-item"> <span class="meta-label">Year Range</span> <span class="meta-value">1930–2023</span> </div> <div class="meta-item"> <span class="meta-label">Avg Streams/Song</span> <span class="meta-value">514 <span class="unit">M</span></span> </div> </div>
 </header> <!-- NAV -->
 <nav> <a href="#overview"><span class="nav-dot"></span>Overview</a> <a href="#performance"><span class="nav-dot"></span>Performance</a> <a href="#audio"><span class="nav-dot"></span>Audio Features</a> <a href="#artists"><span class="nav-dot"></span>Artists</a> <a href="#time"><span class="nav-dot"></span>Trends</a> <a href="#insights"><span class="nav-dot"></span>Insights</a> <a href="#recommendations"><span class="nav-dot"></span>Recommendations</a>
@@ -550,10 +550,10 @@ const keyStreams = {"A":408841412,"A#":552475435,"B":519347957,"C#":604280249,"D
 const energyScatter = [{e:90,s:1.48},{e:84,s:0.08},{e:77,s:1.44},{e:47,s:0.59},{e:89,s:0.30},{e:55,s:0.86},{e:94,s:0.14},{e:43,s:0.09},{e:45,s:0.29},{e:58,s:0.81},{e:60,s:0.32},{e:88,s:0.35},{e:48,s:0.64},{e:37,s:0.43},{e:28,s:0.28},{e:69,s:1.12},{e:61,s:0.87},{e:87,s:0.35},{e:46,s:0.06},{e:82,s:0.52},{e:59,s:0.14},{e:67,s:0.20},{e:90,s:0.10},{e:80,s:1.37},{e:70,s:0.20},{e:72,s:0.12},{e:84,s:0.02},{e:64,s:0.08},{e:48,s:2.29},{e:63,s:0.12},{e:61,s:0.46},{e:42,s:0.37},{e:53,s:0.28},{e:89,s:0.59},{e:55,s:0.68},{e:92,s:0.27},{e:69,s:0.07},{e:85,s:0.18},{e:77,s:0.15},{e:82,s:0.72},{e:65,s:1.26},{e:41,s:2.89},{e:48,s:0.57},{e:39,s:0.23},{e:41,s:0.12},{e:89,s:0.05},{e:60,s:0.95},{e:67,s:0.15},{e:35,s:0.13},{e:53,s:0.40},{e:72,s:0.33},{e:66,s:0.52},{e:77,s:0.14},{e:68,s:0.09},{e:57,s:0.30},{e:83,s:0.05},{e:73,s:0.10},{e:59,s:0.29},{e:65,s:0.26},{e:92,s:0.13},{e:45,s:0.13},{e:64,s:0.40},{e:64,s:0.36},{e:79,s:0.28},{e:80,s:0.21},{e:37,s:0.59},{e:38,s:0.45},{e:85,s:0.44},{e:26,s:0.11},{e:66,s:0.17},{e:66,s:0.30},{e:66,s:0.53},{e:31,s:0.19},{e:71,s:1.20},{e:60,s:0.05},{e:66,s:0.55},{e:90,s:1.55},{e:53,s:0.11},{e:47,s:0.23},{e:65,s:0.25},{e:71,s:0.29},{e:59,s:0.32},{e:44,s:0.18},{e:71,s:0.12},{e:49,s:0.05},{e:77,s:1.24},{e:61,s:1.04},{e:37,s:0.03},{e:54,s:0.63},{e:68,s:0.61},{e:72,s:0.26},{e:86,s:1.36},{e:74,s:0.09},{e:59,s:0.75},{e:70,s:0.39},{e:58,s:0.07},{e:39,s:0.09}];
 const tempoByYear = {2010:118.6,2011:127.9,2012:142.8,2013:120.1,2014:106.0,2015:127.4,2016:126.9,2017:119.0,2018:115.3,2019:118.4,2020:118.0,2021:125.8,2022:122.0,2023:124.1};
 // Chart defaults
-Chart.defaults.color = '#6b6b85';
-Chart.defaults.borderColor = '#1e1e2e';
-Chart.defaults.font.family = "'DM Mono', monospace";
-const GREEN = '#1db954';
+Chart.defaults.color = '#a2ac9f';
+Chart.defaults.borderColor = '#343c32';
+Chart.defaults.font.family = 'DM Sans, Arial, sans-serif';
+const GREEN = '#d7fc70';
 const TEAL = '#00c9a7';
 const GOLD = '#f5c518';
 const ROSE = '#ff6b9d';
@@ -616,8 +616,8 @@ legend: {display:false},
 tooltip: {callbacks:{label: c => `${c.parsed.y.toFixed(2)}B streams`}}
 },
 scales: {
-x: { grid:{display:false}, ticks:{color:'#6b6b85'} },
-y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`, color:'#6b6b85'} }
+x: { grid:{display:false}, ticks:{color:'#a2ac9f'} },
+y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`, color:'#a2ac9f'} }
 }
 }
 });
@@ -652,11 +652,11 @@ yAxisID: 'y1',
 options: {
 responsive: true,
 plugins: {
-legend: {labels:{color:'#6b6b85',boxWidth:12}},
+legend: {labels:{color:'#a2ac9f',boxWidth:12}},
 },
 scales: {
-x: { grid:{display:false}, ticks:{color:'#6b6b85'} },
-y: { position:'left', grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#6b6b85'} },
+x: { grid:{display:false}, ticks:{color:'#a2ac9f'} },
+y: { position:'left', grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#a2ac9f'} },
 y1: { position:'right', grid:{display:false}, ticks:{color:GOLD} }
 }
 }
@@ -676,8 +676,8 @@ options: {
 responsive: true,
 plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`Energy ${c.parsed.x}%, ${c.parsed.y.toFixed(2)}B streams`}}},
 scales: {
-x: {title:{display:true,text:'Energy %',color:'#6b6b85'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}},
-y: {title:{display:true,text:'Streams (B)',color:'#6b6b85'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#6b6b85'}}
+x: {title:{display:true,text:'Energy %',color:'#a2ac9f'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#a2ac9f'}},
+y: {title:{display:true,text:'Streams (B)',color:'#a2ac9f'}, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}B`,color:'#a2ac9f'}}
 }
 }
 });
@@ -697,7 +697,7 @@ options: {
 responsive: true,
 cutout: '65%',
 plugins: {
-legend: {position:'right', labels:{color:'#6b6b85', boxWidth:12, padding:12}},
+legend: {position:'right', labels:{color:'#a2ac9f', boxWidth:12, padding:12}},
 tooltip: {callbacks:{label:c=>`${c.label}: ${c.parsed} songs`}}
 }
 }
@@ -722,8 +722,8 @@ options: {
 responsive: true,
 plugins: {legend:{display:false}},
 scales: {
-x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
-y: {min:100, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}}
+x: {grid:{display:false}, ticks:{color:'#a2ac9f'}},
+y: {min:100, grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#a2ac9f'}}
 }
 }
 });
@@ -743,8 +743,8 @@ options: {
 responsive: true,
 plugins: {legend:{display:false}},
 scales: {
-x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
-y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#6b6b85'}}
+x: {grid:{display:false}, ticks:{color:'#a2ac9f'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#a2ac9f'}}
 }
 }
 });
@@ -767,8 +767,8 @@ options: {
 responsive: true,
 plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(0)}M avg`}}},
 scales: {
-x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
-y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#6b6b85'}}
+x: {grid:{display:false}, ticks:{color:'#a2ac9f'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#a2ac9f'}}
 }
 }
 });
@@ -787,8 +787,8 @@ options: {
 responsive: true,
 plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(0)}M avg`}}},
 scales: {
-x: {grid:{display:false}, ticks:{color:'#6b6b85'}},
-y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#6b6b85'}}
+x: {grid:{display:false}, ticks:{color:'#a2ac9f'}},
+y: {grid:{color:'rgba(255,255,255,0.04)'}, ticks:{callback:v=>`${v}M`,color:'#a2ac9f'}}
 }
 }
 });
@@ -803,7 +803,7 @@ label: 'All Songs Avg',
 data: [66, 64, 51, 27, 18, 10, 61],
 borderColor: 'rgba(107,107,133,0.8)',
 backgroundColor: 'rgba(107,107,133,0.1)',
-pointBackgroundColor: '#6b6b85',
+pointBackgroundColor: '#a2ac9f',
 },
 {
 label: 'Top 10% Songs',
@@ -816,17 +816,17 @@ pointBackgroundColor: GREEN,
 },
 options: {
 responsive: true,
-plugins: {legend:{labels:{color:'#6b6b85',boxWidth:12}}},
+plugins: {legend:{labels:{color:'#a2ac9f',boxWidth:12}}},
 scales: {
 r: {
 grid:{color:'rgba(255,255,255,0.06)'},
 angleLines:{color:'rgba(255,255,255,0.06)'},
 ticks:{display:false},
-pointLabels:{color:'#6b6b85', font:{size:11}},
+pointLabels:{color:'#a2ac9f', font:{size:11}},
 }
 }
 }
 });
 </script>
-</body>
+<div class="sitefooter"><div>Eric Joseph Benedict<br>Data & digital experiences · Lagos, Nigeria</div><a href="index.html#work">← All projects</a><a href="caresync.html">Explore CareSync ↗</a><a href="#project-content">Back to top ↑</a></div><script src="site.js"></script></body>
 </html>

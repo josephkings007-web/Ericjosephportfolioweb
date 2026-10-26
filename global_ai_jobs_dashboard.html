@@ -10,17 +10,17 @@
 <style>
 :root {
   --bg: #060912;
-  --s1: #0c1020;
+  --s1: #191e1a;
   --s2: #111828;
   --s3: #1a2235;
-  --border: #1f2d44;
+  --border: #343c32;
   --text: #e2e8f5;
-  --muted: #4a5a78;
+  --muted: #a2ac9f;
   --dim: #2a3a55;
 
-  --electric: #00e5ff;
+  --electric: #d7fc70;
   --electric-glow: rgba(0,229,255,0.12);
-  --neon: #39ff8f;
+  --neon: #9bcfaf;
   --neon-glow: rgba(57,255,143,0.1);
   --hot: #ff4757;
   --hot-glow: rgba(255,71,87,0.12);
@@ -261,8 +261,8 @@ body {
   display: flex; justify-content: space-between;
 }
 </style>
-</head>
-<body>
+<link rel="stylesheet" href="chrome.css"><link rel="stylesheet" href="dashboard.css"></head>
+<body><a class="site-skip" href="#project-content">Skip to project</a><div class="site-progress" aria-hidden="true"></div><div class="sitebar"><div class="sitebar-inner"><a class="sitebrand" href="index.html" aria-label="Eric Joseph home">ej<span>.</span></a><button class="site-toggle" aria-controls="site-links" aria-expanded="false">Menu</button><div class="sitebar-links" id="site-links"><a href="index.html#work">Selected work</a><a href="caresync.html">CareSync</a><a href="index.html#skills">Capabilities</a><a href="index.html#about">About me</a><a class="sitecontact" href="index.html#contact">Let's talk ↗</a></div></div></div><div id="project-content" tabindex="-1"></div>
 
 <!-- ═══════════ HERO ═══════════ -->
 <div class="hero">
@@ -720,23 +720,23 @@ function switchTab(name) {
 }
 
 // ─── CHART DEFAULTS ────────────────────────────────────────────────────────────
-Chart.defaults.color = '#4a5a78';
-Chart.defaults.font.family = "'Space Mono', monospace";
+Chart.defaults.color = '#a2ac9f';
+Chart.defaults.font.family = 'DM Sans, Arial, sans-serif';
 Chart.defaults.font.size = 10;
 
 const G = '#1a2235';
 const TT = {
-  backgroundColor: '#0c1020',
+  backgroundColor: '#191e1a',
   titleColor: '#e2e8f5',
   bodyColor: '#6a7a98',
-  borderColor: '#1f2d44',
+  borderColor: '#343c32',
   borderWidth: 1,
   padding: 12,
   cornerRadius: 6
 };
 const sc = {
-  x: { grid: { color: G }, ticks: { color: '#4a5a78' }, border: { color: '#1f2d44' } },
-  y: { grid: { color: G }, ticks: { color: '#4a5a78' }, border: { color: '#1f2d44' } }
+  x: { grid: { color: G }, ticks: { color: '#a2ac9f' }, border: { color: '#343c32' } },
+  y: { grid: { color: G }, ticks: { color: '#a2ac9f' }, border: { color: '#343c32' } }
 };
 
 // ─── DATA ──────────────────────────────────────────────────────────────────────
@@ -763,7 +763,7 @@ new Chart(document.getElementById('countrySalChart'), {
   data: {
     labels: countries,
     datasets: [
-      { label: 'Salary USD', data: salary, backgroundColor: countries.map((_,i) => i<3?'#00e5ff':i<7?'#60a5fa':'#4a5a78'), borderRadius:3, borderSkipped:false },
+      { label: 'Salary USD', data: salary, backgroundColor: countries.map((_,i) => i<3?'#d7fc70':i<7?'#60a5fa':'#a2ac9f'), borderRadius:3, borderSkipped:false },
       { label: 'Bonus USD', data: bonus, backgroundColor: countries.map((_,i) => i<3?'rgba(57,255,143,0.7)':i<7?'rgba(168,85,247,0.5)':'rgba(74,90,120,0.4)'), borderRadius:3, borderSkipped:false }
     ]
   },
@@ -778,7 +778,7 @@ new Chart(document.getElementById('countrySalChart'), {
 const bonusMax = 17939;
 const bonusHbl = document.getElementById('bonusHbl');
 countries.forEach((c,i) => {
-  const col = i<3?'#ffd60a':i<7?'#60a5fa':'#4a5a78';
+  const col = i<3?'#ffd60a':i<7?'#60a5fa':'#a2ac9f';
   bonusHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${c}</div><div class="hbl-track"><div class="hbl-fill" style="width:${(bonus[i]/bonusMax*100).toFixed(0)}%;background:${col}"></div></div><div class="hbl-val">$${bonus[i].toLocaleString()}</div></div>`;
 });
 
@@ -787,7 +787,7 @@ new Chart(document.getElementById('specSalChart'), {
   type: 'bar',
   data: {
     labels: specs,
-    datasets: [{ data: specSal, backgroundColor: ['#00e5ff','#a855f7','#60a5fa','#39ff8f','#ff8c42','#ff4757','#ffd60a','#4a5a78'], borderRadius:4, borderSkipped:false }]
+    datasets: [{ data: specSal, backgroundColor: ['#d7fc70','#a855f7','#60a5fa','#9bcfaf','#ff8c42','#ff4757','#ffd60a','#a2ac9f'], borderRadius:4, borderSkipped:false }]
   },
   options: {
     responsive:true,
@@ -804,7 +804,7 @@ new Chart(document.getElementById('roleSalChart'), {
   type: 'bar',
   data: {
     labels: roles,
-    datasets: [{ data: roleSal, backgroundColor: ['#ffd60a','#00e5ff','#60a5fa','#a855f7','#39ff8f','#ff8c42','#ff4757','#4a5a78'], borderRadius:4, borderSkipped:false }]
+    datasets: [{ data: roleSal, backgroundColor: ['#ffd60a','#d7fc70','#60a5fa','#a855f7','#9bcfaf','#ff8c42','#ff4757','#a2ac9f'], borderRadius:4, borderSkipped:false }]
   },
   options: {
     responsive:true,
@@ -824,11 +824,11 @@ new Chart(document.getElementById('expSalChart'), {
     datasets: [{
       label: 'Avg Salary',
       data: expSal,
-      borderColor: '#00e5ff',
+      borderColor: '#d7fc70',
       backgroundColor: 'rgba(0,229,255,0.06)',
       borderWidth: 2.5,
       pointRadius: 4,
-      pointBackgroundColor: expYears.map(y => y===0?'#ff4757':y===19?'#ffd60a':'#00e5ff'),
+      pointBackgroundColor: expYears.map(y => y===0?'#ff4757':y===19?'#ffd60a':'#d7fc70'),
       pointBorderColor: '#060912',
       pointBorderWidth: 2,
       fill: true,
@@ -839,7 +839,7 @@ new Chart(document.getElementById('expSalChart'), {
     responsive:true,
     plugins: { legend:{display:false}, tooltip:{ ...TT, callbacks:{ label:ctx=>' $'+ctx.raw.toLocaleString() } } },
     scales: {
-      x: { ...sc.x, title:{ display:true, text:'Years of Experience', color:'#4a5a78', font:{size:10} } },
+      x: { ...sc.x, title:{ display:true, text:'Years of Experience', color:'#a2ac9f', font:{size:10} } },
       y: { ...sc.y, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' } }
     }
   }
@@ -851,7 +851,7 @@ new Chart(document.getElementById('eduChart'), {
   data: {
     labels: edus,
     datasets: [
-      { label: 'Avg Salary', data: eduSal, backgroundColor: ['#ff4757','#a855f7','#ff8c42','#60a5fa','#00e5ff'], borderRadius:4, borderSkipped:false, yAxisID:'y' },
+      { label: 'Avg Salary', data: eduSal, backgroundColor: ['#ff4757','#a855f7','#ff8c42','#60a5fa','#d7fc70'], borderRadius:4, borderSkipped:false, yAxisID:'y' },
       { label: 'Salary Percentile', data: eduPct, type:'line', borderColor:'#ffd60a', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#ffd60a', yAxisID:'y1', tension:0.3 }
     ]
   },
@@ -860,7 +860,7 @@ new Chart(document.getElementById('eduChart'), {
     plugins: { legend:{ labels:{boxWidth:10} }, tooltip:TT },
     scales: {
       x:sc.x,
-      y:{ ...sc.y, min:95000, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' }, title:{ display:true, text:'Salary',color:'#4a5a78',font:{size:9} } },
+      y:{ ...sc.y, min:95000, ticks:{ ...sc.y.ticks, callback:v=>'$'+(v/1000).toFixed(0)+'K' }, title:{ display:true, text:'Salary',color:'#a2ac9f',font:{size:9} } },
       y1:{ position:'right', min:49.5, max:51.5, grid:{ drawOnChartArea:false }, ticks:{ color:'#ffd60a' } }
     }
   }
@@ -874,7 +874,7 @@ new Chart(document.getElementById('indDemandChart'), {
   type: 'bar',
   data: {
     labels: industries,
-    datasets: [{ data: indDemand, backgroundColor: '#00e5ff', borderRadius:4, borderSkipped:false }]
+    datasets: [{ data: indDemand, backgroundColor: '#d7fc70', borderRadius:4, borderSkipped:false }]
   },
   options: {
     indexAxis:'y', responsive:true,
@@ -886,7 +886,7 @@ new Chart(document.getElementById('indOpenChart'), {
   type: 'bar',
   data: {
     labels: industries,
-    datasets: [{ data: indOpen, backgroundColor: industries.map((_,i)=>['#ffd60a','#39ff8f','#ff8c42','#a855f7','#60a5fa','#00e5ff','#ff4757','#e879f9','#f97316','#4a5a78'][i]), borderRadius:4, borderSkipped:false }]
+    datasets: [{ data: indOpen, backgroundColor: industries.map((_,i)=>['#ffd60a','#9bcfaf','#ff8c42','#a855f7','#60a5fa','#d7fc70','#ff4757','#e879f9','#f97316','#a2ac9f'][i]), borderRadius:4, borderSkipped:false }]
   },
   options: {
     indexAxis:'y', responsive:true,
@@ -904,7 +904,7 @@ new Chart(document.getElementById('interviewChart'), {
     datasets: [{
       label: 'Country',
       data: countries.map((c,i) => ({ x:ctryRounds[i], y:ctryDiff[i], label:c })),
-      backgroundColor: ['#00e5ff','#a855f7','#39ff8f','#ffd60a','#ff4757','#60a5fa','#ff8c42','#e879f9','#f97316','#06b6d4','#84cc16','#f43f5e'],
+      backgroundColor: ['#d7fc70','#a855f7','#9bcfaf','#ffd60a','#ff4757','#60a5fa','#ff8c42','#e879f9','#f97316','#06b6d4','#84cc16','#f43f5e'],
       pointRadius: 8,
       pointHoverRadius: 11
     }]
@@ -916,8 +916,8 @@ new Chart(document.getElementById('interviewChart'), {
       tooltip:{ ...TT, callbacks:{ label: ctx => ` ${ctx.raw.label}: ${ctx.raw.x} rounds, ${ctx.raw.y} difficulty` } }
     },
     scales: {
-      x:{ ...sc.x, min:4.4, max:4.6, title:{display:true,text:'Avg Interview Rounds',color:'#4a5a78',font:{size:10}} },
-      y:{ ...sc.y, min:54.6, max:55.5, title:{display:true,text:'Hiring Difficulty Score',color:'#4a5a78',font:{size:10}} }
+      x:{ ...sc.x, min:4.4, max:4.6, title:{display:true,text:'Avg Interview Rounds',color:'#a2ac9f',font:{size:10}} },
+      y:{ ...sc.y, min:54.6, max:55.5, title:{display:true,text:'Hiring Difficulty Score',color:'#a2ac9f',font:{size:10}} }
     }
   }
 });
@@ -925,7 +925,7 @@ new Chart(document.getElementById('interviewChart'), {
 // Hiring Metrics HBL
 const hmHbl = document.getElementById('hiringMetrics');
 countries.slice(0,6).forEach((c,i) => {
-  hmHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${c}</div><div class="hbl-track"><div class="hbl-fill" style="width:${((ctryDiff[i]-54)/(56-54)*100).toFixed(0)}%;background:#00e5ff"></div></div><div class="hbl-val">${ctryRounds[i]}r / ${ctryDiff[i]}</div></div>`;
+  hmHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${c}</div><div class="hbl-track"><div class="hbl-fill" style="width:${((ctryDiff[i]-54)/(56-54)*100).toFixed(0)}%;background:#d7fc70"></div></div><div class="hbl-val">${ctryRounds[i]}r / ${ctryDiff[i]}</div></div>`;
 });
 
 // ─── Q7: FUNDING CHART ────────────────────────────────────────────────────────
@@ -934,7 +934,7 @@ new Chart(document.getElementById('fundingChart'), {
   data: {
     labels: ['Low (<$1B)','Mid ($1–5B)','High ($5–20B)'],
     datasets: [
-      { label: 'Job Security', data: [71.35,75.51,76.36], backgroundColor: ['#ff4757','#ff8c42','#39ff8f'], borderRadius:5, borderSkipped:false },
+      { label: 'Job Security', data: [71.35,75.51,76.36], backgroundColor: ['#ff4757','#ff8c42','#9bcfaf'], borderRadius:5, borderSkipped:false },
       { label: 'Layoff Risk %', data: [18.0,18.0,18.0], backgroundColor: 'rgba(255,71,87,0.3)', borderRadius:5, borderSkipped:false, yAxisID:'y1' }
     ]
   },
@@ -943,7 +943,7 @@ new Chart(document.getElementById('fundingChart'), {
     plugins: { legend:{ labels:{boxWidth:10} }, tooltip:TT },
     scales: {
       x:sc.x,
-      y:{ ...sc.y, min:65, title:{display:true,text:'Job Security Score',color:'#4a5a78',font:{size:9}} },
+      y:{ ...sc.y, min:65, title:{display:true,text:'Job Security Score',color:'#a2ac9f',font:{size:9}} },
       y1:{ position:'right', min:0, max:30, grid:{drawOnChartArea:false}, ticks:{color:'#ff4757'}, title:{display:true,text:'Layoff Risk %',color:'#ff4757',font:{size:9}} }
     }
   }
@@ -967,7 +967,7 @@ new Chart(document.getElementById('maturityChart'), {
     plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
     scales: {
       x:sc.x,
-      y:{ ...sc.y, min:8.2, title:{display:true,text:'Maturity (yrs)',color:'#4a5a78',font:{size:9}} },
+      y:{ ...sc.y, min:8.2, title:{display:true,text:'Maturity (yrs)',color:'#a2ac9f',font:{size:9}} },
       y1:{ position:'right', min:70.5, max:72.5, grid:{drawOnChartArea:false}, ticks:{color:'#ffd60a'}, title:{display:true,text:'Adoption Score',color:'#ffd60a',font:{size:9}} }
     }
   }
@@ -979,8 +979,8 @@ new Chart(document.getElementById('workModeChart'), {
   data: {
     labels: ['Satisfaction','WLB Score','Salary/1500','OAR','Job Security/2'],
     datasets: [
-      { label:'Remote',  data:[72.7,69.2,96443/1500,75.1,75.5/2], borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,0.1)', borderWidth:2, pointRadius:4 },
-      { label:'Onsite',  data:[72.7,69.2,96451/1500,75.0,75.5/2], borderColor:'#39ff8f', backgroundColor:'rgba(57,255,143,0.08)', borderWidth:2, pointRadius:4 },
+      { label:'Remote',  data:[72.7,69.2,96443/1500,75.1,75.5/2], borderColor:'#d7fc70', backgroundColor:'rgba(0,229,255,0.1)', borderWidth:2, pointRadius:4 },
+      { label:'Onsite',  data:[72.7,69.2,96451/1500,75.0,75.5/2], borderColor:'#9bcfaf', backgroundColor:'rgba(57,255,143,0.08)', borderWidth:2, pointRadius:4 },
       { label:'Hybrid',  data:[72.7,69.1,96748/1500,75.0,75.5/2], borderColor:'#ffd60a', backgroundColor:'rgba(255,214,10,0.07)', borderWidth:2, pointRadius:4 }
     ]
   },
@@ -1003,7 +1003,7 @@ new Chart(document.getElementById('hoursWlbChart'), {
       backgroundColor: 'rgba(255,71,87,0.08)',
       borderWidth: 2.5,
       pointRadius: 6,
-      pointBackgroundColor: ['#39ff8f','#00e5ff','#ff8c42','#ff4757','#ff4757'],
+      pointBackgroundColor: ['#9bcfaf','#d7fc70','#ff8c42','#ff4757','#ff4757'],
       pointBorderColor: '#060912',
       pointBorderWidth: 2,
       fill: true,
@@ -1014,8 +1014,8 @@ new Chart(document.getElementById('hoursWlbChart'), {
     responsive:true,
     plugins: { legend:{display:false}, tooltip:TT },
     scales: {
-      x: { ...sc.x, title:{display:true,text:'Weekly Hours',color:'#4a5a78',font:{size:10}} },
-      y: { ...sc.y, min:45, max:90, title:{display:true,text:'WLB Score',color:'#4a5a78',font:{size:10}} }
+      x: { ...sc.x, title:{display:true,text:'Weekly Hours',color:'#a2ac9f',font:{size:10}} },
+      y: { ...sc.y, min:45, max:90, title:{display:true,text:'WLB Score',color:'#a2ac9f',font:{size:10}} }
     }
   }
 });
@@ -1026,7 +1026,7 @@ new Chart(document.getElementById('sizeChart'), {
   data: {
     labels: ['Startup','Small','Medium','Large','Enterprise'],
     datasets: [
-      { label:'Promotion Speed', data:[54.5,36.6,36.6,36.7,27.7], backgroundColor:'#00e5ff', borderRadius:4, borderSkipped:false },
+      { label:'Promotion Speed', data:[54.5,36.6,36.6,36.7,27.7], backgroundColor:'#d7fc70', borderRadius:4, borderSkipped:false },
       { label:'Career Growth', data:[57.4,57.1,57.2,57.2,57.1], backgroundColor:'rgba(57,255,143,0.6)', borderRadius:4, borderSkipped:false },
       { label:'Satisfaction', data:[69.6,73.1,73.2,73.1,74.6], backgroundColor:'rgba(255,214,10,0.5)', borderRadius:4, borderSkipped:false }
     ]
@@ -1056,7 +1056,7 @@ new Chart(document.getElementById('vacationChart'), {
     plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
     scales: {
       x:sc.x,
-      y:{ ...sc.y, min:19.5, max:20.5, title:{display:true,text:'Vacation Days',color:'#4a5a78',font:{size:9}} },
+      y:{ ...sc.y, min:19.5, max:20.5, title:{display:true,text:'Vacation Days',color:'#a2ac9f',font:{size:9}} },
       y1:{ position:'right', min:26, max:28, grid:{drawOnChartArea:false}, ticks:{color:'#ff4757'}, title:{display:true,text:'Tax Rate %',color:'#ff4757',font:{size:9}} }
     }
   }
@@ -1069,7 +1069,7 @@ new Chart(document.getElementById('autoRoleChart'), {
     labels: ['Research Sci','SW AI Eng','CV Engineer','Data Analyst','NLP Engineer','Data Scientist','ML Engineer','AI Engineer'],
     datasets: [{
       data: [50.6,50.6,50.6,50.3,50.2,50.2,50.1,50.1],
-      backgroundColor: [50.6,50.6,50.6,50.3,50.2,50.2,50.1,50.1].map(v => v>50.4?'#ff4757':v>50.2?'#ff8c42':'#39ff8f'),
+      backgroundColor: [50.6,50.6,50.6,50.3,50.2,50.2,50.1,50.1].map(v => v>50.4?'#ff4757':v>50.2?'#ff8c42':'#9bcfaf'),
       borderRadius:4, borderSkipped:false
     }]
   },
@@ -1085,7 +1085,7 @@ const autoSpecs = ['NLP','Forecasting','RL','Comp Vision','LLM','Analytics','MLO
 const autoVals  = [50.9,50.5,50.4,50.4,50.3,50.2,50.2,50.0];
 const autoHbl = document.getElementById('autoSpecHbl');
 autoSpecs.forEach((s,i) => {
-  const col = autoVals[i]>50.5?'#ff4757':autoVals[i]>50.2?'#ff8c42':'#39ff8f';
+  const col = autoVals[i]>50.5?'#ff4757':autoVals[i]>50.2?'#ff8c42':'#9bcfaf';
   autoHbl.innerHTML += `<div class="hbl-row"><div class="hbl-name w120">${s}</div><div class="hbl-track"><div class="hbl-fill" style="width:${((autoVals[i]-49.5)/(51.5-49.5)*100).toFixed(0)}%;background:${col}"></div></div><div class="hbl-val">${autoVals[i]}</div></div>`;
 });
 
@@ -1096,7 +1096,7 @@ new Chart(document.getElementById('layoffChart'), {
     labels: ['Rating 3.0','Rating 3.5','Rating 4.0','Rating 4.5','Rating 5.0'],
     datasets: [
       { label:'Layoff Risk', data:[0.18,0.18,0.18,0.18,0.18], backgroundColor:'rgba(255,71,87,0.6)', borderRadius:4, borderSkipped:false },
-      { label:'Job Security', data:[71,73,75,77,79], type:'line', borderColor:'#39ff8f', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#39ff8f', yAxisID:'y1', tension:0.3 }
+      { label:'Job Security', data:[71,73,75,77,79], type:'line', borderColor:'#9bcfaf', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#9bcfaf', yAxisID:'y1', tension:0.3 }
     ]
   },
   options: {
@@ -1104,8 +1104,8 @@ new Chart(document.getElementById('layoffChart'), {
     plugins: { legend:{labels:{boxWidth:10}}, tooltip:TT },
     scales: {
       x:sc.x,
-      y:{ ...sc.y, min:0, max:0.3, ticks:{...sc.y.ticks, callback:v=>+(v*100).toFixed(0)+'%'}, title:{display:true,text:'Layoff Risk',color:'#4a5a78',font:{size:9}} },
-      y1:{ position:'right', min:65, max:85, grid:{drawOnChartArea:false}, ticks:{color:'#39ff8f'} }
+      y:{ ...sc.y, min:0, max:0.3, ticks:{...sc.y.ticks, callback:v=>+(v*100).toFixed(0)+'%'}, title:{display:true,text:'Layoff Risk',color:'#a2ac9f',font:{size:9}} },
+      y1:{ position:'right', min:65, max:85, grid:{drawOnChartArea:false}, ticks:{color:'#9bcfaf'} }
     }
   }
 });
@@ -1117,7 +1117,7 @@ new Chart(document.getElementById('oarChart'), {
     labels: ['Remote (75.1%)','Onsite (75.0%)','Hybrid (75.0%)','Declined (24.9%)'],
     datasets: [{
       data: [25.1,25.0,25.0,24.9],
-      backgroundColor: ['#00e5ff','#39ff8f','#ffd60a','rgba(255,71,87,0.3)'],
+      backgroundColor: ['#d7fc70','#9bcfaf','#ffd60a','rgba(255,71,87,0.3)'],
       borderWidth: 2, borderColor: '#060912', hoverOffset: 8
     }]
   },
@@ -1139,7 +1139,7 @@ new Chart(document.getElementById('yearTrendChart'), {
       backgroundColor: 'rgba(168,85,247,0.08)',
       borderWidth: 2.5,
       pointRadius: 5,
-      pointBackgroundColor: ['#ffd60a','#a855f7','#ff4757','#a855f7','#a855f7','#a855f7','#39ff8f'],
+      pointBackgroundColor: ['#ffd60a','#a855f7','#ff4757','#a855f7','#a855f7','#a855f7','#9bcfaf'],
       pointBorderColor: '#060912',
       pointBorderWidth: 2,
       fill: true,
@@ -1159,12 +1159,12 @@ new Chart(document.getElementById('yearTrendChart'), {
 // ML Features HBL
 const mlFeats = [
   { name:'country', val:95, color:'#ffd60a' },
-  { name:'experience_years', val:90, color:'#00e5ff' },
-  { name:'experience_level', val:87, color:'#39ff8f' },
+  { name:'experience_years', val:90, color:'#d7fc70' },
+  { name:'experience_level', val:87, color:'#9bcfaf' },
   { name:'job_role', val:78, color:'#a855f7' },
   { name:'ai_specialization', val:22, color:'#60a5fa' },
-  { name:'work_mode', val:5, color:'#4a5a78' },
-  { name:'education_required', val:4, color:'#4a5a78' },
+  { name:'work_mode', val:5, color:'#a2ac9f' },
+  { name:'education_required', val:4, color:'#a2ac9f' },
 ];
 const mlHbl = document.getElementById('mlFeatures');
 mlFeats.forEach(d => {
@@ -1193,5 +1193,5 @@ new Chart(document.getElementById('workforceMixChart'), {
 });
 
 </script>
-</body>
+<div class="sitefooter"><div>Eric Joseph Benedict<br>Data & digital experiences · Lagos, Nigeria</div><a href="index.html#work">← All projects</a><a href="caresync.html">Explore CareSync ↗</a><a href="#project-content">Back to top ↑</a></div><script src="site.js"></script></body>
 </html>
